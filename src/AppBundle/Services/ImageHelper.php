@@ -16,6 +16,9 @@ class ImageHelper {
      */
     public function resizeImage($image, $newPath, $width=0, $height=0){
 
+        if(!file_exists($image)) {
+          return array('newPath' => $newPath, 'image_name' => '');
+        }
         // Get current dimensions
         $ImageDetails = $this->getImageDetails($image);
         $name = $ImageDetails->name;

@@ -86,7 +86,7 @@ class AppExtension extends \Twig_Extension
 
         return array(
             'session' => $session->all(),
-            'session_user' => $this->container->get('app.global_service')->session_current_user(),
+            'session_user' => $this->container->get('app.global_service')->session_current_user()
         );
     }
 

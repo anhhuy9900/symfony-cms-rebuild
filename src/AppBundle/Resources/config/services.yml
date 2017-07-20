@@ -24,7 +24,7 @@ services:
 
    app.twig_extension:
       class: AppBundle\Twig\AppExtension
-      arguments: ["@doctrine.orm.entity_manager", "@service_container" ]
+      arguments: ["@service_container" ]
       public: false
       tags:
             - { name: twig.extension }
