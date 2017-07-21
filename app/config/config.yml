@@ -80,3 +80,9 @@ services:
         class: Twig_Extension_Debug
         tags:
              - { name: 'twig.extension' }
+
+assetic:
+    debug:          '%kernel.debug%'
+    use_controller: '%kernel.debug%'
+    filters:
+        cssrewrite: ~

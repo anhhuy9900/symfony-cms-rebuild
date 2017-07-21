@@ -5,7 +5,7 @@ services:
 
    app.admincp_service:
       class: AppBundle\Services\AdminCPService
-      arguments: ["@doctrine.orm.entity_manager", "@service_container" ]
+      arguments: ["@doctrine.orm.entity_manager", "@service_container"]
 
    app.upload_files_service:
       class: AppBundle\Services\UploadFilesService

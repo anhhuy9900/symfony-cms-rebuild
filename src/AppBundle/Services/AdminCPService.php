@@ -12,19 +12,21 @@ use Symfony\Component\HttpFoundation\Session\Storage\PhpBridgeSessionStorage;
 use Symfony\Component\HttpFoundation\Cookie;
 use Symfony\Component\HttpFoundation\Response;
 
-class AdminCPService extends Controller{
+class AdminCPService extends Controller {
 
     private $global_helper_service;
 
-    public function setContainer(ContainerInterface $container = null)
-    {
-        parent::setContainer($container);
-        $this->global_helper_service = $this->container->get('app.global_helper_service');
-    }
+//    public function setContainer(ContainerInterface $container)
+//    {
+//        $this->container = $container;
+//
+//    }
 
-    function __construct(EntityManager $entityManager)
+    function __construct(EntityManager $entityManager, ContainerInterface $container)
     {
         $this->em = $entityManager;
+        $this->container = $container;
+        $this->global_helper_service = $this->container->get('app.global_helper_service');
     }
 
     function admin_checkValidUser($username, $password)
@@ -105,10 +107,13 @@ class AdminCPService extends Controller{
         $session = new Session(new PhpBridgeSessionStorage());
         $is_login = FALSE;
 
-        $cookies = $this->get('request')->cookies;
-        if ($cookies->has('remember_me') && $cookies->get('remember_me')) {
+        $request = new Request;
+        $cookies = $request->cookies->get('cookie');
+        if($cookies) {
+          if ($cookies->has('remember_me') && $cookies->get('remember_me')) {
             $is_login = TRUE;
-        } 
+          }
+        }
         else {
             if(!empty($session->get('security_secured_userad'))){
                 $is_login = TRUE;
@@ -138,7 +143,10 @@ class AdminCPService extends Controller{
 
     public function _lists_modules_left_theme($parent_id){
         //get current url
-        $route = $this->get("router")->match($this->getRequest()->getPathInfo());
+
+        //dump($this->container->get("router")->getContext()->getPathInfo());die;
+        //$route = $this->container->get("router")->match($this->container->getRequest()->getPathInfo());
+        $route = $this->container->get("router")->getContext()->getPathInfo();
 
         $current_user = $this->admin_get_current_user_login();
         $repository = $this->em->getRepository('AppBundle:SystemModulesEntity');
@@ -147,9 +155,12 @@ class AdminCPService extends Controller{
         $query->where('pk.module_status = 1');
         $query->andWhere('pk.parent_id = :parent_id')->setParameter('parent_id', $parent_id);
         //Just only super admin enough permission access for all modules
-        if($current_user->getPermission_limit() == 0){
+        if($current_user) {
+          if($current_user->getPermission_limit() == 0){
             $query->andWhere('pk.module_permission = 0');
+          }
         }
+
         $query->orderBy("pk.module_order", 'ASC');
         $results = $query->getQuery()->getResult();
 
@@ -159,7 +170,7 @@ class AdminCPService extends Controller{
             foreach($results as $value){
                 $html_menu = $this->_lists_modules_left_theme($value['id']);
                 $url_redirect = $value['module_alias'] ? $this->generateUrl($value['module_alias']) : '#';
-                $class_active = $route['_route']==$value['module_alias'] ? ' class="active leftmenu-child-active"' : '';
+                $class_active = $route == $value['module_alias'] ? ' class="active leftmenu-child-active"' : '';
                 $html .='<li'.$class_active.'>';
                     $html .='<a href="' .$url_redirect. '"' .($html_menu ? 'class="dropdown-toggle"' : ''). '>';
                         $html .='<i class="menu-icon fa fa-caret-right"></i>';

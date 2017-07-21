@@ -1,9 +1,7 @@
 <?php
 namespace AppBundle\Repository\Admin;
 
-use Doctrine\ORM\EntityRepository;
-
-class AdminNewsRepository extends EntityRepository
+Trait AdminNewsRepository
 {
 
     public function _create_record_DB($data)
@@ -128,7 +126,7 @@ class AdminNewsRepository extends EntityRepository
     }
 
     /**
-     * This function use create and update atgs for each news
+     * This function use create and update tags for each news
      */
     public function _handle_tags_new($type_id, $type = 'default', $tags = ''){
 

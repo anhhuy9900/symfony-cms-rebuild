@@ -1,19 +1,8 @@
 <?php
 namespace AppBundle\Repository\Admin;
 
-use Doctrine\ORM\EntityRepository;
-use Symfony\Component\Validator\Mapping\ClassMetadata;
-use AppBundle\Entity\CategoriesNewsEntity;
-
-
-/**
- * @ORM\Table(name="categories_news")
- * @ORM\Entity(repositoryClass="AdminCategoriesNewsRepository")
- * @ORM\HasLifecycleCallbacks()
- */
-class AdminCategoriesNewsRepository extends EntityRepository
+Trait AdminCategoriesNewsRepository
 {
-
     public function _create_record_DB($data)
     {
         $entity = new CategoriesNewsEntity();

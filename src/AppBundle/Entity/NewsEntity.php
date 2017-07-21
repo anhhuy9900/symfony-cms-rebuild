@@ -8,7 +8,7 @@ use Doctrine\ORM\EntityRepository;
 /**
  * @ORM\Entity
  * @ORM\Table(name="news")
- * @ORM\Entity(repositoryClass="AppBundle\Repository\Front\NewsRepository")
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\NewsRepository")
  */
 
 class NewsEntity {

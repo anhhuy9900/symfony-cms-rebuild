@@ -9,8 +9,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
 
     <!-- bootstrap & fontawesome -->
-    <link rel="stylesheet" href="{{ asset('frontend/assets/css/bootstrap.min.css') }}" />
-    <link rel="stylesheet" href="{{ asset('frontend/assets/css/style.css') }}" />
+    {% block stylesheets %}
+        {% stylesheets
+        'bundles/app/frontend/css/bootstrap.css'
+        'bundles/app/frontend/css/bootstrap.min.css'
+        'bundles/app/frontend/css/style.css'
+        filter='cssrewrite' %}
+            <link rel="stylesheet" href="{{ asset_url }}" />
+        {% endstylesheets %}
+    {% endblock %}
 
 </head>
 
@@ -83,17 +90,15 @@
     <!-- /.row -->
 </footer>
 
-<!-- jQuery -->
-<script src="{{ asset('themes/frontend/assets/js/jquery.js') }}"></script>
-
-<!-- Bootstrap Core JavaScript -->
-<script src="{{ asset('themes/frontend/assets/js/bootstrap.min.js') }}"></script>
-
-<!-- Add new JavaScript -->
+{# Block JS #}
 {% block javascripts %}
+    {% javascripts '@AppBundle/Resources/public/frontend/js/*' %}
+    <script src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+
     {{ add_scripts | raw }}
 {% endblock %}
+{# End Block JS #}
 
 </body>
-
 </html>

@@ -8,7 +8,7 @@ use Doctrine\ORM\EntityRepository;
 /**
  * @ORM\Entity
  * @ORM\Table(name="users")
- * @ORM\Entity(repositoryClass="AppBundle\Repository\Front\UsersRepository")
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\UsersRepository")
  */
 class UsersEntity {
     /**
