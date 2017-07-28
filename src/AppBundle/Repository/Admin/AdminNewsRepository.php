@@ -4,7 +4,7 @@ namespace AppBundle\Repository\Admin;
 Trait AdminNewsRepository
 {
 
-    public function _create_record_DB($data)
+    public function createRecordDb($data)
     {
         $entity = new NewsEntity();
         $entity->setCategoryID($data['category_id']);
@@ -26,7 +26,7 @@ Trait AdminNewsRepository
         return $entity->getID();
     }
 
-    public function _update_record_DB($data)
+    public function updateRecordDb($data)
     {
         $em = $this->getEntityManager();
         $entity = $em->getRepository('AppBundle:NewsEntity')->find($data['id']);
@@ -47,14 +47,16 @@ Trait AdminNewsRepository
         return $entity->getID();
     }
 
-    public function _delete_record_DB($id){
+    public function deleteRecordDb($id)
+    {
         $em = $this->getEntityManager();
         $entity = $em->getRepository('AppBundle:NewsEntity')->findOneBy(array('id'=>$id));
         $em->remove($entity);
         $em->flush();
     }
 
-    public function _getListRecords($limit, $offset, $where = array(), $order = array('field'=>'id', 'by'=>'DESC')){
+    public function getRecords($limit, $offset, $where = array(), $order = array('field'=>'id', 'by'=>'DESC'))
+    {
         $repository = $this->getEntityManager()->getRepository('AppBundle:NewsEntity');
         $query = $repository->createQueryBuilder('pk');
         $query->select("pk.id as id, pk.title as title, pk.image as image, pk.status as status, pk.updated_date as updated_date");
@@ -83,7 +85,8 @@ Trait AdminNewsRepository
         return $result;
     }
 
-    public function _getTotalRecords($where = array()){
+    public function getTotalRecords($where = array())
+    {
         $repository = $this->getEntityManager()->getRepository('AppBundle:NewsEntity');
         $query = $repository->createQueryBuilder('pk');
         $query->select('COUNT(pk.id)');
@@ -105,7 +108,8 @@ Trait AdminNewsRepository
         return $total;
     }
 
-    public function _getCategoriesNews(){
+    public function getCategoriesNews()
+    {
         $repository = $this->getEntityManager()->getRepository('AppBundle:CategoriesNewsEntity');
         $query = $repository->createQueryBuilder('pk');
         $query->select("pk.id, pk.title");
@@ -113,7 +117,8 @@ Trait AdminNewsRepository
         return $results;
     }
 
-    public function _getListTagsNews($type_id, $type = 'default'){
+    public function getTagsNews($type_id, $type = 'default')
+    {
         $repository = $this->getEntityManager()->getRepository('AppBundle:TagsEntity');
         $query = $repository->createQueryBuilder('pk');
         $query->select("pk.id, pk.tag_name");
@@ -128,7 +133,8 @@ Trait AdminNewsRepository
     /**
      * This function use create and update tags for each news
      */
-    public function _handle_tags_new($type_id, $type = 'default', $tags = ''){
+    public function handleTagsNews($type_id, $type = 'default', $tags = '')
+    {
 
         if($tags){
             $entity = $this->getEntityManager()->getRepository('AppBundle:TagsEntity');

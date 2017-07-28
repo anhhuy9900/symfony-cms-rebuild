@@ -15,7 +15,7 @@ class UserHandleAction extends UsersController
     /*
      * This function handle action for feature user register
      */
-    public function user_register($data)
+    public function userRegister($data)
     {
         global $kernel;
 
@@ -56,15 +56,15 @@ class UserHandleAction extends UsersController
     /*
      * This function handle action for feature user login
      */
-    public function user_login($data)
+    public function userLogin($data)
     {
         global $kernel;
         $helper = $kernel->getContainer()->get('app.global_helper_service');
 
         $data = (object)$data;
         $validation = new \AppBundle\Validation\Front\Users\UserLoginValidation;
-        $validation->account = $helper->__xss_clean_string($data->account);
-        $validation->password = $data->password ? $helper->encode_password('UserPass', $data->password) : '';
+        $validation->account = $helper->cleanStringInput($data->account);
+        $validation->password = $data->password ? $helper->encodePassword('UserPass', $data->password) : '';
 
         $errors = $kernel->getContainer()->get('validator')->validate($validation);
         $error_message = $kernel->getContainer()->get('app.global_helper_service')->getErrorMessages($errors);
@@ -79,7 +79,7 @@ class UserHandleAction extends UsersController
             $error_message = 'Success';
 
             //save session for user
-            $this->save_session_user($data);
+            $this->saveSessionUser($data);
 
         }
 
@@ -94,7 +94,7 @@ class UserHandleAction extends UsersController
     /*
      * This function use to save session at user login
      */
-    function save_session_user($data){
+    function saveSessionUser($data){
         global $kernel;
         $session = new Session(new PhpBridgeSessionStorage());
         $session->start();
@@ -120,13 +120,13 @@ class UserHandleAction extends UsersController
     /*
      * This function handle action for feature forgot password
      */
-    function user_forgot_password($data){
+    function userForgotPassword($data){
         global $kernel;
         $helper = $kernel->getContainer()->get('app.global_helper_service');
 
         $data = (object)$data;
         $validation = new \AppBundle\Validation\Front\Users\UserForgotPasswordValidation;
-        $validation->email = $helper->__xss_clean_string($data->email);
+        $validation->email = $helper->cleanStringInput($data->email);
 
         $errors = $kernel->getContainer()->get('validator')->validate($validation);
         $error_message = $kernel->getContainer()->get('app.global_helper_service')->getErrorMessages($errors);

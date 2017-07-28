@@ -22,14 +22,14 @@ class AdminCPService extends Controller {
 //
 //    }
 
-    function __construct(EntityManager $entityManager, ContainerInterface $container)
+    public function __construct(EntityManager $entityManager, ContainerInterface $container)
     {
         $this->em = $entityManager;
         $this->container = $container;
         $this->global_helper_service = $this->container->get('app.global_helper_service');
     }
 
-    function admin_checkValidUser($username, $password)
+    public function adminCheckValidUser($username, $password)
     {
         $password = $this->encodePassword('MyPass', $password);
         $repository = $this->em->getRepository('AppBundle:SystemUsersEntity');
@@ -43,18 +43,14 @@ class AdminCPService extends Controller {
         return NULL;
     }
 
-    function admin_getUserByToken($user_token)
+    public function adminGetUserByToken($user_token)
     {
-
         $repository = $this->em->getRepository('AppBundle:SystemUsersEntity');
-        // $query = $repository->createQueryBuilder('pk')
-        //     ->where('pk.user_token LIKE :user_token')
-        //     ->andwhere('pk.status = 1')
-        //     ->setParameters(array('user_token' => $user_token))
-        //     ->getQuery();
-        // $result = $query->getArrayResult();
         $result = $repository->findOneBy(
-            array('user_token' => $user_token, 'status' => 1 )
+            [
+                'user_token' => $user_token,
+                'status' => 1
+            ]
         );
         if($result) {
             return $result;
@@ -63,21 +59,20 @@ class AdminCPService extends Controller {
         return NULL;
     }
 
-    function admin_get_current_user_login(){
+    public function adminGetCurrentUserLogin(){
         $session = new Session(new PhpBridgeSessionStorage());
         if(!empty($session->get('userad_authentication'))) {
             $session_user = $session->get('userad_authentication');
 
             //get current user
-            $get_user = $this->admin_getUserByToken($session_user['token']);
+            $get_user = $this->adminGetUserByToken($session_user['token']);
 
             return $get_user;
         }
         return NULL;
     }
 
-
-    function admin_onAuthentication($user_data, $remember){
+    public function adminSetAuthentication($user_data, $remember) {
         $session = new Session(new PhpBridgeSessionStorage());
         $session->start();
 
@@ -95,7 +90,7 @@ class AdminCPService extends Controller {
         $session->save();
 
         //set cookie for remmeber me
-        if($remember){
+        if($remember) {
             $response = new Response();
             $cookie = new Cookie('remember_me', 1, time()+86400);
             $response->headers->setCookie($cookie);
@@ -103,7 +98,7 @@ class AdminCPService extends Controller {
         }
     }
 
-    function admin_UserSessionLogin(){
+    public function adminUserSessionLogin(){
         $session = new Session(new PhpBridgeSessionStorage());
         $is_login = FALSE;
 
@@ -115,22 +110,24 @@ class AdminCPService extends Controller {
           }
         }
         else {
-            if(!empty($session->get('security_secured_userad'))){
+            if(!empty($session->get('security_secured_userad'))) {
                 $is_login = TRUE;
             }
         }
         return $is_login;
     }
 
-    function admin_CheckValidLogin(){
-        if($this->admin_UserSessionLogin()){
+    public function adminCheckValidLogin()
+    {
+        if($this->adminUserSessionLogin()) {
             return TRUE;
         }
         return FALSE;
 
     }
 
-    function admin_UserAdminInfo(){
+    public function adminUserAdminInfo()
+    {
         $session = new Session();
         $user = $session->get('userad_authentication');
         return $user;
@@ -141,14 +138,14 @@ class AdminCPService extends Controller {
         return hash('sha256', $salt . $raw); // Custom function for encrypt
     }
 
-    public function _lists_modules_left_theme($parent_id){
+    public function adminListModulesLeft($parent_id)
+    {
         //get current url
-
         //dump($this->container->get("router")->getContext()->getPathInfo());die;
         //$route = $this->container->get("router")->match($this->container->getRequest()->getPathInfo());
         $route = $this->container->get("router")->getContext()->getPathInfo();
 
-        $current_user = $this->admin_get_current_user_login();
+        $current_user = $this->adminGetCurrentUserLogin();
         $repository = $this->em->getRepository('AppBundle:SystemModulesEntity');
         $query = $repository->createQueryBuilder('pk');
         $query->select("pk.id, pk.module_name, pk.module_alias");
@@ -156,7 +153,7 @@ class AdminCPService extends Controller {
         $query->andWhere('pk.parent_id = :parent_id')->setParameter('parent_id', $parent_id);
         //Just only super admin enough permission access for all modules
         if($current_user) {
-          if($current_user->getPermission_limit() == 0){
+          if($current_user->getPermission_limit() == 0) {
             $query->andWhere('pk.module_permission = 0');
           }
         }
@@ -165,10 +162,10 @@ class AdminCPService extends Controller {
         $results = $query->getQuery()->getResult();
 
         $html = '';
-        if(!empty($results)){
+        if(!empty($results)) {
             $html .= '<ul class="submenu">';
-            foreach($results as $value){
-                $html_menu = $this->_lists_modules_left_theme($value['id']);
+            foreach($results as $value) {
+                $html_menu = $this->adminListModulesLeft($value['id']);
                 $url_redirect = $value['module_alias'] ? $this->generateUrl($value['module_alias']) : '#';
                 $class_active = $route == $value['module_alias'] ? ' class="active leftmenu-child-active"' : '';
                 $html .='<li'.$class_active.'>';
@@ -189,10 +186,11 @@ class AdminCPService extends Controller {
         return $html;
     }
 
-    public function admin_check_roles_user($module_id, $role_type){
+    public function adminCheckRolesUser($module_id, $role_type)
+    {
         $valid = FALSE;
-        $get_user = $this->admin_get_current_user_login();
-        if($get_user){
+        $get_user = $this->adminGetCurrentUserLogin();
+        if($get_user) {
             $repository = $this->em->getRepository('AppBundle:SystemUsersEntity');
             $query = $repository->createQueryBuilder('pk');
             $query->select("fk.role_type");
@@ -202,8 +200,8 @@ class AdminCPService extends Controller {
             $result = $query->getQuery()->getArrayResult(\Doctrine\ORM\Query::HYDRATE_SCALAR);
 
             $result_role_type = unserialize($result[0]['role_type']);
-            if(!empty($result_role_type[$module_id])){
-                switch($role_type){
+            if(!empty($result_role_type[$module_id])) {
+                switch($role_type) {
                     case 'view':
                         if($result_role_type[$module_id][$role_type]){
                             $valid = TRUE;
@@ -229,7 +227,7 @@ class AdminCPService extends Controller {
                 }
             }
 
-            if($get_user->getPermission_limit() == 1){
+            if($get_user->getPermission_limit() == 1) {
                 $valid = TRUE;
             }
         }
@@ -238,7 +236,7 @@ class AdminCPService extends Controller {
 
     }
 
-    public static function __admin_random_token($length = 16)
+    public static function adminRandomToken($length = 16)
     {
         if (function_exists('openssl_random_pseudo_bytes'))
         {
@@ -255,25 +253,26 @@ class AdminCPService extends Controller {
         return NULL;
     }
 
-    public function admin_get_current_module($module_alias){
+    public function adminGetCurrentModule($module_alias)
+    {
         $repository = $this->em->getRepository('AppBundle:SystemModulesEntity');
-        $result = $repository->findOneBy(array('module_alias' => $module_alias));
+        $result = $repository->findOneBy(['module_alias' => $module_alias]);
         if($result) {
             return $result;
         }
         return NULL;
     }
 
-
-    public static function handle_element_form_filter($array_filters = array()){
+    public static function handleElementFormFilter($array_filters = array())
+    {
         $html = '';
         if(!empty($array_filters)){
-            //$html .= '<form name="filter_options" id="filter_options">';
-            foreach($array_filters as $key => $value){
+            //$html .= '<form name="filterOptions" id="filterOptions">';
+            foreach($array_filters as $key => $value) {
                 $html .= '<div class="row">';
                 $html .= '<div class="col-xs-6 hr4">';
                 $html .= '<label for="' .$key. '" class="col-xs-3">' .$value['title']. ' : </label>';
-                switch($value['type']){
+                switch($value['type']) {
                     case 'input':
                         $html .= '<div class="input-group dataTables_filter col-xs-8">';
                         $html .= '<input type="input" id="' .$key. '" name="' .$key. '" value="' .$value['default_value']. '" class="form-control input-sm col-xs-5" placeholder="" aria-controls="dynamic-table">';

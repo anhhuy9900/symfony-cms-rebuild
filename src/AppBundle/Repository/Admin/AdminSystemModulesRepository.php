@@ -14,7 +14,7 @@ use AppBundle\Entity\SystemModulesEntity;
 class AdminSystemModulesRepository extends EntityRepository
 {
 
-    public function _create_record_DB($data)
+    public function createRecordDb($data)
     {
         $entity = new SystemModulesEntity();
         $entity->setParentID($data['parent_id']);
@@ -32,7 +32,7 @@ class AdminSystemModulesRepository extends EntityRepository
         return $entity->getID();
     }
 
-    public function _update_record_DB($data)
+    public function updateRecordDb($data)
     {
         $em = $this->getEntityManager();
         $entity = $em->getRepository('AppBundle:SystemModulesEntity')->find($data['id']);
@@ -49,14 +49,16 @@ class AdminSystemModulesRepository extends EntityRepository
         return $entity->getID();
     }
 
-    public function _delete_record_DB($id){
+    public function deleteRecordDb($id)
+    {
         $em = $this->getEntityManager();
         $entity = $em->getRepository('AppBundle:SystemModulesEntity')->findOneBy(array('id'=>$id));
         $em->remove($entity);
         $em->flush();
     }
 
-    public function _getListRecords($offset, $limit, $where = array(), $order = array('field'=>'id', 'by'=>'DESC')){
+    public function getRecords($offset, $limit, $where = array(), $order = array('field'=>'id', 'by'=>'DESC'))
+    {
         $repository = $this->getEntityManager()->getRepository('AppBundle:SystemModulesEntity');
         $query = $repository->createQueryBuilder('pk');
         $query->select("pk");
@@ -78,7 +80,8 @@ class AdminSystemModulesRepository extends EntityRepository
         return $result->getResult();
     }
 
-    public function _getTotalRecords($key = ''){
+    public function getTotalRecords($key = '')
+    {
         $repository = $this->getEntityManager()->getRepository('AppBundle:SystemModulesEntity');
         $query = $repository->createQueryBuilder('pk');
         $query->select('COUNT(pk.id)');
@@ -90,7 +93,8 @@ class AdminSystemModulesRepository extends EntityRepository
         return $total;
     }
 
-    public function _get_recursive_modules($parent_id, &$arr_menu = array()){
+    public function getRecursiveModules($parent_id, &$arr_menu = array())
+    {
 
         $repository = $this->getEntityManager()->getRepository('AppBundle:SystemModulesEntity');
         $query = $repository->createQueryBuilder('pk');
@@ -106,7 +110,7 @@ class AdminSystemModulesRepository extends EntityRepository
                 }
                 $value['module_name'] = $str.$value['module_name'];
                 $arr_menu[] = $value;
-                $this->_get_recursive_modules($value['id'], $arr_menu);
+                $this->getRecursiveModules($value['id'], $arr_menu);
             }
         }
 

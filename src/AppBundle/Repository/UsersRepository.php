@@ -31,16 +31,16 @@ class UsersRepository extends EntityRepository
         global $kernel;
         $helper = $kernel->getContainer()->get('app.global_helper_service');
 
-        $password = $helper->encode_password('UserPass', $data->password);
+        $password = $helper->encodePassword('UserPass', $data->password);
         $active_code = md5($data->email.time());
 
         $entity = new UsersEntity();
-        $entity->setFullname($helper->__xss_clean_string($data->fullname));
-        $entity->setEmail($helper->__xss_clean_string($data->email));
+        $entity->setFullname($helper->cleanStringInput($data->fullname));
+        $entity->setEmail($helper->cleanStringInput($data->email));
         $entity->setPassword($password);
-        $entity->setPhone($helper->__xss_clean_string($data->phone));
-        $entity->setAddress($helper->__xss_clean_string($data->address));
-        $entity->setGender($helper->__xss_clean_int($data->gender));
+        $entity->setPhone($helper->cleanStringInput($data->phone));
+        $entity->setAddress($helper->cleanStringInput($data->address));
+        $entity->setGender($helper->cleanIntInput($data->gender));
         $entity->setStatus(0);
         $entity->setActive_Code($active_code);
         $entity->setActive_Date(0);
@@ -63,7 +63,7 @@ class UsersRepository extends EntityRepository
     function get_current_user($user_data){
         global $kernel;
         $helper = $kernel->getContainer()->get('app.global_helper_service');
-        $password = $helper->encode_password('UserPass', $user_data->password);
+        $password = $helper->encodePassword('UserPass', $user_data->password);
 
         $repository = $this->getEntityManager()->getRepository('AppBundle:UsersEntity');
         $query = $repository->createQueryBuilder('pk')

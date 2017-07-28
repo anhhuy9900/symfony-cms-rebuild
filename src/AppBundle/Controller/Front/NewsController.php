@@ -1,12 +1,10 @@
 <?php
 namespace AppBundle\Controller\Front;
 
-use AppBundle\Controller\FrontController;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use AppBundle\Controller\Front\BaseController;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 
-class NewsController extends FrontController
+class NewsController extends BaseController
 {
     /**
      * @Route("/news", name="news_page")
@@ -20,7 +18,7 @@ class NewsController extends FrontController
         $repository = $this->getDoctrine()->getRepository('AppBundle:NewsEntity');
         $results = $repository->list_data_news_get($limit, $offset);
         $total = $repository->total_list_data_news_get();
-        $pagination = $this->global_helper_service->__pagination($total, $page_offset, $limit, 3, $this->generateUrl('news_page'));
+        $pagination = $this->global_helper_service->pagination($total, $page_offset, $limit, 3, $this->generateUrl('news_page'));
 
         $this->data['title'] = 'News Page';
         $this->data['results'] = $results;
@@ -34,7 +32,7 @@ class NewsController extends FrontController
      */
     public function detailAction($slug)
     {
-        $slug = $this->global_helper_service->__xss_clean_string($slug);
+        $slug = $this->global_helper_service->cleanStringInput($slug);
         $repository = $this->getDoctrine()->getRepository('AppBundle:NewsEntity');
         $result = $repository->get_news_detail($slug);
 

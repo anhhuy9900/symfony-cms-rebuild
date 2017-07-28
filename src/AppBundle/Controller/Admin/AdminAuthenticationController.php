@@ -36,7 +36,7 @@ class AdminAuthenticationController extends Controller
     public function loginAction(Request $request)
     {
 
-        if($this->admincp_service->admin_UserSessionLogin()){
+        if($this->admincp_service->adminUserSessionLogin()){
             $url = $this->generateUrl('admincp_page');
             return $this->redirect($url, 301);
         }
@@ -66,8 +66,8 @@ class AdminAuthenticationController extends Controller
             $errors = $this->get('validator')->validate($validation);
             $form_errors = $this->global_helper_service->getErrorMessages($errors);
             if(!$form_errors){
-                $user = $this->admincp_service->admin_checkValidUser($data['username'], $data['password']);
-                $this->admincp_service->admin_onAuthentication($user, $data['remember']);
+                $user = $this->admincp_service->adminCheckValidUser($data['username'], $data['password']);
+                $this->admincp_service->adminSetAuthentication($user, $data['remember']);
 
                 $url = $this->generateUrl('admincp_page');
                 return $this->redirect($url, 301);

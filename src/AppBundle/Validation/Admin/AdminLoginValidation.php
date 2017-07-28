@@ -42,7 +42,7 @@ class AdminLoginValidation extends Controller {
 
         $admincp_service = $kernel->getContainer()->get('app.admincp_service');
 
-        if(!$admincp_service->admin_checkValidUser($this->username, $this->password)){
+        if(!$admincp_service->adminCheckValidUser($this->username, $this->password)){
             $context->buildViolation('The username and password invalid')
                 ->atPath('username')
                 ->addViolation();

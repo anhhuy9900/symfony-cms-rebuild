@@ -2,7 +2,6 @@
 namespace AppBundle\Controller\Admin;
 
 use MyProject\Proxies\__CG__\OtherProject\Proxies\__CG__\stdClass;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -13,7 +12,7 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
 /* import Bundle Custom */
-use AppBundle\Controller\AdminController;
+use AppBundle\Controller\Admin\AdminController;
 use AppBundle\Validation\Admin\AdminSystemRolesValidation;
 
 
@@ -34,25 +33,25 @@ class AdminSystemRolesController extends AdminController
      */
     public function indexAction(Request $request)
     {
-        $key = $request->query->get('key') ? $this->global_helper_service->__xss_clean_string($request->query->get('key')) : '';
-        $arr_order = $request->query->get('order') ? $this->global_helper_service->__handle_param_order_in_url($request->query->get('order')) : array('field'=>'id', 'by'=>'DESC');
-        $date_range = $request->query->get('date_range') ? $this->global_helper_service->__handle_param_date_range_in_url($request->query->get('date_range')) : array();
+        $key = $request->query->get('key') ? $this->global_helper_service->cleanStringInput($request->query->get('key')) : '';
+        $arr_order = $request->query->get('order') ? $this->global_helper_service->handleParamrOderInUrl($request->query->get('order')) : array('field'=>'id', 'by'=>'DESC');
+        $date_range = $request->query->get('date_range') ? $this->global_helper_service->handleParamDateRangeInUrl($request->query->get('date_range')) : array();
 
         $limit = $request->query->get('lm') ? (int)$request->query->get('lm') : 10;
         $page_offset = $request->query->get('p') ? (int)$request->query->get('p') : 0;
         $offset = $page_offset > 0 ? ($page_offset - 1) * $limit : $page_offset * $limit;
 
     	  $repository = $this->getDoctrine()->getRepository('AppBundle:SystemRolesEntity');
-        $total = $repository->_getTotalRecords($key);
-        $results = $repository->_getListRecords($limit, $offset, array('key' => $key, 'date_range' => $date_range), $arr_order);
+        $total = $repository->getTotalRecords($key);
+        $results = $repository->getRecords($limit, $offset, array('key' => $key, 'date_range' => $date_range), $arr_order);
 
         if($request->query->get('report')){
             $this->_report_data($results);
         }
 
-        $pagination = $this->global_helper_service->__pagination($total, $page_offset, $limit, 3, $this->generateUrl('admincp_system_roles_page'));
+        $pagination = $this->global_helper_service->pagination($total, $page_offset, $limit, 3, $this->generateUrl('admincp_system_roles_page'));
 
-        $this->data['filter_options'] = $this->filter_options();
+        $this->data['filterOptions'] = $this->filterOptions();
         $this->data['results'] = $results;
         $this->data['pagination'] = $pagination;
 
@@ -110,7 +109,7 @@ class AdminSystemRolesController extends AdminController
             $em = $this->getDoctrine()->getEntityManager();
             $check_exist_record = $em->getRepository('AppBundle:SystemRolesEntity')->find($id);
             if($check_exist_record){
-                $em->getRepository('AppBundle:SystemRolesEntity')->_delete_record_DB($id);
+                $em->getRepository('AppBundle:SystemRolesEntity')->deleteRecordDb($id);
 
                 $request->getSession()->getFlashBag()->add('message_data', 'Deleted record success!');
             }
@@ -173,10 +172,10 @@ class AdminSystemRolesController extends AdminController
                 $data['role_type'] = self::_filter_permission_role_type($request->request->get('role_type'));
                 if($data['id'] > 0){
                     /* Update record */
-                    $id = $em->getRepository('AppBundle:SystemRolesEntity')->_update_record_DB($data);
+                    $id = $em->getRepository('AppBundle:SystemRolesEntity')->updateRecordDb($data);
                 } else {
                     /* Create new record */
-                    $id = $em->getRepository('AppBundle:SystemRolesEntity')->_create_record_DB($data);
+                    $id = $em->getRepository('AppBundle:SystemRolesEntity')->createRecordDb($data);
                 }
 
                 $success = TRUE;
@@ -184,7 +183,7 @@ class AdminSystemRolesController extends AdminController
         }
 
         $lists_modules = array();
-        $getListModules = $em->getRepository('AppBundle:SystemRolesEntity')->_getListModules();
+        $getListModules = $em->getRepository('AppBundle:SystemRolesEntity')->getModules();
         if(!empty($getListModules)){
             foreach ($getListModules as $key => $module) {
                 $var = new \stdClass();
@@ -274,12 +273,12 @@ class AdminSystemRolesController extends AdminController
     /*
      * This function used to render form html filter for data
      */
-    private function filter_options(){
+    private function filterOptions(){
         $request = new Request();
 
-        $key = $request->query->get('key') ? $this->global_helper_service->__xss_clean_string($request->query->get('key')) : '';
+        $key = $request->query->get('key') ? $this->global_helper_service->cleanStringInput($request->query->get('key')) : '';
         $date_range = $request->query->get('date_range') ? $request->query->get('date_range') : '';
-        $status = $request->query->get('status') != '' ? (int)$this->global_helper_service->__xss_clean_string($request->query->get('status')) : '';
+        $status = $request->query->get('status') != '' ? (int)$this->global_helper_service->cleanStringInput($request->query->get('status')) : '';
 
         $array_filters = array();
 
@@ -307,6 +306,6 @@ class AdminSystemRolesController extends AdminController
             'default_value' => $date_range
         );
 
-        return $this->admincp_service->handle_element_form_filter($array_filters);
+        return $this->admincp_service->handleElementFormFilter($array_filters);
     }
 }    

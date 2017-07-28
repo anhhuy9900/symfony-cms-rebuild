@@ -1,19 +1,16 @@
 <?php
-namespace AppBundle\Controller;
+namespace AppBundle\Controller\Front;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
-use AppBundle\Entity\AdminLoginEntity;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
-class FrontController extends Controller
+class BaseController extends Controller
 {
     public $global_service;
     public $global_helper_service;
     public $data;
-
-
 
     /**
      * Used as constructor
@@ -36,5 +33,5 @@ class FrontController extends Controller
      */
     public function notfoundAction(){
 
-}
+    }
 }

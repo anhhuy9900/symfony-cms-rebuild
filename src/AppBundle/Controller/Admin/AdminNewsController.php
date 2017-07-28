@@ -1,9 +1,8 @@
 <?php
 namespace AppBundle\Controller\Admin;
 
-use AppBundle\Controller\AdminController;
+use AppBundle\Controller\Admin\AdminController;
 use MyProject\Proxies\__CG__\stdClass;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -25,7 +24,7 @@ class AdminNewsController extends AdminController
     {
         parent::setContainer($container);
         $this->data['title'] = 'Admin Manage News';
-        $this->data['admin_module_id'] = $this->admincp_service->admin_get_current_module('admincp_news_page')->getID();
+        $this->data['admin_module_id'] = $this->admincp_service->adminGetCurrentModule('admincp_news_page')->getID();
     }
 
     /**
@@ -34,26 +33,26 @@ class AdminNewsController extends AdminController
     public function indexAction(Request $request)
     {
 
-        $key = $request->query->get('key') ? $this->global_helper_service->__xss_clean_string($request->query->get('key')) : '';
-        $arr_order = $request->query->get('order') ? $this->global_helper_service->__handle_param_order_in_url($request->query->get('order')) : array('field'=>'id', 'by'=>'DESC');
-        $date_range = $request->query->get('date_range') ? $this->global_helper_service->__handle_param_date_range_in_url($request->query->get('date_range')) : '';
-        $status = $request->query->get('status') != '' ? (int)$this->global_helper_service->__xss_clean_string($request->query->get('status')) : '';
+        $key = $request->query->get('key') ? $this->global_helper_service->cleanStringInput($request->query->get('key')) : '';
+        $arr_order = $request->query->get('order') ? $this->global_helper_service->handleParamrOderInUrl($request->query->get('order')) : array('field'=>'id', 'by'=>'DESC');
+        $date_range = $request->query->get('date_range') ? $this->global_helper_service->handleParamDateRangeInUrl($request->query->get('date_range')) : '';
+        $status = $request->query->get('status') != '' ? (int)$this->global_helper_service->cleanStringInput($request->query->get('status')) : '';
         $limit = !empty($request->query->get('lm')) ? (int)$request->query->get('lm') : 10;
         $page_offset = !empty($request->query->get('p')) ? (int)$request->query->get('p') : 0;
         $offset = $page_offset > 0 ? ($page_offset - 1) * $limit : $page_offset * $limit;
 
         $repository = $this->getDoctrine()->getRepository('AppBundle:NewsEntity');
-        $total = $repository->_getTotalRecords(array('key' => $key, 'date_range' => $date_range, 'status' => $status));
-        $results = $repository->_getListRecords($limit, $offset, array('key' => $key, 'date_range' => $date_range, 'status' => $status), $arr_order);
+        $total = $repository->getTotalRecords(array('key' => $key, 'date_range' => $date_range, 'status' => $status));
+        $results = $repository->getRecords($limit, $offset, array('key' => $key, 'date_range' => $date_range, 'status' => $status), $arr_order);
 
         if($request->query->get('report')){
             $this->_report_data($results);
         }
 
-        $pagination = $this->global_helper_service->__pagination($total, $page_offset, $limit, 3, $this->generateUrl('admincp_news_page'));
+        $pagination = $this->global_helper_service->pagination($total, $page_offset, $limit, 3, $this->generateUrl('admincp_news_page'));
         //dump($results);die();
 
-        $this->data['filter_options'] = $this->filter_options();
+        $this->data['filterOptions'] = $this->filterOptions();
         $this->data['results'] = $results;
         $this->data['pagination'] = $pagination;
 
@@ -115,7 +114,7 @@ class AdminNewsController extends AdminController
             $em = $this->getDoctrine()->getEntityManager();
             $check_exist_record = $em->getRepository('AppBundle:NewsEntity')->find($id);
             if($check_exist_record){
-                $em->getRepository('AppBundle:NewsEntity')->_delete_record_DB($id);
+                $em->getRepository('AppBundle:NewsEntity')->deleteRecordDb($id);
 
                 $request->getSession()->getFlashBag()->add('message_data', 'Deleted record success!');
             }
@@ -146,14 +145,14 @@ class AdminNewsController extends AdminController
         );
 
         //Get list categories
-        $categories = $em->getRepository('AppBundle:NewsEntity')->_getCategoriesNews();
-        $list_categories = $this->global_helper_service->__convert_array_result_selectbox($categories, array('key'=>'id', 'value'=>'title'));
+        $categories = $em->getRepository('AppBundle:NewsEntity')->getCategoriesNews();
+        $list_categories = $this->global_helper_service->convertArrayResultSelectbox($categories, array('key'=>'id', 'value'=>'title'));
 
         //Get list galleries
-        $list_galleries = $this->global_service->__get_list_galleries($id, 'news');
+        $list_galleries = $this->global_service->getListGalleries($id, 'news');
 
         //Get list tags
-        $list_tags = $em->getRepository('AppBundle:NewsEntity')->_getListTagsNews($id, 'news');
+        $list_tags = $em->getRepository('AppBundle:NewsEntity')->getTagsNews($id, 'news');
 
         $defaultData = array();
         $form = $this->createFormBuilder($defaultData)
@@ -222,18 +221,18 @@ class AdminNewsController extends AdminController
             if(!$form_errors){
 
                 //Create Slug
-                $data['slug'] = $this->global_helper_service->_createSlug($data['title']);
+                $data['slug'] = $this->global_helper_service->createSlug($data['title']);
 
                 //Upload image
                 $service = $this->container->get('app.upload_files_service');
-                $data['image'] = $service->__upload_file_request($data['image'],'news');
+                $data['image'] = $service->uploadFileRequest($data['image'],'news');
 
                 if($data['id'] > 0){
                     /* Update record */
-                    $id = $em->getRepository('AppBundle:NewsEntity')->_update_record_DB($data);
+                    $id = $em->getRepository('AppBundle:NewsEntity')->updateRecordDb($data);
                 } else {
                     /* Create new record */
-                    $id = $em->getRepository('AppBundle:NewsEntity')->_create_record_DB($data);
+                    $id = $em->getRepository('AppBundle:NewsEntity')->createRecordDb($data);
                 }
 
                 /* handle gallery images */
@@ -241,7 +240,7 @@ class AdminNewsController extends AdminController
                 if(!empty($data['lists_thumb'])){
                     $files_gallery = json_decode($data['lists_thumb']);
                     foreach ($files_gallery as $key => $value) {
-                        $service->__save_files_data($id, 'news', $value->file);
+                        $service->saveFilesData($id, 'news', $value->file);
                     }
                 }
 
@@ -249,13 +248,13 @@ class AdminNewsController extends AdminController
                 if(!empty($data['lists_del_file'])){
                     $lists_del_file = json_decode($data['lists_del_file']);
                     foreach ($lists_del_file as $key_del_file => $del_file) {
-                        $service->__delete_files_data($id, 'news', $del_file->id);
+                        $service->deleteFilesData($id, 'news', $del_file->id);
                     }
                 }
                 /* End handle gallery images */
 
                 /* handle tags */
-                $em->getRepository('AppBundle:NewsEntity')->_handle_tags_new($id, 'news', $data['tags']);
+                $em->getRepository('AppBundle:NewsEntity')->handleTagsNews($id, 'news', $data['tags']);
                 /* End handle tags */
 
                 $success = TRUE;
@@ -307,19 +306,19 @@ class AdminNewsController extends AdminController
                 $rows[] = $tmp;
             }
             $data['rows'] = $rows;
-            $this->global_helper_service->__export_to_excel($data,$file_name);
+            $this->global_helper_service->exportToExcel($data,$file_name);
         }
     }
 
     /*
      * This function used to render form html filter for data
      */
-    private function filter_options(){
+    private function filterOptions(){
         $request = new Request();
 
-        $key = $request->query->get('key') ? $this->global_helper_service->__xss_clean_string($request->query->get('key')) : '';
+        $key = $request->query->get('key') ? $this->global_helper_service->cleanStringInput($request->query->get('key')) : '';
         $date_range = $request->query->get('date_range') ? $request->query->get('date_range') : '';
-        $status = $request->query->get('status') != '' ? (int)$this->global_helper_service->__xss_clean_string($request->query->get('status')) : '';
+        $status = $request->query->get('status') != '' ? (int)$this->global_helper_service->cleanStringInput($request->query->get('status')) : '';
 
         $array_filters = array();
 
@@ -347,7 +346,7 @@ class AdminNewsController extends AdminController
             'default_value' => $date_range
         );
 
-        return $this->admincp_service->handle_element_form_filter($array_filters);
+        return $this->admincp_service->handleElementFormFilter($array_filters);
     }
 
 }

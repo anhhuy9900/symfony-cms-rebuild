@@ -14,7 +14,7 @@ use AppBundle\Entity\SystemRolesEntity;
 class AdminSystemRolesRepository extends EntityRepository
 {
 
-    public function _create_record_DB($data)
+    public function createRecordDb($data)
     {
         $entity = new SystemRolesEntity();
         $entity->setRole_Name($data['role_name']);
@@ -30,7 +30,7 @@ class AdminSystemRolesRepository extends EntityRepository
         return $entity->getID();
     }
 
-    public function _update_record_DB($data)
+    public function updateRecordDb($data)
     {
         $em = $this->getEntityManager();
         $entity = $em->getRepository('AppBundle:SystemRolesEntity')->find($data['id']);
@@ -45,14 +45,16 @@ class AdminSystemRolesRepository extends EntityRepository
         return $entity->getID();
     }
 
-    public function _delete_record_DB($id){
+    public function deleteRecordDb($id)
+    {
         $em = $this->getEntityManager();
         $entity = $em->getRepository('AppBundle:SystemRolesEntity')->findOneBy(array('id'=>$id));
         $em->remove($entity);
         $em->flush();
     }
 
-    public function _getListRecords($offset, $limit, $where = array(), $order = array('field'=>'id', 'by'=>'DESC')){
+    public function getRecords($offset, $limit, $where = array(), $order = array('field'=>'id', 'by'=>'DESC'))
+    {
         $repository = $this->getEntityManager()->getRepository('AppBundle:SystemRolesEntity');
         $query = $repository->createQueryBuilder('pk');
         $query->select("pk");
@@ -74,7 +76,8 @@ class AdminSystemRolesRepository extends EntityRepository
         return $result->getResult();
     }
 
-    public function _getTotalRecords($key = ''){
+    public function getTotalRecords($key = '')
+    {
         $repository = $this->getEntityManager()->getRepository('AppBundle:SystemRolesEntity');
         $query = $repository->createQueryBuilder('pk');
         $query->select('COUNT(pk.id)');
@@ -86,7 +89,8 @@ class AdminSystemRolesRepository extends EntityRepository
         return $total;
     }
 
-    public function _getListModules(){
+    public function getModules()
+    {
         $repository = $this->getEntityManager()->getRepository('AppBundle:AdminSystemModulesEntity');
         $query = $repository->createQueryBuilder('pk');
         $query->select('pk.id, pk.module_name');

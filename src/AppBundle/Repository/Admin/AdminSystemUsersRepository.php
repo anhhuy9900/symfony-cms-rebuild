@@ -14,7 +14,7 @@ use AppBundle\Entity\SystemUsersEntity;
 class AdminSystemUsersRepository extends EntityRepository
 {
 
-    public function _create_record_DB($data)
+    public function createRecordDb($data)
     {
         $entity = new SystemUsersEntity();
         $entity->setRoleID($data['role_id']);
@@ -32,7 +32,7 @@ class AdminSystemUsersRepository extends EntityRepository
         return $entity->getID();
     }
 
-    public function _update_record_DB($data)
+    public function updateRecordDb($data)
     {
         $em = $this->getEntityManager();
         $entity = $em->getRepository('AppBundle:SystemUsersEntity')->find($data['id']);
@@ -49,14 +49,16 @@ class AdminSystemUsersRepository extends EntityRepository
         return $entity->getID();
     }
 
-    public function _delete_record_DB($id){
+    public function deleteRecordDb($id)
+    {
         $em = $this->getEntityManager();
         $entity = $em->getRepository('AppBundle:SystemUsersEntity')->findOneBy(array('id'=>$id));
         $em->remove($entity);
         $em->flush();
     }
 
-    public function _getListRecords($offset, $limit, $where = array(), $order = array('field'=>'id', 'by'=>'DESC')){
+    public function getRecords($offset, $limit, $where = array(), $order = array('field'=>'id', 'by'=>'DESC'))
+    {
         $repository = $this->getEntityManager()->getRepository('AppBundle:SystemUsersEntity');
         $query = $repository->createQueryBuilder('pk');
         $query->select("pk");
@@ -80,7 +82,8 @@ class AdminSystemUsersRepository extends EntityRepository
         return $result;
     }
 
-    public function _getTotalRecords($key = ''){
+    public function getTotalRecords($key = '')
+    {
         $repository = $this->getEntityManager()->getRepository('AppBundle:SystemUsersEntity');
         $query = $repository->createQueryBuilder('pk');
         $query->select('COUNT(pk.id)');
@@ -92,7 +95,8 @@ class AdminSystemUsersRepository extends EntityRepository
         return $total;
     }
 
-    public function _getListRolesUser(){
+    public function getRolesUser()
+    {
         $repository = $this->getEntityManager()->getRepository('AppBundle:SystemRolesEntity');
         $query = $repository->createQueryBuilder('pk');
         $query->select('pk.id, pk.role_name');

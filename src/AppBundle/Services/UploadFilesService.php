@@ -23,15 +23,15 @@ class UploadFilesService extends Controller{
         $this->em = $entityManager;
     }
 
-    public function __get_path_folder_upload(){
+    public function getPathFolderUpload(){
         return $this->get('request')->getBasePath() . '/uploads/';
     }
 
-    public function __upload_file_request($file, $type_name){
+    public function uploadFileRequest($file, $type_name){
         if($file){
             $extension = $file->guessExtension(); // getting image extension
             $fileName = $type_name.'_'.rand(11111,99999).time().'.jpg';
-            $var_path = $this->__creat_folder_upload($type_name);
+            $var_path = $this->creatFolderUpload($type_name);
 
             $file->move( $var_path['folder_path'], $fileName);
             $new_file = $var_path['path_url'].$fileName;
@@ -40,11 +40,11 @@ class UploadFilesService extends Controller{
         }
     }
 
-    public function __creat_folder_upload($folder_name = 'images') {
+    public function creatFolderUpload($folder_name = 'images') {
         $uploadDir = $this->getParameter('upload_dir');
         $path_url = $folder_name.'/'.date('Y').'/'.date('m').'/'.date('d').'/';
         $folder_path = $uploadDir .'/'.$path_url;
-        $folder = self::__Newfolder($folder_path);
+        $folder = self::creeatNewFolder($folder_path);
 
         $data  = array(
             'folder_path' => $folder_path,
@@ -53,7 +53,7 @@ class UploadFilesService extends Controller{
         return $data;
     }
 
-    public static function __Newfolder($folder) {
+    public static function creeatNewFolder($folder) {
         $fs = new Filesystem();
         $arr_folder = explode('/', $folder);
         $fol = '';
@@ -74,7 +74,7 @@ class UploadFilesService extends Controller{
         }
     }
 
-    static function __random_file_name($length = 10) {
+    static function randomFileName($length = 10) {
         $allowed_chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890';
         $allowed_chars_len = strlen($allowed_chars);
 
@@ -94,7 +94,7 @@ class UploadFilesService extends Controller{
     /**
      * This function use save file to database
      */
-    public function __save_files_data($type_id, $type = 'default', $file = '')
+    public function saveFilesData($type_id, $type = 'default', $file = '')
     {
 
         if($file && file_exists($this->getParameter('upload_dir').'/'.$file)){
@@ -112,8 +112,8 @@ class UploadFilesService extends Controller{
             $get_file_exists = $query->getQuery()->getResult();
 
             if(empty($get_file_exists)) {
-                $file_gallery = $this->__creat_folder_upload($gallery_name);
-                $file_gallery_name = self::__random_file_name(15).'_'.rand(11111,99999).time().'.jpg';
+                $file_gallery = $this->creatFolderUpload($gallery_name);
+                $file_gallery_name = self::randomFileName(15).'_'.rand(11111,99999).time().'.jpg';
                 $newfile = $file_gallery['path_url'].$file_gallery_name;
 
                 copy($this->getParameter('upload_dir').'/'.$file, $file_gallery['folder_path'].$file_gallery_name);
@@ -140,7 +140,7 @@ class UploadFilesService extends Controller{
     /**
      * This function use delete file to database
      */
-    public function __delete_files_data($type_id, $type = 'default', $file_id = 0){
+    public function deleteFilesData($type_id, $type = 'default', $file_id = 0){
 
         if(!empty($file_id)){
 

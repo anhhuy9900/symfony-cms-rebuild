@@ -1,5 +1,5 @@
 <?php
-namespace AppBundle\Controller;
+namespace AppBundle\Controller\Admin;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -26,8 +26,8 @@ class AdminController extends Controller
     $this->global_helper_service = $this->container->get('app.global_helper_service');
     $this->data = array(
       'title' => 'Admin DasnhBoard',
-      'user_admin' => $this->admincp_service->admin_UserAdminInfo(),
-      'left_menu' => $this->admincp_service->_lists_modules_left_theme(0)
+      'user_admin' => $this->admincp_service->adminUserAdminInfo(),
+      'left_menu' => $this->admincp_service->adminListModulesLeft(0)
     );
   }
 
@@ -52,12 +52,12 @@ class AdminController extends Controller
     $image = '';
     if($file){
       $status = TRUE;
-      $image = $service->__upload_file_request($file, 'files_tmp');
+      $image = $service->uploadFileRequest($file, 'files_tmp');
     }
     $data = array(
       'status' => $status,
       'file' => $image,
-      'file_path' => $service->__get_path_folder_upload() . $image
+      'file_path' => $service->getPathFolderUpload() . $image
     );
 
     print json_encode($data);

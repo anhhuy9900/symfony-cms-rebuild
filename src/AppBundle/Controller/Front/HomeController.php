@@ -1,12 +1,10 @@
 <?php
 namespace AppBundle\Controller\Front;
 
-use AppBundle\Controller\FrontController;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use AppBundle\Controller\Front\BaseController;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 
-class HomeController extends FrontController
+class HomeController extends BaseController
 {
     /**
      * @Route("/", name="home_page")

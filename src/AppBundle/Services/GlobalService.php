@@ -24,7 +24,8 @@ class GlobalService extends Controller
         $this->em = $entityManager;
     }
 
-    public function __get_list_galleries($type_id, $type){
+    public function getListGalleries($type_id, $type)
+    {
         $entity = $this->em->getRepository('AppBundle:FilesManagedEntity');
         $query = $entity->createQueryBuilder('pk');
         $query->select("pk");
@@ -35,13 +36,14 @@ class GlobalService extends Controller
         $result = $query->getQuery()->getArrayResult();
 
         if(!empty($result)){
-            return $this->global_helper_service->__convert_result_to_object($result, 1);
+            return $this->global_helper_service->convertResultToObject($result, 1);
         }
 
         return NULL;
     }
 
-    public function session_current_user(){
+    public function sessionCurrentUser()
+    {
         $session = new Session();
 
         $user = '';
@@ -52,7 +54,8 @@ class GlobalService extends Controller
         return $user;
     }
 
-    public function check_valid_csrf_token($intention, $token){
+    public function checkValidCsrfToken($intention, $token)
+    {
         if (!$this->isCsrfTokenValid($intention, $token)) {
             return FALSE;
         }

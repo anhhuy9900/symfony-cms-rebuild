@@ -20,7 +20,8 @@ class GlobalHelperService  extends Controller
         $this->em = $entityManager;
     }
 
-    public function cutUnicode($str){
+    public function cutUnicode($str)
+    {
         if(!$str) return false;
         $unicode = array(
             'a'=>'á|à|ả|ã|ạ|ă|ắ|ằ|ẳ|ẵ|ặ|â|ấ|ầ|ẩ|ẫ|ậ',
@@ -45,7 +46,8 @@ class GlobalHelperService  extends Controller
         return $str;
     }
 
-    public function _createSlug($string) {
+    public function createSlug($string)
+    {
         $string= trim(self::cutUnicode($string));
         $string = strtolower($string);
         //Strip any unwanted characters
@@ -55,7 +57,8 @@ class GlobalHelperService  extends Controller
         return $string;
     }
 
-    public function pr($data, $type = 0) {
+    public function pr($data, $type = 0)
+    {
         print '<pre>';
         print_r($data);
         print '</pre>';
@@ -64,7 +67,8 @@ class GlobalHelperService  extends Controller
         }
     }
 
-    public function getErrorMessages($errors) {
+    public function getErrorMessages($errors)
+    {
         $error_message = '';
 
         if(count($errors) > 0){
@@ -77,7 +81,8 @@ class GlobalHelperService  extends Controller
         return $error_message;
     }
 
-    public function __handle_param_order_in_url($value) {
+    public function handleParamrOderInUrl($value)
+    {
         $arr_order = array();
         $explode = explode('|', $value);
         if(!empty($explode)){
@@ -90,7 +95,8 @@ class GlobalHelperService  extends Controller
         return $arr_order;
     }
 
-    public function __handle_param_date_range_in_url($date_range){
+    public function handleParamDateRangeInUrl($date_range)
+    {
         $arr_date_range = array();
         $explode_date = explode('-', $date_range);
         if(!empty($explode_date)){
@@ -103,7 +109,8 @@ class GlobalHelperService  extends Controller
         return $arr_date_range;
     }
 
-    public function __pagination($totalRows, $pageNum = 1, $pageSize, $limit = 3, $current_url = '') {
+    public function pagination($totalRows, $pageNum = 1, $pageSize, $limit = 3, $current_url = '')
+    {
         settype($totalRows, "int");
         settype($pageSize, "int");
         if ($totalRows <= 0)
@@ -186,21 +193,21 @@ class GlobalHelperService  extends Controller
         return $pagination;
     }
 
-
-    public function __xss_clean_string($input){
+    public function cleanStringInput($input)
+    {
         $output = strip_tags(htmlspecialchars($input));
         return $output;
     }
 
-    public function __xss_clean_int($input){
+    public function cleanIntInput($input)
+    {
         $output = intval($input);
         return $output;
     }
 
     /* EXPORT */
-    public static function __createExcelFile($header, $formatExcel = array()) {
-        //require_once DRUPAL_ROOT.'/'.'sites/all/libraries/PHPExcel/PHPExcel.php';
-
+    public static function createExcelFile($header, $formatExcel = array())
+    {
         // Create report
         $objPHPExcel = new PHPExcel();
 
@@ -258,12 +265,12 @@ class GlobalHelperService  extends Controller
         return $objPHPExcel;
     }
 
-
     /**
      * Download excel file
      * @param $objPHPExcel
      */
-    public static function __downloadExcelFile($objPHPExcel, $fileName = 'report.xls') {
+    public static function downloadExcelFile($objPHPExcel, $fileName = 'report.xls')
+    {
 
         $styleArray = array(
             'borders' => array(
@@ -302,7 +309,8 @@ class GlobalHelperService  extends Controller
 
     }
 
-    public function __export_to_excel ($data, $name ='') {
+    public function exportToExcel ($data, $name ='')
+    {
         $_headers = array(
             'A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z'
         ,'AA','AB','AC','AD','AE','AF','AG','AH','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z'
@@ -313,7 +321,7 @@ class GlobalHelperService  extends Controller
             $arrHeaders[$_headers[$key]]  = $value;
         }
 
-        $objPHPExcel = self::__createExcelFile($arrHeaders);
+        $objPHPExcel = self::createExcelFile($arrHeaders);
 
         $rowCount = 1;
         $rows = $data['rows'];
@@ -324,11 +332,12 @@ class GlobalHelperService  extends Controller
             }
         }
 
-        self::__downloadExcelFile($objPHPExcel, $name);
+        self::downloadExcelFile($objPHPExcel, $name);
 
     }
 
-    public function __convert_array_result_selectbox($data, $fields = array()){
+    public function convertArrayResultSelectbox($data, $fields = array())
+    {
         $arr_values = array(
             0 => 'Select Value'
         );
@@ -341,7 +350,8 @@ class GlobalHelperService  extends Controller
         return $arr_values;
     }
 
-    public function __convert_array_result($data, $fields = array()){
+    public function convertArrayResult($data, $fields = array())
+    {
         $arr_values = array();
         if(!empty($data)){
             foreach($data as $value){
@@ -352,8 +362,8 @@ class GlobalHelperService  extends Controller
         return $arr_values;
     }
 
-    public function __convert_result_to_object($data, $check_list_array = 0){
-
+    public function convertResultToObject($data, $check_list_array = 0)
+    {
         $values = array();
         if(!empty($data)){
             //$count_records = count($data);
@@ -372,7 +382,8 @@ class GlobalHelperService  extends Controller
         return NULL;
     }
 
-    public function system_add_js($javascripts = array()){
+    public function systemAddJs($javascripts = array())
+    {
         //$arr_js = array();
         $js_str = '';
         if(!empty($javascripts)){
@@ -384,7 +395,7 @@ class GlobalHelperService  extends Controller
         return $js_str;
     }
 
-    public function encode_password($raw, $salt)
+    public function encodePassword($raw, $salt)
     {
         return hash('sha256', $salt . $raw); // Custom function for encrypt
     }

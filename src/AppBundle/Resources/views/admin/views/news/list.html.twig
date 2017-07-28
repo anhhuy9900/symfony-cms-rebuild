@@ -20,7 +20,7 @@
 		{% endif %}
 	</div>
 	<div class="col-xs-1 pull-right span6">
-		{% if app_admincp_service.admin_check_roles_user(admin_module_id, 'add') %}
+		{% if app_admincp_service.adminCheckRolesUser(admin_module_id, 'add') %}
 			<a href="{{ path('admincp_news_create_page') }}" class="btn btn-app btn-primary no-radius">
 				<i class="ace-icon fa fa-pencil-square-o bigger-160"></i>
 				Add New
@@ -75,7 +75,7 @@
 										</div>
 									</div>
 
-									<form name="filter_options" id="filter_options" action="{{ app.request.uri }}">
+									<form name="filterOptions" id="filterOptions" action="{{ app.request.uri }}">
 										<div class="row">
 											<div class="col-xs-6 hr4">
 												<div class="dataTables_length" id="dynamic-table_length">
@@ -94,7 +94,7 @@
 
 										</div>
 
-										{{ filter_options | raw }}
+										{{ filterOptions | raw }}
 
 										<div class="row">
 											<div class="col-xs-6 hr4">
@@ -164,13 +164,13 @@
 
 								<td width="10%">
 									<div class="hidden-sm hidden-xs action-buttons">
-										{% if app_admincp_service.admin_check_roles_user(admin_module_id, 'edit') %}
+										{% if app_admincp_service.adminCheckRolesUser(admin_module_id, 'edit') %}
 											<a class="btn btn-xs btn-info" href="{{ path('admincp_news_edit_page', {'id': value.id}) }}" title="Edit">
 												<i class="ace-icon fa fa-pencil bigger-120"></i>
 											</a>
 										{% endif %}
 
-										{% if app_admincp_service.admin_check_roles_user(admin_module_id, 'delete') %}
+										{% if app_admincp_service.adminCheckRolesUser(admin_module_id, 'delete') %}
 											<a class="btn btn-xs btn-danger" href="{{ path('admincp_news_delete_page', {'id': value.id}) }}" title="Delete">
 												<i class="ace-icon fa fa-trash-o bigger-120"></i>
 											</a>

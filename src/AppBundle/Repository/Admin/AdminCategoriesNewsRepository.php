@@ -3,7 +3,7 @@ namespace AppBundle\Repository\Admin;
 
 Trait AdminCategoriesNewsRepository
 {
-    public function _create_record_DB($data)
+    public function createRecordDb($data)
     {
         $entity = new CategoriesNewsEntity();
         $entity->setTitle($data['title']);
@@ -18,7 +18,7 @@ Trait AdminCategoriesNewsRepository
         return $entity->getID();
     }
 
-    public function _update_record_DB($data)
+    public function updateRecordDb($data)
     {
         $em = $this->getEntityManager();
         $entity = $em->getRepository('AppBundle:CategoriesNewsEntity')->find($data['id']);
@@ -32,14 +32,16 @@ Trait AdminCategoriesNewsRepository
         return $entity->getID();
     }
 
-    public function _delete_record_DB($id){
+    public function deleteRecordDb($id)
+    {
         $em = $this->getEntityManager();
         $entity = $em->getRepository('AppBundle:CategoriesNewsEntity')->findOneBy(array('id'=>$id));
         $em->remove($entity);
         $em->flush();
     }
 
-    public function _getListRecords($offset, $limit, $where = array(), $order = array('field'=>'id', 'by'=>'DESC')){
+    public function getRecords($offset, $limit, $where = array(), $order = array('field'=>'id', 'by'=>'DESC'))
+    {
         $repository = $this->getEntityManager()->getRepository('AppBundle:CategoriesNewsEntity');
         $query = $repository->createQueryBuilder('pk');
         $query->select("pk");
@@ -61,7 +63,8 @@ Trait AdminCategoriesNewsRepository
         return $result;
     }
 
-    public function _getTotalRecords($key = ''){
+    public function getTotalRecords($key = '')
+    {
         $repository = $this->getEntityManager()->getRepository('AppBundle:CategoriesNewsEntity');
         $query = $repository->createQueryBuilder('pk');
         $query->select('COUNT(pk.id)');

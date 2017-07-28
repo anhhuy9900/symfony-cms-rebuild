@@ -1,15 +1,13 @@
 <?php
 namespace AppBundle\Controller\Front;
 
-use AppBundle\Controller\FrontController;
+use AppBundle\Controller\Front\BaseController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use AppBundle\Handle\UserHandleAction;
 
-class UsersController extends FrontController
+class UsersController extends BaseController
 {
     /**
      * @Route("/user/login", name="user_login_page")
@@ -19,7 +17,7 @@ class UsersController extends FrontController
         /*
          * Check session user exists yet
          */
-        if($this->global_service->session_current_user()){
+        if($this->global_service->sessionCurrentUser()){
             $url = $this->generateUrl('home_page');
             return $this->redirect($url, 301);
             exit();
@@ -43,7 +41,7 @@ class UsersController extends FrontController
         $form->handleRequest($request);
 
         $this->data['form'] = $form->createView();
-        $add_scripts = $this->global_helper_service->system_add_js(array(
+        $add_scripts = $this->global_helper_service->systemAddJs(array(
             array(
                 'path' => $this->container->get('templating.helper.assets')->getUrl('themes/frontend/assets/js/user/user_page.js'),
                 'version' => '',
@@ -86,7 +84,7 @@ class UsersController extends FrontController
         $form->handleRequest($request);
 
         $this->data['form'] = $form->createView();
-        $add_scripts = $this->global_helper_service->system_add_js(array(
+        $add_scripts = $this->global_helper_service->systemAddJs(array(
           array(
             'path' => $this->container->get('templating.helper.assets')->getUrl('themes/frontend/assets/js/user/user_page.js'),
             'version' => '',
@@ -117,7 +115,7 @@ class UsersController extends FrontController
         $form->handleRequest($request);
 
         $this->data['form'] = $form->createView();
-        $add_scripts = $this->global_helper_service->system_add_js(array(
+        $add_scripts = $this->global_helper_service->systemAddJs(array(
             array(
                 'path' => $this->container->get('templating.helper.assets')->getUrl('themes/frontend/assets/js/user/user_page.js'),
                 'version' => '',
@@ -138,7 +136,7 @@ class UsersController extends FrontController
 
         //remove session of user
         $session = $request->getSession();
-        if($this->global_service->session_current_user()){
+        if($this->global_service->sessionCurrentUser()){
             $session->remove('user');
         }
 
@@ -166,7 +164,7 @@ class UsersController extends FrontController
         $response_data = array();
         $action = $json_data->action;
 
-        if(!$this->global_service->check_valid_csrf_token($action, $json_data->data->csrf_token)){
+        if(!$this->global_service->checkValidCsrfToken($action, $json_data->data->csrf_token)){
             $response_json = array(
                 'status' => 0,
                 'msg' => 'Invalid Token'
@@ -177,13 +175,13 @@ class UsersController extends FrontController
         $handle_action = new UserHandleAction;
         switch($action){
             case 'user-register':
-                $response_data = $handle_action->user_register($json_data->data);
+                $response_data = $handle_action->userRegister($json_data->data);
                 break;
             case 'user-login':
-                $response_data = $handle_action->user_login($json_data->data);
+                $response_data = $handle_action->userLogin($json_data->data);
                 break;
             case 'user-forgot-password':
-                $response_data = $handle_action->user_forgot_password($json_data->data);
+                $response_data = $handle_action->userForgotPassword($json_data->data);
                 break;
             default:
                 break;
