@@ -17,13 +17,13 @@ class AdminSystemUsersRepository extends EntityRepository
     public function createRecordDb($data)
     {
         $entity = new SystemUsersEntity();
-        $entity->setRoleID($data['role_id']);
+        $entity->setRoleID($data['roleId']);
         $entity->setUsername($data['username']);
         $entity->setEmail($data['email']);
         $entity->setPassword($data['password']);
         $entity->setStatus($data['status']);
         $entity->setUpdated_Date(time());
-        $entity->setCreated_Date(time());
+        $entity->setCreatedDate(time());
 
         $em = $this->getEntityManager();
         $em->persist($entity);
@@ -37,7 +37,7 @@ class AdminSystemUsersRepository extends EntityRepository
         $em = $this->getEntityManager();
         $entity = $em->getRepository('AppBundle:SystemUsersEntity')->find($data['id']);
 
-        $entity->setRoleID($data['role_id']);
+        $entity->setRoleID($data['roleId']);
         $entity->setUsername($data['username']);
         $entity->setEmail($data['email']);
         $entity->setPassword($data['password']);
@@ -62,8 +62,8 @@ class AdminSystemUsersRepository extends EntityRepository
         $repository = $this->getEntityManager()->getRepository('AppBundle:SystemUsersEntity');
         $query = $repository->createQueryBuilder('pk');
         $query->select("pk");
-        $query->addSelect("fk.role_name");
-        $query->leftJoin("AppBundle:SystemRolesEntity", "fk", "WITH", "pk.role_id=fk.id");
+        $query->addSelect("fk.roleName");
+        $query->leftJoin("AppBundle:SystemRolesEntity", "fk", "WITH", "pk.roleId=fk.id");
         $query->where('pk.id > 0');
         if(!empty($where)){
             if(isset($where['key']) && $where['key']) {
@@ -99,8 +99,8 @@ class AdminSystemUsersRepository extends EntityRepository
     {
         $repository = $this->getEntityManager()->getRepository('AppBundle:SystemRolesEntity');
         $query = $repository->createQueryBuilder('pk');
-        $query->select('pk.id, pk.role_name');
-        $query->where('pk.role_status = 1');
+        $query->select('pk.id, pk.roleName');
+        $query->where('pk.roleStatus = 1');
         $result = $query->getQuery()->getResult();
 
         return $result;

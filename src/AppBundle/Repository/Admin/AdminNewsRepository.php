@@ -7,7 +7,7 @@ Trait AdminNewsRepository
     public function createRecordDb($data)
     {
         $entity = new NewsEntity();
-        $entity->setCategoryID($data['category_id']);
+        $entity->setCategoryID($data['categoryId']);
         $entity->setTitle($data['title']);
         $entity->setSlug($data['slug']);
         if($data['image']){
@@ -17,7 +17,7 @@ Trait AdminNewsRepository
         $entity->setContent($data['content']);
         $entity->setStatus($data['status']);
         $entity->setUpdated_Date(time());
-        $entity->setCreated_Date(time());
+        $entity->setCreatedDate(time());
 
         $em = $this->getEntityManager();
         $em->persist($entity);
@@ -31,7 +31,7 @@ Trait AdminNewsRepository
         $em = $this->getEntityManager();
         $entity = $em->getRepository('AppBundle:NewsEntity')->find($data['id']);
 
-        $entity->setCategoryID($data['category_id']);
+        $entity->setCategoryID($data['categoryId']);
         $entity->setTitle($data['title']);
         $entity->setSlug($data['slug']);
         if($data['image']){
@@ -61,7 +61,7 @@ Trait AdminNewsRepository
         $query = $repository->createQueryBuilder('pk');
         $query->select("pk.id as id, pk.title as title, pk.image as image, pk.status as status, pk.updated_date as updated_date");
         $query->addSelect("fk.title as category_title");
-        $query->leftJoin("AppBundle:CategoriesNewsEntity", "fk", "WITH", "pk.category_id=fk.id");
+        $query->leftJoin("AppBundle:CategoriesNewsEntity", "fk", "WITH", "pk.categoryId=fk.id");
         $query->where('pk.id > 0');
 
         if(!empty($where)) {
@@ -117,15 +117,15 @@ Trait AdminNewsRepository
         return $results;
     }
 
-    public function getTagsNews($type_id, $type = 'default')
+    public function getTagsNews($typeId, $type = 'default')
     {
         $repository = $this->getEntityManager()->getRepository('AppBundle:TagsEntity');
         $query = $repository->createQueryBuilder('pk');
-        $query->select("pk.id, pk.tag_name");
+        $query->select("pk.id, pk.tagName");
         $query->where('pk.type = :type');
-        $query->andWhere('pk.type_id = :type_id');
+        $query->andWhere('pk.typeId = :typeId');
         $query->setParameter('type', $type);
-        $query->setParameter('type_id', $type_id);
+        $query->setParameter('typeId', $typeId);
         $results = $query->getQuery()->getResult(\Doctrine\ORM\AbstractQuery::HYDRATE_ARRAY);
         return $results;
     }
@@ -133,7 +133,7 @@ Trait AdminNewsRepository
     /**
      * This function use create and update tags for each news
      */
-    public function handleTagsNews($type_id, $type = 'default', $tags = '')
+    public function handleTagsNews($typeId, $type = 'default', $tags = '')
     {
 
         if($tags){
@@ -144,22 +144,22 @@ Trait AdminNewsRepository
                     $query = $entity->createQueryBuilder('pk');
                     $query->select("pk");
                     $query->where('pk.type = :type');
-                    $query->andWhere('pk.type_id = :type_id');
-                    $query->andWhere('pk.tag_name = :tag_name');
+                    $query->andWhere('pk.typeId = :typeId');
+                    $query->andWhere('pk.tagName = :tagName');
                     $query->setParameter('type', $type);
-                    $query->setParameter('type_id', $type_id);
-                    $query->setParameter('tag_name', $tag);
+                    $query->setParameter('typeId', $typeId);
+                    $query->setParameter('tagName', $tag);
                     $get_tag_exists = $query->getQuery()->getResult();
 
                     if(empty($get_tag_exists)) {
 
                         //Create tag in database
                         $create = new TagsEntity();
-                        $create->setTypeID($type_id);
+                        $create->setTypeID($typeId);
                         $create->setType($type);
-                        $create->setTag_Name($tag);
+                        $create->setTagName($tag);
                         $create->setStatus(1);
-                        $create->setCreated_Date(time());
+                        $create->setCreatedDate(time());
                         $em = $this->getEntityManager();
                         $em->persist($create);
                         $em->flush();
@@ -172,10 +172,10 @@ Trait AdminNewsRepository
             $query = $entity->createQueryBuilder('pk');
             $query->select("pk");
             $query->where('pk.type = :type');
-            $query->andWhere('pk.type_id = :type_id');
-            $query->andWhere($query->expr()->notIn('pk.tag_name', ':list_tags'));
+            $query->andWhere('pk.typeId = :typeId');
+            $query->andWhere($query->expr()->notIn('pk.tagName', ':list_tags'));
             $query->setParameter('type', $type);
-            $query->setParameter('type_id', $type_id);
+            $query->setParameter('typeId', $typeId);
             $query->setParameter('list_tags', $list_tags);
             $list_tags_delete = $query->getQuery()->getResult();
             if(!empty($list_tags_delete)) {

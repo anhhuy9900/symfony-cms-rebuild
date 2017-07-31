@@ -11,6 +11,7 @@ use Doctrine\ORM\EntityRepository;
  * @ORM\Entity(repositoryClass="AppBundle\Repository\Admin\AdminSystemModulesRepository")
  */
 class SystemModulesEntity {
+
     /**
      * @ORM\Column(type="integer", length=5)
      * @ORM\Id
@@ -19,133 +20,192 @@ class SystemModulesEntity {
     private $id;
 
     /**
-     * @ORM\Column(type="integer", length=5)
+     * @ORM\Column(name="parent_id", type="integer", length=5)
      */
-    private $parent_id;
+    private $parentId = 0;
 
     /**
-     * @ORM\Column(type="string", length=200)
+     * @ORM\Column(name="module_name", type="string", length=200, nullable=true)
      */
-    private $module_name;
+    private $moduleName;
 
     /**
-     * @ORM\Column(type="string", length=200)
+     * @ORM\Column(name="module_alias", type="string", length=200, nullable=true)
      */
-    private $module_alias;
+    private $moduleAlias;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(name="module_type", type="string", length=255, nullable=true)
      */
-    private $module_type;
+    private $moduleType;
 
     /**
-     * @ORM\Column(type="smallint", length=1)
+     * @ORM\Column(name="module_permission", type="smallint", length=1)
      */
-    private $module_permission;
+    private $modulePermission = 0;
 
     /**
-     * @ORM\Column(type="smallint", length=1)
+     * @ORM\Column(name="module_status", type="smallint", length=1)
      */
-    private $module_status;
+    private $moduleStatus = 0;
 
     /**
-     * @ORM\Column(type="integer", length=10)
+     * @ORM\Column(name="module_order", type="integer", length=10)
      */
-    private $module_order;
+    private $moduleOrder = ;
 
     /**
-     * @ORM\Column(type="integer", length=10)
+     * @var \DateTime
+     *
+     * @ORM\Column(name="updatedDate", type="datetime", nullable=true)
      */
-    private $updated_date;
+    private $updatedDate;
 
     /**
-     * @ORM\Column(type="integer", length=10)
+     * @var \DateTime
+     *
+     * @ORM\Column(name="created_date", type="datetime", nullable=false)
      */
-    private $created_date;
+    private $createdDate;
 
-    /*public function __construct(Doctrine $doctrine)
-    {
-        $this->em = $doctrine->getEntityManager();
-    }*/
-
+    /**
+     * @param [int]
+     */
     public function setID($id) {
         $this->id = $id;
     }
 
+    /**
+     * @return id
+     */
     public function getID() {
         return $this->id;
     }
 
-    public function setParentID($parent_id) {
-        $this->parent_id = $parent_id;
+    /**
+     * @param [int]
+     */
+    public function setParentID($parentId) {
+        $this->parentId = $parentId;
     }
 
+    /**
+     * @return parentId
+     */
     public function getParentID() {
-        return $this->parent_id;
+        return $this->parentId;
     }
 
-    public function setModule_Name($module_name) {
-        $this->module_name = $module_name;
+    /**
+     * @param [string]
+     */
+    public function setModuleName($moduleName) {
+        $this->moduleName = $moduleName;
     }
 
-    public function getModule_Name() {
-        return $this->module_name;
+    /**
+     * @return moduleName
+     */
+    public function getModuleName() {
+        return $this->moduleName;
     }
 
-    public function setModule_Alias($module_alias) {
-        $this->module_alias = $module_alias;
+    /**
+     * @param [string]
+     */
+    public function setModuleAlias($moduleAlias) {
+        $this->moduleAlias = $moduleAlias;
     }
 
-    public function getModule_Alias() {
-        return $this->module_alias;
+    /**
+     * @return moduleAlias
+     */
+    public function getModuleAlias() {
+        return $this->moduleAlias;
     }
 
-    public function setModule_Type($module_type) {
-        $this->module_type = $module_type;
+    /**
+     * @param [string]
+     */
+    public function setModuleType($moduleType) {
+        $this->moduleType = $moduleType;
     }
 
-    public function getModule_Type() {
-        return $this->module_type;
+    /**
+     * @return moduleType
+     */
+    public function getModuleType() {
+        return $this->moduleType;
     }
 
-    public function setModule_Permission($module_permission) {
-        $this->module_permission = $module_permission;
+    /**
+     * @param [int]
+     */
+    public function setModulePermission($modulePermission) {
+        $this->modulePermission = $modulePermission;
     }
 
-    public function getModule_Permission() {
-        return $this->module_permission;
+    /**
+     * @return modulePermission
+     */
+    public function getModulePermission() {
+        return $this->modulePermission;
     }
 
-    public function setModule_Status($module_status) {
-        $this->module_status = $module_status;
+    /**
+     * @param [int]
+     */
+    public function setModuleStatus($moduleStatus) {
+        $this->moduleStatus = $moduleStatus;
     }
 
-    public function getModule_Status() {
-        return $this->module_status;
+    /**
+     * @return moduleStatus
+     */
+    public function getModuleStatus() {
+        return $this->moduleStatus;
     }
 
-    public function setModule_Order($module_order) {
-        $this->module_order = $module_order;
+    /**
+     * @param [int]
+     */
+    public function setModuleOrder($moduleOrder) {
+        $this->moduleOrder = $moduleOrder;
     }
 
-    public function getModule_Order() {
-        return $this->module_order;
+    /**
+     * @return moduleOrder
+     */
+    public function getModuleOrder() {
+        return $this->moduleOrder;
     }
 
-    public function setUpdated_Date($updated_date) {
-        $this->updated_date = $updated_date;
+    /**
+     * @param [datetime]
+     */
+    public function setUpdatedDate($updatedDate) {
+        $this->updatedDate = $updatedDate;
     }
 
-    public function getUpdated_Date() {
-        return $this->updated_date;
+    /**
+     * @return updatedDate
+     */
+    public function getUpdatedDate() {
+        return $this->updatedDate;
     }
 
-    public function setCreated_Date($created_date) {
-        $this->created_date = $created_date;
+    /**
+     * @param [datetime]
+     */
+    public function setCreatedDate($createdDate) {
+        $this->createdDate = new \DateTime();
     }
 
-    public function getCreated_Date() {
-        return $this->created_date;
+    /**
+     * @return createdDate
+     */
+    public function getCreatedDate() {
+        return $this->createdDate;
     }
 
 }

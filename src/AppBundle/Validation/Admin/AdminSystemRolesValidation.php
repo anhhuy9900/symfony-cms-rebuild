@@ -9,17 +9,17 @@ use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 class AdminSystemRolesValidation extends Controller {
 
-    public $role_name;
+    public $roleName;
 
     public static function loadValidatorMetadata(ClassMetadata $metadata)
     {
 
-        $metadata->addPropertyConstraint('role_name', new Assert\NotNull(
+        $metadata->addPropertyConstraint('roleName', new Assert\NotNull(
             array(
                 'message' => 'Role Name is not null',
             )
         ));
-        $metadata->addPropertyConstraint('role_name', new Assert\Length(array(
+        $metadata->addPropertyConstraint('roleName', new Assert\Length(array(
             'min'        => 6,
             'max'        => 100,
             'minMessage' => 'Role Name must be at least {{ limit }} characters long',
@@ -31,10 +31,10 @@ class AdminSystemRolesValidation extends Controller {
     }
 
     public function validate(ExecutionContextInterface $context)
-    {   
+    {
         global $kernel;
 
         $admincp_service = $kernel->getContainer()->get('app.admincp_service');
-        
+
     }
 }

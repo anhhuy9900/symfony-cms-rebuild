@@ -10,6 +10,7 @@ use Doctrine\ORM\EntityRepository;
  * @ORM\Table(name="tags")
  */
 class TagsEntity {
+
     /**
      * @ORM\Column(type="integer", length=11)
      * @ORM\Id
@@ -18,77 +19,114 @@ class TagsEntity {
     private $id;
 
     /**
-     * @ORM\Column(type="integer", length=11)
+     * @ORM\Column(name="type_id", type="integer", length=11)
      */
-    private $type_id;
+    private $typeId = 0;
 
     /**
-     * @ORM\Column(type="string", length=100)
+     * @ORM\Column(name="type", type="string", length=100, nullable=true)
      */
     private $type;
 
     /**
-     * @ORM\Column(type="string", length=200)
+     * @ORM\Column(name="tagName", type="string", length=200, nullable=true)
      */
-    private $tag_name;
+    private $tagName;
 
     /**
-     * @ORM\Column(type="smallint", length=1)
+     * @ORM\Column(name="status", type="smallint", length=1)
      */
-    private $status;
+    private $status = 0;
 
     /**
-     * @ORM\Column(type="integer", length=10)
+     * @var \DateTime
+     *
+     * @ORM\Column(name="created_date", type="datetime", nullable=false)
      */
-    private $created_date;
+    private $createdDate;
 
-
+    /**
+     * @param [int]
+     */
     public function setID($id) {
         $this->id = $id;
     }
 
+    /**
+     * @return id
+     */
     public function getID() {
         return $this->id;
     }
 
-    public function setTypeID($type_id) {
-        $this->type_id = $type_id;
+    /**
+     * @param [int]
+     */
+    public function setTypeID($typeId) {
+        $this->typeId = $typeId;
     }
 
+    /**
+     * @return typeId
+     */
     public function getTypeID() {
-        return $this->type_id;
+        return $this->typeId;
     }
 
+    /**
+     * @param [int]
+     */
     public function setType($type) {
         $this->type = $type;
     }
 
+    /**
+     * @return type
+     */
     public function getType() {
         return $this->type;
     }
 
-    public function setTag_name($tag_name) {
-        $this->tag_name = $tag_name;
+    /**
+     * @param [string]
+     */
+    public function setTagName($tagName) {
+        $this->tagName = $tagName;
     }
 
-    public function getTag_Name() {
-        return $this->tag_name;
+    /**
+     * @return tagName
+     */
+    public function getTagName() {
+        return $this->tagName;
     }
 
+    /**
+     * @param [int]
+     */
     public function setStatus($status) {
         $this->status = $status;
     }
 
+    /**
+     * @return status
+     */
     public function getStatus() {
         return $this->status;
     }
 
-    public function setCreated_Date($created_date) {
-        $this->created_date = $created_date;
+    /**
+     * @param [datetime]
+     */
+    public function setCreatedDate($createdDate) {
+        $this->createdDate = new \DateTime();
     }
 
-    public function getCreated_Date() {
-        return $this->created_date;
+    /**
+     * @return createdDate
+     */
+    public function getCreatedDate() {
+        return $this->createdDate;
     }
 
 }

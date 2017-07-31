@@ -17,11 +17,11 @@ class AdminSystemRolesRepository extends EntityRepository
     public function createRecordDb($data)
     {
         $entity = new SystemRolesEntity();
-        $entity->setRole_Name($data['role_name']);
-        $entity->setRole_Type($data['role_type']);
-        $entity->setRole_Status($data['role_status']);
+        $entity->setRoleName($data['roleName']);
+        $entity->setRoleType($data['roleType']);
+        $entity->setRoleStatus($data['roleStatus']);
         $entity->setUpdated_Date(time());
-        $entity->setCreated_Date(time());
+        $entity->setCreatedDate(time());
 
         $em = $this->getEntityManager();
         $em->persist($entity);
@@ -35,9 +35,9 @@ class AdminSystemRolesRepository extends EntityRepository
         $em = $this->getEntityManager();
         $entity = $em->getRepository('AppBundle:SystemRolesEntity')->find($data['id']);
 
-        $entity->setRole_Name($data['role_name']);
-        $entity->setRole_Type($data['role_type']);
-        $entity->setRole_Status($data['role_status']);
+        $entity->setRoleName($data['roleName']);
+        $entity->setRoleType($data['roleType']);
+        $entity->setRoleStatus($data['roleStatus']);
         $entity->setUpdated_Date(time());
 
         $em->flush();
@@ -61,7 +61,7 @@ class AdminSystemRolesRepository extends EntityRepository
         $query->where('pk.id > 0');
         if(!empty($where)){
             if(isset($where['key']) && $where['key']) {
-                $query->andWhere('pk.role_name LIKE :key')->setParameter('key', '%'.$where['key'].'%');
+                $query->andWhere('pk.roleName LIKE :key')->setParameter('key', '%'.$where['key'].'%');
             }
             if(isset($where['date_range']) && $where['date_range']) {
                 $query->andWhere('pk.updated_date >= :date_from')->setParameter('date_from', $where['date_range']['from']);
@@ -82,7 +82,7 @@ class AdminSystemRolesRepository extends EntityRepository
         $query = $repository->createQueryBuilder('pk');
         $query->select('COUNT(pk.id)');
         if($key){
-            $query->where('pk.role_name LIKE :key')->setParameter('key', '%'.$key.'%');
+            $query->where('pk.roleName LIKE :key')->setParameter('key', '%'.$key.'%');
         }
         $total = $query->getQuery()->getSingleScalarResult();
 
@@ -93,9 +93,9 @@ class AdminSystemRolesRepository extends EntityRepository
     {
         $repository = $this->getEntityManager()->getRepository('AppBundle:AdminSystemModulesEntity');
         $query = $repository->createQueryBuilder('pk');
-        $query->select('pk.id, pk.module_name');
-        $query->where('pk.module_status = 1');
-        $query->andwhere('pk.parent_id > 0');
+        $query->select('pk.id, pk.moduleName');
+        $query->where('pk.moduleStatus = 1');
+        $query->andwhere('pk.parentId > 0');
         $result = $query->getQuery()->getResult();
 
         return $result;

@@ -138,7 +138,7 @@ class AdminCPService extends Controller {
         return hash('sha256', $salt . $raw); // Custom function for encrypt
     }
 
-    public function adminListModulesLeft($parent_id)
+    public function adminListModulesLeft($parentId)
     {
         //get current url
         //dump($this->container->get("router")->getContext()->getPathInfo());die;
@@ -148,17 +148,17 @@ class AdminCPService extends Controller {
         $current_user = $this->adminGetCurrentUserLogin();
         $repository = $this->em->getRepository('AppBundle:SystemModulesEntity');
         $query = $repository->createQueryBuilder('pk');
-        $query->select("pk.id, pk.module_name, pk.module_alias");
-        $query->where('pk.module_status = 1');
-        $query->andWhere('pk.parent_id = :parent_id')->setParameter('parent_id', $parent_id);
+        $query->select("pk.id, pk.moduleName, pk.moduleAlias");
+        $query->where('pk.moduleStatus = 1');
+        $query->andWhere('pk.parentId = :parentId')->setParameter('parentId', $parentId);
         //Just only super admin enough permission access for all modules
         if($current_user) {
-          if($current_user->getPermission_limit() == 0) {
-            $query->andWhere('pk.module_permission = 0');
+          if($current_user->getPermissionLimit() == 0) {
+            $query->andWhere('pk.modulePermission = 0');
           }
         }
 
-        $query->orderBy("pk.module_order", 'ASC');
+        $query->orderBy("pk.moduleOrder", 'ASC');
         $results = $query->getQuery()->getResult();
 
         $html = '';
@@ -166,12 +166,12 @@ class AdminCPService extends Controller {
             $html .= '<ul class="submenu">';
             foreach($results as $value) {
                 $html_menu = $this->adminListModulesLeft($value['id']);
-                $url_redirect = $value['module_alias'] ? $this->generateUrl($value['module_alias']) : '#';
-                $class_active = $route == $value['module_alias'] ? ' class="active leftmenu-child-active"' : '';
+                $url_redirect = $value['moduleAlias'] ? $this->generateUrl($value['moduleAlias']) : '#';
+                $class_active = $route == $value['moduleAlias'] ? ' class="active leftmenu-child-active"' : '';
                 $html .='<li'.$class_active.'>';
                     $html .='<a href="' .$url_redirect. '"' .($html_menu ? 'class="dropdown-toggle"' : ''). '>';
                         $html .='<i class="menu-icon fa fa-caret-right"></i>';
-                        $html .= $value['module_name'];
+                        $html .= $value['moduleName'];
                     $html .='</a>';
                     $html .='<b class="arrow ' .($html_menu ? 'fa fa-angle-down' : ''). '"></b>';
 
@@ -186,39 +186,39 @@ class AdminCPService extends Controller {
         return $html;
     }
 
-    public function adminCheckRolesUser($module_id, $role_type)
+    public function adminCheckRolesUser($module_id, $roleType)
     {
         $valid = FALSE;
         $get_user = $this->adminGetCurrentUserLogin();
         if($get_user) {
             $repository = $this->em->getRepository('AppBundle:SystemUsersEntity');
             $query = $repository->createQueryBuilder('pk');
-            $query->select("fk.role_type");
-            $query->leftJoin("AppBundle:SystemRolesEntity", "fk", "WITH", "pk.role_id=fk.id");
+            $query->select("fk.roleType");
+            $query->leftJoin("AppBundle:SystemRolesEntity", "fk", "WITH", "pk.roleId=fk.id");
             $query->where('pk.id = :id')->setParameter('id', $get_user->getID());
             $query->andwhere('pk.status = 1');
             $result = $query->getQuery()->getArrayResult(\Doctrine\ORM\Query::HYDRATE_SCALAR);
 
-            $result_role_type = unserialize($result[0]['role_type']);
-            if(!empty($result_role_type[$module_id])) {
-                switch($role_type) {
+            $result_roleType = unserialize($result[0]['roleType']);
+            if(!empty($result_roleType[$module_id])) {
+                switch($roleType) {
                     case 'view':
-                        if($result_role_type[$module_id][$role_type]){
+                        if($result_roleType[$module_id][$roleType]){
                             $valid = TRUE;
                         }
                         break;
                     case 'add':
-                        if($result_role_type[$module_id][$role_type]){
+                        if($result_roleType[$module_id][$roleType]){
                             $valid = TRUE;
                         }
                         break;
                     case 'edit':
-                        if($result_role_type[$module_id][$role_type]){
+                        if($result_roleType[$module_id][$roleType]){
                             $valid = TRUE;
                         }
                         break;
                     case 'delete':
-                        if($result_role_type[$module_id][$role_type]){
+                        if($result_roleType[$module_id][$roleType]){
                             $valid = TRUE;
                         }
                         break;
@@ -227,7 +227,7 @@ class AdminCPService extends Controller {
                 }
             }
 
-            if($get_user->getPermission_limit() == 1) {
+            if($get_user->getPermissionLimit() == 1) {
                 $valid = TRUE;
             }
         }
@@ -253,10 +253,10 @@ class AdminCPService extends Controller {
         return NULL;
     }
 
-    public function adminGetCurrentModule($module_alias)
+    public function adminGetCurrentModule($moduleAlias)
     {
         $repository = $this->em->getRepository('AppBundle:SystemModulesEntity');
-        $result = $repository->findOneBy(['module_alias' => $module_alias]);
+        $result = $repository->findOneBy(['moduleAlias' => $moduleAlias]);
         if($result) {
             return $result;
         }

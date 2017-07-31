@@ -11,6 +11,7 @@ use Doctrine\ORM\EntityRepository;
  * @ORM\Entity(repositoryClass="AppBundle\Repository\Admin\AdminSystemRolesRepository")
  */
 class SystemRolesEntity {
+
     /**
      * @ORM\Column(type="integer", length=5)
      * @ORM\Id
@@ -19,94 +20,135 @@ class SystemRolesEntity {
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=200)
+     * @ORM\Column(name="role_name", type="string", length=200)
      */
-    private $role_name;
+    private $roleName;
 
     /**
-     * @ORM\Column(type="text")
+     * @ORM\Column(name="role_type", type="text", nullable=true)
      */
-    private $role_type;
+    private $roleType;
 
     /**
-     * @ORM\Column(type="smallint", length=1)
+     * @ORM\Column(name="role_status", type="smallint", length=1)
      */
-    private $role_status;
+    private $roleStatus = 0;
 
     /**
-     * @ORM\Column(type="smallint", length=1)
+     * @ORM\Column(name="access", type="smallint", length=1)
      */
     private $access;
 
     /**
-     * @ORM\Column(type="integer", length=10)
+     * @var \DateTime
+     *
+     * @ORM\Column(name="updatedDate", type="datetime", nullable=true)
      */
-    private $updated_date;
+    private $updatedDate;
 
     /**
-     * @ORM\Column(type="integer", length=10)
+     * @var \DateTime
+     *
+     * @ORM\Column(name="created_date", type="datetime", nullable=false)
      */
-    private $created_date;
+    private $createdDate;
 
-    /*public function __construct(Doctrine $doctrine)
-    {
-        $this->em = $doctrine->getEntityManager();
-    }*/
-
+    /**
+     * @param [int]
+     */
     public function setID($id) {
         $this->id = $id;
     }
 
+    /**
+     * @return id
+     */
     public function getID() {
         return $this->id;
     }
 
-    public function setRole_Name($role_name) {
-        $this->role_name = $role_name;
+    /**
+     * @param [string]
+     */
+    public function setRoleName($roleName) {
+        $this->roleName = $roleName;
     }
 
-    public function getRole_Name() {
-        return $this->role_name;
+    /**
+     * @return roleName
+     */
+    public function getRoleName() {
+        return $this->roleName;
     }
 
-    public function setRole_Type($role_type) {
-        $this->role_type = $role_type;
+    /**
+     * @param [string]
+     */
+    public function setRoleType($roleType) {
+        $this->roleType = $roleType;
     }
 
-    public function getRole_Type() {
-        return $this->role_type;
+    /**
+     * @return roleType
+     */
+    public function getRoleType() {
+        return $this->roleType;
     }
 
-    public function setRole_Status($role_status) {
-        $this->role_status = $role_status;
+    /**
+     * @param [int]
+     */
+    public function setRoleStatus($roleStatus) {
+        $this->roleStatus = $roleStatus;
     }
 
-    public function getRole_Status() {
-        return $this->role_status;
+    /**
+     * @return roleStatus
+     */
+    public function getRoleStatus() {
+        return $this->roleStatus;
     }
 
+    /**
+     * @param access
+     */
     public function setAccess($access) {
         $this->access = $access;
     }
 
+    /**
+     * @return access
+     */
     public function getAccess() {
         return $this->access;
     }
 
-    public function setUpdated_Date($updated_date) {
-        $this->updated_date = $updated_date;
+    /**
+     * @param [datetime]
+     */
+    public function setUpdatedDate($updatedDate) {
+        $this->updatedDate = $updatedDate;
     }
 
-    public function getUpdated_Date() {
-        return $this->updated_date;
+    /**
+     * @return updatedDate
+     */
+    public function getUpdatedDate() {
+        return $this->updatedDate;
     }
 
-    public function setCreated_Date($created_date) {
-        $this->created_date = $created_date;
+    /**
+     * @param [datetime]
+     */
+    public function setCreatedDate($createdDate) {
+        $this->createdDate = new \DateTime();
     }
 
-    public function getCreated_Date() {
-        return $this->created_date;
+    /**
+     * @return createdDate
+     */
+    public function getCreatedDate() {
+        return $this->createdDate;
     }
 
 }

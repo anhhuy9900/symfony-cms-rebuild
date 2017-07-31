@@ -17,13 +17,13 @@ class AdminSystemModulesRepository extends EntityRepository
     public function createRecordDb($data)
     {
         $entity = new SystemModulesEntity();
-        $entity->setParentID($data['parent_id']);
-        $entity->setModule_Name($data['module_name']);
-        $entity->setModule_Alias($data['module_alias']);
-        $entity->setModule_Status($data['module_status']);
-        $entity->setModule_Order($data['module_order']);
+        $entity->setParentID($data['parentId']);
+        $entity->setModuleName($data['moduleName']);
+        $entity->setModuleAlias($data['moduleAlias']);
+        $entity->setModuleStatus($data['moduleStatus']);
+        $entity->setModuleOrder($data['moduleOrder']);
         $entity->setUpdated_Date(time());
-        $entity->setCreated_Date(time());
+        $entity->setCreatedDate(time());
 
         $em = $this->getEntityManager();
         $em->persist($entity);
@@ -37,11 +37,11 @@ class AdminSystemModulesRepository extends EntityRepository
         $em = $this->getEntityManager();
         $entity = $em->getRepository('AppBundle:SystemModulesEntity')->find($data['id']);
 
-        $entity->setParentID($data['parent_id']);
-        $entity->setModule_Name($data['module_name']);
-        $entity->setModule_Alias($data['module_alias']);
-        $entity->setModule_Status($data['module_status']);
-        $entity->setModule_Order((int)$data['module_order']);
+        $entity->setParentID($data['parentId']);
+        $entity->setModuleName($data['moduleName']);
+        $entity->setModuleAlias($data['moduleAlias']);
+        $entity->setModuleStatus($data['moduleStatus']);
+        $entity->setModuleOrder((int)$data['moduleOrder']);
         $entity->setUpdated_Date(time());
 
         $em->flush();
@@ -65,7 +65,7 @@ class AdminSystemModulesRepository extends EntityRepository
         $query->where('pk.id > 0');
         if(!empty($where)){
             if(isset($where['key']) && $where['key']) {
-                $query->andWhere('pk.module_name LIKE :key')->setParameter('key', '%'.$where['key'].'%');
+                $query->andWhere('pk.moduleName LIKE :key')->setParameter('key', '%'.$where['key'].'%');
             }
             if(isset($where['date_range']) && $where['date_range']) {
                 $query->andWhere('pk.updated_date >= :date_from')->setParameter('date_from', $where['date_range']['from']);
@@ -86,29 +86,29 @@ class AdminSystemModulesRepository extends EntityRepository
         $query = $repository->createQueryBuilder('pk');
         $query->select('COUNT(pk.id)');
         if($key){
-            $query->where('pk.module_name LIKE :key')->setParameter('key', '%'.$key.'%');
+            $query->where('pk.moduleName LIKE :key')->setParameter('key', '%'.$key.'%');
         }
         $total = $query->getQuery()->getSingleScalarResult();
 
         return $total;
     }
 
-    public function getRecursiveModules($parent_id, &$arr_menu = array())
+    public function getRecursiveModules($parentId, &$arr_menu = array())
     {
 
         $repository = $this->getEntityManager()->getRepository('AppBundle:SystemModulesEntity');
         $query = $repository->createQueryBuilder('pk');
-        $query->select("pk.id, pk.module_name");
-        $query->where('pk.module_status = 1');
-        $query->andWhere('pk.parent_id = :parent_id')->setParameter('parent_id', $parent_id);
+        $query->select("pk.id, pk.moduleName");
+        $query->where('pk.moduleStatus = 1');
+        $query->andWhere('pk.parentId = :parentId')->setParameter('parentId', $parentId);
         $results = $query->getQuery()->getResult();
         if(!empty($results)){
             foreach($results as $value){
                 $str = '';
-                if($parent_id > 0){
+                if($parentId > 0){
                     $str .= '--';
                 }
-                $value['module_name'] = $str.$value['module_name'];
+                $value['moduleName'] = $str.$value['moduleName'];
                 $arr_menu[] = $value;
                 $this->getRecursiveModules($value['id'], $arr_menu);
             }

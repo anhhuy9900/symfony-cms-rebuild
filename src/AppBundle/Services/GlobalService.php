@@ -24,15 +24,15 @@ class GlobalService extends Controller
         $this->em = $entityManager;
     }
 
-    public function getListGalleries($type_id, $type)
+    public function getListGalleries($typeId, $type)
     {
         $entity = $this->em->getRepository('AppBundle:FilesManagedEntity');
         $query = $entity->createQueryBuilder('pk');
         $query->select("pk");
         $query->where('pk.type = :type');
-        $query->andWhere('pk.type_id = :type_id');
+        $query->andWhere('pk.typeId = :typeId');
         $query->setParameter('type', $type);
-        $query->setParameter('type_id', $type_id);
+        $query->setParameter('typeId', $typeId);
         $result = $query->getQuery()->getArrayResult();
 
         if(!empty($result)){

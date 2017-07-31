@@ -8,9 +8,10 @@ use Doctrine\ORM\EntityRepository;
 /**
  * @ORM\Entity
  * @ORM\Table(name="categories_news")
- * @ORM\Entity(repositoryClass="AppBundle\Repository\Admin\AdminCategoriesNewsRepository")
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\CategoriesNewsRepository")
  */
 class CategoriesNewsEntity {
+
     /**
      * @ORM\Column(type="integer", length=11)
      * @ORM\Id
@@ -19,69 +20,97 @@ class CategoriesNewsEntity {
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(name="name", type="string", length=255)
      */
     private $title;
 
+    /**
+     * @ORM\Column(name="status", type="smallint", length=1)
+     */
+    private $status = 0;
 
     /**
-     * @ORM\Column(type="smallint", length=1)
+     * @var \DateTime
+     *
+     * @ORM\Column(name="updatedDate", type="datetime", nullable=true)
      */
-    private $status;
+    private $updatedDate;
 
     /**
-     * @ORM\Column(type="integer", length=10)
+     * @var \DateTime
+     *
+     * @ORM\Column(name="created_date", type="datetime", nullable=false)
      */
-    private $updated_date;
+    private $createdDate;
 
     /**
-     * @ORM\Column(type="integer", length=10)
+     * @param [int]
      */
-    private $created_date;
-
-    /*public function __construct(Doctrine $doctrine)
-    {
-        $this->em = $doctrine->getEntityManager();
-    }*/
-
     public function setID($id) {
         $this->id = $id;
     }
 
+    /**
+     * @return id
+     */
     public function getID() {
         return $this->id;
     }
 
+    /**
+     * @param [string]
+     */
     public function setTitle($title) {
         $this->title = $title;
     }
 
+    /**
+     * @return title
+     */
     public function getTitle() {
         return $this->title;
     }
-    
+
+    /**
+     * @param [int]
+     */
     public function setStatus($status) {
         $this->status = $status;
     }
 
+    /**
+     * @return status
+     */
     public function getStatus() {
         return $this->status;
     }
 
-    public function setUpdated_Date($updated_date) {
-        $this->updated_date = $updated_date;
+    /**
+     * @param [datetime]
+     */
+    public function setUpdatedDate($updatedDate) {
+        $this->updatedDate = $updatedDate;
     }
 
-    public function getUpdated_Date() {
-        return $this->updated_date;
+    /**
+     * @return updatedDate
+     */
+    public function getUpdatedDate() {
+        return $this->updatedDate;
     }
 
-    public function setCreated_Date($created_date) {
-        $this->created_date = $created_date;
+    /**
+     * @param [datetime]
+     */
+    public function setCreatedDate($createdDate) {
+        $this->createdDate = new \DateTime();
     }
 
-    public function getCreated_Date() {
-        return $this->created_date;
+    /**
+     * @return createdDate
+     */
+    public function getCreatedDate() {
+        return $this->createdDate;
     }
 
 }

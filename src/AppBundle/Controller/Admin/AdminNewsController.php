@@ -136,7 +136,7 @@ class AdminNewsController extends AdminController
 
         $fields_value = array(
             'id' => ( $id ? $id : 0 ),
-            'category_id' => ( $result_data ? $result_data->getCategoryID() : 0 ),
+            'categoryId' => ( $result_data ? $result_data->getCategoryID() : 0 ),
             'title' => ( $result_data ? $result_data->getTitle() : '' ),
             'image' => ( $result_data ? $result_data->getImage() : '' ),
             'description' => ( $result_data ? $result_data->getDescription() : '' ),
@@ -160,10 +160,10 @@ class AdminNewsController extends AdminController
             ->add('id', HiddenType::class, array(
                 'data' => $fields_value['id'],
             ))
-            ->add('category_id', ChoiceType::class, array(
+            ->add('categoryId', ChoiceType::class, array(
                 'label' => 'Category ID',
                 'choices' => $list_categories,
-                'data' => $fields_value['category_id']
+                'data' => $fields_value['categoryId']
             ))
             ->add('title', TextType::class, array(
                 'label' => 'Title',
@@ -301,7 +301,7 @@ class AdminNewsController extends AdminController
                 $tmp[] = $value->getDescription();
                 $tmp[] = $value->getContent();
                 $tmp[] = $value->getStatus() == 1 ? 'Active' : 'UnActive';
-                $tmp[] = date('Y-m-d H:i:s',$value->getCreated_Date());
+                $tmp[] = date('Y-m-d H:i:s',$value->getCreatedDate());
 
                 $rows[] = $tmp;
             }

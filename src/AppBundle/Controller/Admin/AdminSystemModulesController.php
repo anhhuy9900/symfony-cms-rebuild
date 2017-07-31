@@ -127,15 +127,15 @@ class AdminSystemModulesController extends AdminController
 
         $fields_value = array(
             'id' => ( $id ? $id : 0 ),
-            'parent_id' => ( $result_data ? $result_data->getParentID() : 0 ),
-            'module_name' => ( $result_data ? $result_data->getModule_Name() : '' ),
-            'module_alias' => ( $result_data ? $result_data->getModule_Alias() : '' ),
-            'module_order' => ( $result_data ? $result_data->getModule_Order() : 0 ),
-            'module_status' => ( $result_data ? $result_data->getModule_Status() : 0 )
+            'parentId' => ( $result_data ? $result_data->getParentID() : 0 ),
+            'moduleName' => ( $result_data ? $result_data->getmoduleName() : '' ),
+            'moduleAlias' => ( $result_data ? $result_data->getModuleAlias() : '' ),
+            'moduleOrder' => ( $result_data ? $result_data->getModuleOrder() : 0 ),
+            'moduleStatus' => ( $result_data ? $result_data->getModuleStatus() : 0 )
         );
 
         $get_recursive_modules = $em->getRepository('AppBundle:SystemModulesEntity')->getRecursiveModules(0);
-        $list_recursive_modules = $this->global_helper_service->convertArrayResultSelectbox($get_recursive_modules, array('key'=>'id', 'value'=>'module_name'));
+        $list_recursive_modules = $this->global_helper_service->convertArrayResultSelectbox($get_recursive_modules, array('key'=>'id', 'value'=>'moduleName'));
 
         $defaultData = array('message' => 'Type your message here');
         $form = $this->createFormBuilder($defaultData)
@@ -143,27 +143,27 @@ class AdminSystemModulesController extends AdminController
             ->add('id', HiddenType::class, array(
                 'data' => $fields_value['id'],
             ))
-            ->add('parent_id', ChoiceType::class, array(
+            ->add('parentId', ChoiceType::class, array(
                 'label' => 'Parent',
                 'choices' =>$list_recursive_modules,
-                'data' => $fields_value['parent_id']
+                'data' => $fields_value['parentId']
             ))
-            ->add('module_name', TextType::class, array(
+            ->add('moduleName', TextType::class, array(
                 'label' => 'Module Name',
-                'data' => $fields_value['module_name']
+                'data' => $fields_value['moduleName']
             ))
-            ->add('module_alias', TextType::class, array(
+            ->add('moduleAlias', TextType::class, array(
                 'label' => 'Module Alias',
-                'data' => $fields_value['module_alias'],
+                'data' => $fields_value['moduleAlias'],
                 'required' => FALSE
             ))
-            ->add('module_order', TextType::class, array(
+            ->add('moduleOrder', TextType::class, array(
                 'label' => 'Module Order',
-                'data' => $fields_value['module_order']
+                'data' => $fields_value['moduleOrder']
             ))
-            ->add('module_status', ChoiceType::class, array(
+            ->add('moduleStatus', ChoiceType::class, array(
                 'label' => 'Module Status',
-                'data' => $fields_value['module_status'],
+                'data' => $fields_value['moduleStatus'],
                 'choices' => array( 0 => 'Unpblish', 1 => 'Publish')
             ))
             ->add('send', SubmitType::class, array(
@@ -179,9 +179,9 @@ class AdminSystemModulesController extends AdminController
             $data = $form->getData();
 
             $validation = new AdminSystemModulesValidation();
-            $validation->module_name = $data['module_name'];
-            $validation->module_alias = $data['module_alias'];
-            $validation->module_order = (int)$data['module_order'];
+            $validation->moduleName = $data['moduleName'];
+            $validation->moduleAlias = $data['moduleAlias'];
+            $validation->moduleOrder = (int)$data['moduleOrder'];
 
             $errors = $this->get('validator')->validate($validation);
             $form_errors = $this->global_helper_service->getErrorMessages($errors);
@@ -231,11 +231,11 @@ class AdminSystemModulesController extends AdminController
             foreach($arrData as $key => $value) {
                 $tmp = array();
                 $tmp[] = $value->getID();
-                $tmp[] = $value->getModule_Name();
-                $tmp[] = $value->getModule_Alias();
-                $tmp[] = $value->getModule_Order();
-                $tmp[] = $value->getModule_Status() == 1 ? 'Active' : 'UnActive';
-                $tmp[] = date('Y-m-d H:i:s',$value->getCreated_Date());
+                $tmp[] = $value->getModuleName();
+                $tmp[] = $value->getmoduleAlias();
+                $tmp[] = $value->getModuleOrder();
+                $tmp[] = $value->getModuleStatus() == 1 ? 'Active' : 'UnActive';
+                $tmp[] = date('Y-m-d H:i:s',$value->getCreatedDate());
 
                 $rows[] = $tmp;
             }
@@ -271,4 +271,4 @@ class AdminSystemModulesController extends AdminController
         return $this->admincp_service->handleElementFormFilter($array_filters);
     }
 
-}    
+}

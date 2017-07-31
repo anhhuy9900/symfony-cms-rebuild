@@ -24,7 +24,7 @@ class UsersRepository extends EntityRepository
      *          - address (string)
      *          - gender (int)
      *          - status (int)
-     *          - active_code (string)
+     *          - activeCode (string)
      */
     public function user_data_insert($data)
     {
@@ -32,7 +32,7 @@ class UsersRepository extends EntityRepository
         $helper = $kernel->getContainer()->get('app.global_helper_service');
 
         $password = $helper->encodePassword('UserPass', $data->password);
-        $active_code = md5($data->email.time());
+        $activeCode = md5($data->email.time());
 
         $entity = new UsersEntity();
         $entity->setFullname($helper->cleanStringInput($data->fullname));
@@ -42,9 +42,9 @@ class UsersRepository extends EntityRepository
         $entity->setAddress($helper->cleanStringInput($data->address));
         $entity->setGender($helper->cleanIntInput($data->gender));
         $entity->setStatus(0);
-        $entity->setActive_Code($active_code);
-        $entity->setActive_Date(0);
-        $entity->setCreated_Date(time());
+        $entity->setactiveCode($activeCode);
+        $entity->setactiveDate(0);
+        $entity->setCreatedDate(time());
 
         $em = $this->getEntityManager();
         $em->persist($entity);

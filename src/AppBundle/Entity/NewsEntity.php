@@ -10,8 +10,8 @@ use Doctrine\ORM\EntityRepository;
  * @ORM\Table(name="news")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\NewsRepository")
  */
-
 class NewsEntity {
+
     /**
      * @ORM\Column(type="integer", length=11)
      * @ORM\Id
@@ -20,134 +20,192 @@ class NewsEntity {
     private $id;
 
     /**
-     * @ORM\Column(type="integer", length=11)
+     * @ORM\Column(name="category_id", type="integer", length=11)
      */
-    private $category_id;
-
+    private $categoryId = 0;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(name="name", type="string", length=255)
      */
     private $title;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(name="slug", type="string", length=255, nullable=true)
      */
     private $slug;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(name="image", type="string", length=255, nullable=true)
      */
     private $image;
 
     /**
-     * @ORM\Column(type="text")
+     * @ORM\Column(name="description", type="text", nullable=true)
      */
     private $description;
 
     /**
-     * @ORM\Column(type="text")
+     * @ORM\Column(name="content", type="text", nullable=true)
      */
     private $content;
 
     /**
-     * @ORM\Column(type="smallint", length=1)
+     * @ORM\Column(name="status", type="smallint", length=1)
      */
-    private $status;
+    private $status = 0;
 
     /**
-     * @ORM\Column(type="integer", length=10)
+     * @var \DateTime
+     *
+     * @ORM\Column(name="updatedDate", type="datetime", nullable=true)
      */
-    private $updated_date;
+    private $updatedDate;
 
     /**
-     * @ORM\Column(type="integer", length=10)
+     * @var \DateTime
+     *
+     * @ORM\Column(name="created_date", type="datetime", nullable=false)
      */
-    private $created_date;
+    private $createdDate;
 
-    /*public function __construct(Doctrine $doctrine)
-    {
-        $this->em = $doctrine->getEntityManager();
-    }*/
-
+    /**
+     * @param [int]
+     */
     public function setID($id) {
         $this->id = $id;
     }
 
+    /**
+     * @return id
+     */
     public function getID() {
         return $this->id;
     }
 
-    public function setCategoryID($category_id) {
-        $this->category_id = $category_id;
+    /**
+     * @param [int]
+     */
+    public function setCategoryID($categoryId) {
+        $this->categoryId = $categoryId;
     }
 
+    /**
+     * @return categoryId
+     */
     public function getCategoryID() {
-        return $this->category_id;
+        return $this->categoryId;
     }
 
+    /**
+     * @param [string]
+     */
     public function setTitle($title) {
         $this->title = $title;
     }
 
+    /**
+     * @return title
+     */
     public function getTitle() {
         return $this->title;
     }
 
+    /**
+     * @param [string]
+     */
     public function setSlug($slug) {
         $this->slug = $slug;
     }
 
+    /**
+     * @return slug
+     */
     public function getSlug() {
         return $this->slug;
     }
 
+    /**
+     * @param [string]
+     */
     public function setImage($image) {
         $this->image = $image;
     }
 
+    /**
+     * @return image
+     */
     public function getImage() {
         return $this->image;
     }
 
+    /**
+     * @param [string]
+     */
     public function setDescription($description) {
         $this->description = $description;
     }
 
+    /**
+     * @return description
+     */
     public function getDescription() {
         return $this->description;
     }
 
+    /**
+     * @param [string]
+     */
     public function setContent($content) {
         $this->content = $content;
     }
 
+    /**
+     * @return content
+     */
     public function getContent() {
         return $this->content;
     }
 
+    /**
+     * @param [int]
+     */
     public function setStatus($status) {
         $this->status = $status;
     }
 
+    /**
+     * @return status
+     */
     public function getStatus() {
         return $this->status;
     }
 
-    public function setUpdated_Date($updated_date) {
-        $this->updated_date = $updated_date;
+    /**
+     * @param [datetime]
+     */
+    public function setUpdatedDate($updatedDate) {
+        $this->updatedDate = $updatedDate;
     }
 
-    public function getUpdated_Date() {
-        return $this->updated_date;
+    /**
+     * @return updatedDate
+     */
+    public function getUpdatedDate() {
+        return $this->updatedDate;
     }
 
-    public function setCreated_Date($created_date) {
-        $this->created_date = $created_date;
+    /**
+     * @param [datetime]
+     */
+    public function setCreatedDate($createdDate) {
+        $this->createdDate = new \DateTime();
     }
 
-    public function getCreated_Date() {
-        return $this->created_date;
+    /**
+     * @return createdDate
+     */
+    public function getCreatedDate() {
+        return $this->createdDate;
     }
 
 }

@@ -130,8 +130,8 @@ class AdminSystemRolesController extends AdminController
 
         $fields_value = array(
             'id' => ( $id ? $id : 0 ),
-            'role_name' => ( $result_data ? $result_data->getRole_Name() : '' ),
-            'role_status' => ( $result_data ? $result_data->getRole_Status() : 0 )
+            'roleName' => ( $result_data ? $result_data->getroleName() : '' ),
+            'roleStatus' => ( $result_data ? $result_data->getRoleStatus() : 0 )
         );
 
         $defaultData = array('message' => 'Type your message here');
@@ -141,13 +141,13 @@ class AdminSystemRolesController extends AdminController
             ->add('id', HiddenType::class, array(
                 'data' => $fields_value['id'],
             ))
-            ->add('role_name', TextType::class, array(
+            ->add('roleName', TextType::class, array(
                 'label' => 'Role Name',
-                'data' => $fields_value['role_name']
+                'data' => $fields_value['roleName']
             ))
-            ->add('role_status', ChoiceType::class, array(
+            ->add('roleStatus', ChoiceType::class, array(
                 'label' => 'Role Status',
-                'data' => $fields_value['role_status'],
+                'data' => $fields_value['roleStatus'],
                 'choices' => array( 0 => 'Unpblish', 1 => 'Publish')
             ))
             ->add('send', SubmitType::class, array(
@@ -163,12 +163,12 @@ class AdminSystemRolesController extends AdminController
             $data = $form->getData();
 
             $validation = new AdminSystemRolesValidation();
-            $validation->role_name = $data['role_name'];
+            $validation->roleName = $data['roleName'];
 
             $errors = $this->get('validator')->validate($validation);
             $form_errors = $this->global_helper_service->getErrorMessages($errors);
             if(!$form_errors){
-                $data['role_type'] = self::_filter_permission_role_type($request->request->get('role_type'));
+                $data['roleType'] = self::_filter_permission_roleType($request->request->get('roleType'));
                 if($data['id'] > 0){
                     /* Update record */
                     $id = $em->getRepository('AppBundle:SystemRolesEntity')->updateRecordDb($data);
@@ -187,7 +187,7 @@ class AdminSystemRolesController extends AdminController
             foreach ($getListModules as $key => $module) {
                 $var = new \stdClass();
                 $var->id = $module['id'];
-                $var->module_name = $module['module_name'];
+                $var->moduleName = $module['moduleName'];
                 $var->view = self::_check_role_system($id, $module['id'], 'view');
                 $var->add = self::_check_role_system($id, $module['id'], 'add');
                 $var->edit = self::_check_role_system($id, $module['id'], 'edit');
@@ -218,9 +218,9 @@ class AdminSystemRolesController extends AdminController
     /**
      * This function use to filter permission for each modules
      */
-    private function _filter_permission_role_type($role_type){
-        if(!empty($role_type)){
-            foreach ($role_type as $key => $value) {
+    private function _filter_permission_roleType($roleType){
+        if(!empty($roleType)){
+            foreach ($roleType as $key => $value) {
                 $arr_val= array();
                 if(!empty($value['view'])){
                     $arr_val['view'] = 1;
@@ -245,22 +245,22 @@ class AdminSystemRolesController extends AdminController
                 }else{
                     $arr_val['delete'] = 0;
                 }
-                $role_type[$key] = $arr_val;
+                $roleType[$key] = $arr_val;
             }
         }
-        return serialize($role_type);
+        return serialize($roleType);
     }
 
     /**
      * This function use to check exists record of the role in database
      */
-    protected function _check_role_system($role_id, $module_id, $action = ''){
+    protected function _check_role_system($roleId, $module_id, $action = ''){
         $em = $this->getDoctrine()->getEntityManager();
-        $result_role_active = $em->getRepository('AppBundle:SystemRolesEntity')->find($role_id);
+        $result_role_active = $em->getRepository('AppBundle:SystemRolesEntity')->find($roleId);
         if(!empty($result_role_active)){
-            if(!empty($result_role_active->getRole_Type())){
-                $role_type = unserialize($result_role_active->getRole_Type());
-                if(!empty($role_type[$module_id][$action])) {
+            if(!empty($result_role_active->getRoleType())){
+                $roleType = unserialize($result_role_active->getRoleType());
+                if(!empty($roleType[$module_id][$action])) {
                     return 1;
                 } else {
                     return 0;
@@ -307,4 +307,4 @@ class AdminSystemRolesController extends AdminController
 
         return $this->admincp_service->handleElementFormFilter($array_filters);
     }
-}    
+}

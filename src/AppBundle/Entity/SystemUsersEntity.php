@@ -11,6 +11,7 @@ use Doctrine\ORM\EntityRepository;
  * @ORM\Entity(repositoryClass="AppBundle\Repository\Admin\AdminSystemUsersRepository")
  */
 class SystemUsersEntity {
+
     /**
      * @ORM\Column(type="integer", length=5)
      * @ORM\Id
@@ -19,132 +20,192 @@ class SystemUsersEntity {
     private $id;
 
     /**
-     * @ORM\Column(type="integer", length=5)
+     * @ORM\Column(name="role_id", type="integer", length=5)
      */
-    private $role_id;
+    private $roleId;
 
     /**
-     * @ORM\Column(type="string", length=150)
+     * @ORM\Column(name="username", type="string", length=150)
      */
     private $username;
 
     /**
-     * @ORM\Column(type="string", length=150)
+     * @ORM\Column(name="email", type="string", length=150)
      */
     private $email;
 
     /**
-     * @ORM\Column(type="string", length=200)
+     * @ORM\Column(name="password", type="string", length=200)
      */
     private $password;
 
     /**
-     * @ORM\Column(type="string", length=60)
+     * @ORM\Column(name="user_token", type="string", length=60, nullable=true)
      */
-    private $user_token;
-    /**
-     * @ORM\Column(type="smallint", length=1)
-     */
-    private $permission_limit;
+    private $userToken;
 
     /**
-     * @ORM\Column(type="smallint", length=1)
+     * @ORM\Column(name="permission_limit", type="smallint", length=1)
      */
-    private $status;
+    private $permissionLimit = 0;
 
     /**
-     * @ORM\Column(type="integer", length=10)
+     * @ORM\Column(name="status", type="smallint", length=1)
      */
-    private $updated_date;
+    private $status = 0;
 
     /**
-     * @ORM\Column(type="integer", length=10)
+     * @var \DateTime
+     *
+     * @ORM\Column(name="updatedDate", type="datetime", nullable=true)
      */
-    private $created_date;
+    private $updatedDate;
 
-    /*public function __construct(Doctrine $doctrine)
-    {
-        $this->em = $doctrine->getEntityManager();
-    }*/
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="created_date", type="datetime", nullable=false)
+     */
+    private $createdDate;
 
+    /**
+     * @param [int]
+     */
     public function setID($id) {
         $this->id = $id;
     }
 
+    /**
+     * @return id
+     */
     public function getID() {
         return $this->id;
     }
 
-    public function setRoleID($role_id) {
-        $this->role_id = $role_id;
+    /**
+     * @param [int]
+     */
+    public function setRoleID($roleId) {
+        $this->roleId = $roleId;
     }
 
+    /**
+     * @return roleId
+     */
     public function getRoleID() {
-        return $this->role_id;
+        return $this->roleId;
     }
 
+    /**
+     * @param [string]
+     */
     public function setUsername($username) {
         $this->username = $username;
     }
 
+    /**
+     * @return username
+     */
     public function getUsername() {
         return $this->username;
     }
 
+    /**
+     * @param [string]
+     */
     public function setEmail($email) {
         $this->email = $email;
     }
 
+    /**
+     * @return email
+     */
     public function getEmail() {
         return $this->email;
     }
 
+    /**
+     * @param [string]
+     */
     public function setPassword($password) {
         $this->password = $password;
     }
 
+    /**
+     * @return password
+     */
     public function getPassword() {
         return $this->password;
     }
 
-    public function setUser_Token($user_token) {
-        $this->user_token = $user_token;
+    /**
+     * @param  [string]
+     */
+    public function setUserToken($userToken) {
+        $this->userToken = $userToken;
     }
 
-    public function getUser_Token() {
-        return $this->user_token;
+    /**
+     * @return userToken
+     */
+    public function getUserToken() {
+        return $this->userToken;
     }
 
-    public function setPermission_limit($permission_limit) {
-        $this->permission_limit = $permission_limit;
-    }
-    
-    public function getPermission_limit() {
-        return $this->permission_limit;
+    /**
+     * @param  [int]
+     */
+    public function setPermissionLimit($permissionLimit) {
+        $this->permissionLimit = $permissionLimit;
     }
 
+    /**
+     * @return permissionLimit
+     */
+    public function getPermissionLimit() {
+        return $this->permissionLimit;
+    }
+
+    /**
+     * @param [int]
+     */
     public function setStatus($status) {
         $this->status = $status;
     }
 
+    /**
+     * @return status
+     */
     public function getStatus() {
         return $this->status;
     }
 
-    public function setUpdated_Date($updated_date) {
-        $this->updated_date = $updated_date;
+    /**
+     * @param [datetime]
+     */
+    public function setUpdatedDate($updatedDate) {
+        $this->updatedDate = $updatedDate;
     }
 
-    public function getUpdated_Date() {
-        return $this->updated_date;
+    /**
+     * @return updatedDate
+     */
+    public function getUpdatedDate() {
+        return $this->updatedDate;
     }
 
-    public function setCreated_Date($created_date) {
-        $this->created_date = $created_date;
+    /**
+     * @param [datetime]
+     */
+    public function setCreatedDate($createdDate) {
+        $this->createdDate = new \DateTime();
     }
 
-    public function getCreated_Date() {
-        return $this->created_date;
+    /**
+     * @return createdDate
+     */
+    public function getCreatedDate() {
+        return $this->createdDate;
     }
 
 }

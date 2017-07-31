@@ -129,7 +129,7 @@ class AdminSystemUsersController extends AdminController
 
         $fields_value = array(
             'id' => ( $id ? $id : 0 ),
-            'role_id' => ( $result_data ? $result_data->getRoleID() : 0 ),
+            'roleId' => ( $result_data ? $result_data->getRoleID() : 0 ),
             'username' => ( $result_data ? $result_data->getUsername() : '' ),
             'email' => ( $result_data ? $result_data->getEmail() : '' ),
             'password' => ( $result_data ? $result_data->getPassword() : 0 ),
@@ -137,7 +137,7 @@ class AdminSystemUsersController extends AdminController
         );
 
         $getListRolesUser = $em->getRepository('AppBundle:SystemUsersEntity')->getRolesUser();
-        $list_roles = $this->global_helper_service->convertArrayResultSelectbox($getListRolesUser, array('key'=>'id', 'value'=>'role_name'));
+        $list_roles = $this->global_helper_service->convertArrayResultSelectbox($getListRolesUser, array('key'=>'id', 'value'=>'roleName'));
 
         $defaultData = array('message' => 'Type your message here');
 
@@ -146,10 +146,10 @@ class AdminSystemUsersController extends AdminController
             ->add('id', HiddenType::class, array(
                 'data' => $fields_value['id'],
             ))
-            ->add('role_id', ChoiceType::class, array(
+            ->add('roleId', ChoiceType::class, array(
                 'label' => 'Select Role',
                 'choices' => $list_roles,
-                'data' => $fields_value['role_id']
+                'data' => $fields_value['roleId']
             ))
             ->add('username', TextType::class, array(
                 'label' => 'UserName',
@@ -258,4 +258,4 @@ class AdminSystemUsersController extends AdminController
 
         return $this->admincp_service->handleElementFormFilter($array_filters);
     }
-}    
+}

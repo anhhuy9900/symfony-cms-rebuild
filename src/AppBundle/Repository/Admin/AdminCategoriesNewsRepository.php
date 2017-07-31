@@ -9,7 +9,7 @@ Trait AdminCategoriesNewsRepository
         $entity->setTitle($data['title']);
         $entity->setStatus($data['status']);
         $entity->setUpdated_Date(time());
-        $entity->setCreated_Date(time());
+        $entity->setCreatedDate(time());
 
         $em = $this->getEntityManager();
         $em->persist($entity);

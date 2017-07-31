@@ -94,7 +94,7 @@ class UploadFilesService extends Controller{
     /**
      * This function use save file to database
      */
-    public function saveFilesData($type_id, $type = 'default', $file = '')
+    public function saveFilesData($typeId, $type = 'default', $file = '')
     {
 
         if($file && file_exists($this->getParameter('upload_dir').'/'.$file)){
@@ -104,10 +104,10 @@ class UploadFilesService extends Controller{
             $query = $entity->createQueryBuilder('pk');
             $query->select("pk");
             $query->where('pk.type = :type');
-            $query->andWhere('pk.type_id = :type_id');
+            $query->andWhere('pk.typeId = :typeId');
             $query->andWhere('pk.file = :file');
             $query->setParameter('type', $type);
-            $query->setParameter('type_id', $type_id);
+            $query->setParameter('typeId', $typeId);
             $query->setParameter('file', $file);
             $get_file_exists = $query->getQuery()->getResult();
 
@@ -121,11 +121,11 @@ class UploadFilesService extends Controller{
 
                 //Create file in database
                 $create = new FilesManagedEntity();
-                $create->setTypeID($type_id);
+                $create->setTypeID($typeId);
                 $create->setType($type);
                 $create->setFile($newfile);
                 $create->setStatus(1);
-                $create->setCreated_Date(time());
+                $create->setCreatedDate(time());
                 $this->em->persist($create);
                 $this->em->flush();
 
@@ -140,7 +140,7 @@ class UploadFilesService extends Controller{
     /**
      * This function use delete file to database
      */
-    public function deleteFilesData($type_id, $type = 'default', $file_id = 0){
+    public function deleteFilesData($typeId, $type = 'default', $file_id = 0){
 
         if(!empty($file_id)){
 
@@ -148,10 +148,10 @@ class UploadFilesService extends Controller{
             $query = $entity->createQueryBuilder('pk');
             $query->select("pk");
             $query->where('pk.type = :type');
-            $query->andWhere('pk.type_id = :type_id');
+            $query->andWhere('pk.typeId = :typeId');
             $query->andWhere('pk.id = :id');
             $query->setParameter('type', $type);
-            $query->setParameter('type_id', $type_id);
+            $query->setParameter('typeId', $typeId);
             $query->setParameter('id', $file_id);
             $get_file = $query->getQuery()->getSingleResult(\Doctrine\ORM\AbstractQuery::HYDRATE_ARRAY);
 

@@ -214,7 +214,7 @@ class AdminCategoriesNewsController extends AdminController
                 $tmp[] = $value->getID();
                 $tmp[] = $value->getTitle();
                 $tmp[] = $value->getStatus() == 1 ? 'Active' : 'UnActive';
-                $tmp[] = date('Y-m-d H:i:s',$value->getCreated_Date());
+                $tmp[] = date('Y-m-d H:i:s',$value->getCreatedDate());
 
                 $rows[] = $tmp;
             }
@@ -249,5 +249,5 @@ class AdminCategoriesNewsController extends AdminController
 
         return $this->admincp_service->handleElementFormFilter($array_filters);
     }
-    
+
 }
