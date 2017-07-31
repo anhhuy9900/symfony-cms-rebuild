@@ -1,7 +1,8 @@
 <?php
 namespace AppBundle\Controller\Front;
 
-use AppBundle\Controller\Front\BaseController;
+use AppBundle\Controller\BaseController;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
 
 class HomeController extends BaseController

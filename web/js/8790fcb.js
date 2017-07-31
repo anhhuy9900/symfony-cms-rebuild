@@ -2645,11 +2645,11 @@ var AdminMain = window.AdminMain || {};
 
         admin_submit_filter_records : function(){
             $(".search-filter").on('click', function(){
-                /*var current_url = $("#filter_options").attr('action');
+                /*var current_url = $("#filterOptions").attr('action');
                 //var pathname = $(location).attr('href');
                 var params = '';
                 var value;
-                $.each($("#filter_options").serializeArray(), function(key, element){
+                $.each($("#filterOptions").serializeArray(), function(key, element){
                     value = element.value;
                     if($("#"+element.name).data('type') == 'date-picker'){
                         var date_range = element.value.split('-');
@@ -2671,7 +2671,7 @@ var AdminMain = window.AdminMain || {};
                 var redirect_url = current_url + params;
                 window.location.href = redirect_url;*/
 
-                $("#filter_options").submit();
+                $("#filterOptions").submit();
             });
         },
 

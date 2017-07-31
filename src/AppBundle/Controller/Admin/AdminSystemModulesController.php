@@ -1,7 +1,7 @@
 <?php
 namespace AppBundle\Controller\Admin;
 
-
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -11,7 +11,7 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
 /* import Bundle Custom */
-use AppBundle\Controller\Admin\AdminController;
+use AppBundle\Controller\AdminController;
 use AppBundle\Validation\Admin\AdminSystemModulesValidation;
 
 class AdminSystemModulesController extends AdminController

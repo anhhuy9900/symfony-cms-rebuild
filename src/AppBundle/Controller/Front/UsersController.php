@@ -1,8 +1,9 @@
 <?php
 namespace AppBundle\Controller\Front;
 
-use AppBundle\Controller\Front\BaseController;
+use AppBundle\Controller\BaseController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use AppBundle\Handle\UserHandleAction;
