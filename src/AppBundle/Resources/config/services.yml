@@ -28,3 +28,5 @@ services:
       public: false
       tags:
             - { name: twig.extension }
+
+   templating.helper.assets: '@assets.packages'

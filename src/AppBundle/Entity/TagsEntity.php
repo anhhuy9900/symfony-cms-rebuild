@@ -29,7 +29,7 @@ class TagsEntity {
     private $type;
 
     /**
-     * @ORM\Column(name="tagName", type="string", length=200, nullable=true)
+     * @ORM\Column(name="tag_name", type="string", length=200, nullable=true)
      */
     private $tagName;
 
@@ -41,7 +41,7 @@ class TagsEntity {
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="created_date", type="datetime", nullable=false)
+     * @ORM\Column(name="created_date", type="datetime", nullable=true)
      */
     private $createdDate;
 

@@ -29,7 +29,7 @@ class FilesEntity {
     private $file;
 
     /**
-     * @ORM\Column(name="path;", type="string", length=255, nullable=true)
+     * @ORM\Column(name="path", type="string", length=255, nullable=true)
      */
     public $path;
 
@@ -41,9 +41,9 @@ class FilesEntity {
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="created_date", type="datetime", nullable=false)
+     * @ORM\Column(name="created_date", type="datetime", nullable=true)
      */
-    private $createdDate
+    private $createdDate;
 
 
     /**

@@ -57,14 +57,14 @@ class SystemUsersEntity {
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="updatedDate", type="datetime", nullable=true)
+     * @ORM\Column(name="updated_date", type="datetime", nullable=true)
      */
     private $updatedDate;
 
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="created_date", type="datetime", nullable=false)
+     * @ORM\Column(name="created_date", type="datetime", nullable=true)
      */
     private $createdDate;
 

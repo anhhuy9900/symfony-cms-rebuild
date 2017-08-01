@@ -59,7 +59,7 @@ Trait AdminNewsRepository
     {
         $repository = $this->getEntityManager()->getRepository('AppBundle:NewsEntity');
         $query = $repository->createQueryBuilder('pk');
-        $query->select("pk.id as id, pk.title as title, pk.image as image, pk.status as status, pk.updated_date as updated_date");
+        $query->select("pk.id as id, pk.title as title, pk.image as image, pk.status as status, pk.updatedDate as updatedDate");
         $query->addSelect("fk.title as category_title");
         $query->leftJoin("AppBundle:CategoriesNewsEntity", "fk", "WITH", "pk.categoryId=fk.id");
         $query->where('pk.id > 0');
@@ -69,8 +69,8 @@ Trait AdminNewsRepository
                 $query->andWhere('pk.title LIKE :key')->setParameter('key', '%'.$where['key'].'%');
             }
             if(isset($where['date_range']) && $where['date_range']) {
-                $query->andWhere('pk.updated_date >= :date_from')->setParameter('date_from', $where['date_range']['from']);
-                $query->andWhere('pk.updated_date <= :date_to')->setParameter('date_to', $where['date_range']['to']);
+                $query->andWhere('pk.updatedDate >= :date_from')->setParameter('date_from', $where['date_range']['from']);
+                $query->andWhere('pk.updatedDate <= :date_to')->setParameter('date_to', $where['date_range']['to']);
             }
 
             if(isset($where['status']) && $where['status']) {
@@ -95,8 +95,8 @@ Trait AdminNewsRepository
                 $query->andWhere('pk.title LIKE :key')->setParameter('key', '%'.$where['key'].'%');
             }
             if(isset($where['date_range']) && $where['date_range']) {
-                $query->andWhere('pk.updated_date >= :date_from')->setParameter('date_from', $where['date_range']['from']);
-                $query->andWhere('pk.updated_date <= :date_to')->setParameter('date_to', $where['date_range']['to']);
+                $query->andWhere('pk.updatedDate >= :date_from')->setParameter('date_from', $where['date_range']['from']);
+                $query->andWhere('pk.updatedDate <= :date_to')->setParameter('date_to', $where['date_range']['to']);
             }
 
             if(isset($where['status']) && $where['status']) {

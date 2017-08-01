@@ -25,7 +25,7 @@ class NewsEntity {
     private $categoryId = 0;
 
     /**
-     * @ORM\Column(name="name", type="string", length=255)
+     * @ORM\Column(name="title", type="string", length=255)
      */
     private $title;
 
@@ -57,14 +57,14 @@ class NewsEntity {
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="updatedDate", type="datetime", nullable=true)
+     * @ORM\Column(name="updated_date", type="datetime", nullable=true)
      */
     private $updatedDate;
 
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="created_date", type="datetime", nullable=false)
+     * @ORM\Column(name="created_date", type="datetime", nullable=true)
      */
     private $createdDate;
 

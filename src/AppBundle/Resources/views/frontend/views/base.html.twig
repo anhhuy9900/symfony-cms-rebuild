@@ -92,7 +92,11 @@
 
 {# Block JS #}
 {% block javascripts %}
-    {% javascripts '@AppBundle/Resources/public/frontend/js/*' %}
+    {% javascripts
+    '@AppBundle/Resources/public/frontend/js/jquery.js'
+    '@AppBundle/Resources/public/frontend/js/*'
+    '@AppBundle/Resources/public/frontend/js/user/*'
+    %}
     <script src="{{ asset_url }}"></script>
     {% endjavascripts %}
 

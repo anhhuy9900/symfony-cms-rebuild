@@ -1,6 +1,7 @@
 <?php
 namespace AppBundle\Controller\Front;
 
+use AppBundle\AppBundle;
 use AppBundle\Controller\BaseController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -24,27 +25,14 @@ class UsersController extends BaseController
             exit();
         }
 
-        $defaultData = array();
-        $form = $this->createFormBuilder($defaultData, array('csrf_protection' => true))
-          //->setAction($this->generateUrl('login_form_submit'))
-          ->add('csrf_token', \Symfony\Component\Form\Extension\Core\Type\HiddenType::class,array(
-              'data' => $this->get('security.csrf.token_manager')->refreshToken('user-login')
-          ))
-          ->add('account', \Symfony\Component\Form\Extension\Core\Type\TextType::class)
-          ->add('password', \Symfony\Component\Form\Extension\Core\Type\PasswordType::class)
-          ->add('user_remember', \Symfony\Component\Form\Extension\Core\Type\CheckboxType::class , array(
-            'label'    => '',
-            'required' => false,
-          ))
-          //->add('send', SubmitType::class)
-          ->getForm();
-
+        $form = $this->createForm(\AppBundle\Form\Front\UserLogin::class);
         $form->handleRequest($request);
-
         $this->data['form'] = $form->createView();
+
         $add_scripts = $this->global_helper_service->systemAddJs(array(
             array(
-                'path' => $this->container->get('templating.helper.assets')->getUrl('themes/frontend/assets/js/user/user_page.js'),
+                //'path' => $this->container->get('templating.helper.assets')->getUrl('@AppBundle/Resources/public/frontend/js/user/user_page.js'),
+                'path' => '',
                 'version' => '',
                 'footer' => true,
             )
@@ -165,13 +153,13 @@ class UsersController extends BaseController
         $response_data = array();
         $action = $json_data->action;
 
-        if(!$this->global_service->checkValidCsrfToken($action, $json_data->data->csrf_token)){
-            $response_json = array(
-                'status' => 0,
-                'msg' => 'Invalid Token'
-            );
-            return new JsonResponse($response_json);
-        }
+//        if(!$this->global_service->checkValidCsrfToken($action, $json_data->data->csrf_token)){
+//            $response_json = array(
+//                'status' => 0,
+//                'msg' => 'Invalid Token'
+//            );
+//            return new JsonResponse($response_json);
+//        }
 
         $handle_action = new UserHandleAction;
         switch($action){

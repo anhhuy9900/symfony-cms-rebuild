@@ -51,8 +51,8 @@ Trait AdminCategoriesNewsRepository
                 $query->andWhere('pk.title LIKE :key')->setParameter('key', '%'.$where['key'].'%');
             }
             if(isset($where['key']) && $where['date_range']) {
-                $query->andWhere('pk.updated_date >= :date_from')->setParameter('date_from', $where['date_range']['from']);
-                $query->andWhere('pk.updated_date <= :date_to')->setParameter('date_to', $where['date_range']['to']);
+                $query->andWhere('pk.updatedDate >= :date_from')->setParameter('date_from', $where['date_range']['from']);
+                $query->andWhere('pk.updatedDate <= :date_to')->setParameter('date_to', $where['date_range']['to']);
             }
         }
         $query->orderBy("pk.".$order['field'], $order['by']);
