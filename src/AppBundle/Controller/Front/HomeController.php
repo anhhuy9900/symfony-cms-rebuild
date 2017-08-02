@@ -31,4 +31,35 @@ class HomeController extends BaseController
         return $this->render('@frontend/home/index.html.twig', $this->data);
 
     }
+
+    /**
+     * @Route("test-upload", name="home_page")
+     */
+    public function testUploadAction(Request $request)
+    {
+        $form = $this->createFormBuilder()
+            ->add('file',\Symfony\Component\Form\Extension\Core\Type\FileType::class, array('label' => 'Upload file'))
+            ->add('save', \Symfony\Component\Form\Extension\Core\Type\SubmitType::class)
+            ->getForm();
+
+        if ($request->getMethod() === 'POST') {
+            $form->handleRequest($request);
+            if ($form->isValid()) {
+                $file = $form['file']->getData();
+                dump($file);die;
+                $file = new \AppBundle\Entity\FilesEntity;
+                $file->setType('file_test');
+                $file->setFile('file_test');
+
+                $em = $this->getDoctrine()->getEntityManager();
+
+                $em->persist();
+                $em->flush();
+
+                return $this->redirect($this->generateUrl('home_page'));
+            }
+        }
+        $this->data['form'] = $form->createView();
+        return $this->render('@frontend/home/test_upload.html.twig', $this->data);
+    }
 }

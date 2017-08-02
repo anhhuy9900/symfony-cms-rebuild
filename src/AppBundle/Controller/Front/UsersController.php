@@ -49,27 +49,7 @@ class UsersController extends BaseController
      */
     public function registerAction(Request $request)
     {
-        $defaultData = array();
-        $form = $this->createFormBuilder($defaultData)
-          //->setAction($this->generateUrl('login_form_submit'))
-          ->add('csrf_token', \Symfony\Component\Form\Extension\Core\Type\HiddenType::class,array(
-              'data' => $this->get('security.csrf.token_manager')->refreshToken('user-register')
-          ))
-          ->add('fullname', \Symfony\Component\Form\Extension\Core\Type\TextType::class)
-          ->add('email', \Symfony\Component\Form\Extension\Core\Type\TextType::class)
-          ->add('password', \Symfony\Component\Form\Extension\Core\Type\PasswordType::class)
-          ->add('confirm_password', \Symfony\Component\Form\Extension\Core\Type\PasswordType::class)
-          ->add('phone', \Symfony\Component\Form\Extension\Core\Type\TextType::class)
-          ->add('address', \Symfony\Component\Form\Extension\Core\Type\TextareaType::class)
-          ->add('gender', \Symfony\Component\Form\Extension\Core\Type\ChoiceType::class, array(
-            'choices'  => array(
-              1 => 'Male',
-              2 => 'Female',
-            ),
-          ))
-          //->add('send', SubmitType::class)
-          ->getForm();
-
+        $form = $this->createForm(\AppBundle\Form\Front\UserRegister::class);
         $form->handleRequest($request);
 
         $this->data['form'] = $form->createView();
@@ -91,16 +71,7 @@ class UsersController extends BaseController
      */
     public function forgot_passwordAction(Request $request)
     {
-        $defaultData = array();
-        $form = $this->createFormBuilder($defaultData)
-            //->setAction($this->generateUrl('forgot_password_form_submit'))
-            ->add('csrf_token', \Symfony\Component\Form\Extension\Core\Type\HiddenType::class,array(
-                'data' => $this->get('security.csrf.token_manager')->refreshToken('user-forgot-password')
-            ))
-            ->add('email', \Symfony\Component\Form\Extension\Core\Type\TextType::class)
-            //->add('send', SubmitType::class)
-            ->getForm();
-
+        $form = $this->createForm(\AppBundle\Form\Front\UserForgotPassword::class);
         $form->handleRequest($request);
 
         $this->data['form'] = $form->createView();
