@@ -20,8 +20,8 @@ class AdminSystemRolesRepository extends EntityRepository
         $entity->setRoleName($data['roleName']);
         $entity->setRoleType($data['roleType']);
         $entity->setRoleStatus($data['roleStatus']);
-        $entity->setUpdated_Date(time());
-        $entity->setCreatedDate(time());
+        $entity->setUpdatedDate();
+        $entity->setCreatedDate();
 
         $em = $this->getEntityManager();
         $em->persist($entity);
@@ -38,7 +38,7 @@ class AdminSystemRolesRepository extends EntityRepository
         $entity->setRoleName($data['roleName']);
         $entity->setRoleType($data['roleType']);
         $entity->setRoleStatus($data['roleStatus']);
-        $entity->setUpdated_Date(time());
+        $entity->setUpdatedDate();
 
         $em->flush();
 

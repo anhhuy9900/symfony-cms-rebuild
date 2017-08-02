@@ -339,7 +339,7 @@ class GlobalHelperService  extends Controller
     public function convertArrayResultSelectbox($data, $fields = array())
     {
         $arr_values = array(
-            0 => 'Select Value'
+            'None' => 0
         );
         if(!empty($data)){
             foreach($data as $value){

@@ -88,8 +88,8 @@ class CategoriesNewsEntity {
     /**
      * @param [datetime]
      */
-    public function setUpdatedDate($updatedDate) {
-        $this->updatedDate = $updatedDate;
+    public function setUpdatedDate() {
+        $this->updatedDate = new \DateTime();
     }
 
     /**
@@ -102,7 +102,7 @@ class CategoriesNewsEntity {
     /**
      * @param [datetime]
      */
-    public function setCreatedDate($createdDate) {
+    public function setCreatedDate() {
         $this->createdDate = new \DateTime();
     }
 

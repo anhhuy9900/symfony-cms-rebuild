@@ -22,7 +22,7 @@ class AdminSystemUsersRepository extends EntityRepository
         $entity->setEmail($data['email']);
         $entity->setPassword($data['password']);
         $entity->setStatus($data['status']);
-        $entity->setUpdated_Date(time());
+        $entity->setUpdatedDate(time());
         $entity->setCreatedDate(time());
 
         $em = $this->getEntityManager();
@@ -42,7 +42,7 @@ class AdminSystemUsersRepository extends EntityRepository
         $entity->setEmail($data['email']);
         $entity->setPassword($data['password']);
         $entity->setStatus((int)$data['status']);
-        $entity->setUpdated_Date(time());
+        $entity->setUpdatedDate(time());
 
         $em->flush();
 

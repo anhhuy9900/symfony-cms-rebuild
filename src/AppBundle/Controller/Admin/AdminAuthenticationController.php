@@ -42,17 +42,7 @@ class AdminAuthenticationController extends Controller
         }
 
         $defaultData = array('message' => 'Type your message here');
-        $form = $this->createFormBuilder($defaultData)
-            //->setAction($this->generateUrl('login_form_submit'))
-            ->add('username', TextType::class)
-            ->add('password', PasswordType::class)
-            ->add('remember', CheckboxType::class , array(
-                'label'    => '',
-                'required' => false,
-            ))
-            //->add('send', SubmitType::class)
-            ->getForm();
-
+        $form = $this->createForm(\AppBundle\Form\Admin\AuthenticateLogin::class);
         $form->handleRequest($request);
 
         $form_errors = '';
@@ -85,7 +75,7 @@ class AdminAuthenticationController extends Controller
      * @Route("/system/logout", name="admincp_logout_page")
      */
     public function logoutAction(Request $request)
-    {  
+    {
         $session = $request->getSession();
         if(!empty($session->get('_security_secured_userad'))){
             $session->remove('_security_secured_userad');
@@ -93,5 +83,5 @@ class AdminAuthenticationController extends Controller
         $url = $this->generateUrl('admincp_login_page');
         return $this->redirect($url, 301);
     }
-    
+
 }

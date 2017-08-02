@@ -8,8 +8,8 @@ Trait AdminCategoriesNewsRepository
         $entity = new CategoriesNewsEntity();
         $entity->setTitle($data['title']);
         $entity->setStatus($data['status']);
-        $entity->setUpdated_Date(time());
-        $entity->setCreatedDate(time());
+        $entity->setUpdatedDate();
+        $entity->setCreatedDate();
 
         $em = $this->getEntityManager();
         $em->persist($entity);
@@ -25,7 +25,7 @@ Trait AdminCategoriesNewsRepository
 
         $entity->setTitle($data['title']);
         $entity->setStatus($data['status']);
-        $entity->setUpdated_Date(time());
+        $entity->setUpdatedDate();
 
         $em->flush();
 

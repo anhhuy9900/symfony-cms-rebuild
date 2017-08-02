@@ -7,24 +7,43 @@ use Doctrine\ORM\EntityManager;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 /* import Bundle Custom */
 use AppBundle\Entity\FilesManagedEntity;
 
 
-class UploadFilesService extends Controller{
-
+class UploadFilesService extends Controller
+{
+    public $path;
+    public $fileName;
+    public $fileType;
     /**
      * Used as constructor
      */
-
-    function __construct(EntityManager $entityManager)
+    function __construct(EntityManager $entityManager, ContainerInterface $container)
     {
         $this->em = $entityManager;
+        $this->container = $container;
     }
 
     public function getPathFolderUpload(){
-        return $this->get('request')->getBasePath() . '/uploads/';
+        return  '/uploads/';
+    }
+
+    protected function getUploadRootDir()
+    {
+        return $this->container->get('kernel')->getRootDir() . '/../web'.$this->path;
+    }
+
+    public function setUploadDir($pathUpload)
+    {
+        $pathUpload = $pathUpload.'/'.date('Y').'/'.date('m').'/'.date('d').'/';
+        $uploadDir = $this->getPathFolderUpload() . $pathUpload;
+        $this->createNewFolder($uploadDir);
+        // get rid of the __DIR__ so it doesn't screw up
+        // when displaying uploaded doc/image in the view.
+        $this->path = $uploadDir;
     }
 
     public function uploadFileRequest($file, $type_name){
@@ -40,11 +59,21 @@ class UploadFilesService extends Controller{
         }
     }
 
+    public function upload(UploadedFile $file, $pathName = '')
+    {
+
+        $this->setUploadDir($pathName);
+        $fileName = $this->randomFileName() . '.' . $file->guessExtension();
+        $file->move($this->getUploadRootDir(), $fileName);
+        $this->fileName = $fileName;
+    }
+
+
     public function creatFolderUpload($folder_name = 'images') {
         $uploadDir = $this->getParameter('upload_dir');
         $path_url = $folder_name.'/'.date('Y').'/'.date('m').'/'.date('d').'/';
         $folder_path = $uploadDir .'/'.$path_url;
-        $folder = self::creeatNewFolder($folder_path);
+        $folder = self::createNewFolder($folder_path);
 
         $data  = array(
             'folder_path' => $folder_path,
@@ -53,14 +82,14 @@ class UploadFilesService extends Controller{
         return $data;
     }
 
-    public static function creeatNewFolder($folder) {
+    public static function createNewFolder($folder) {
         $fs = new Filesystem();
         $arr_folder = explode('/', $folder);
         $fol = '';
         foreach ($arr_folder as $row) {
             if (!empty($row)) {
                 $fol.=$row . '/';
-                if (!file_exists($fol)) {
+                if (!$fs->exists($fol)) {
                     $fs->mkdir($fol, 0777);
                 } else {
                     if ($row != 'static') {
@@ -75,20 +104,22 @@ class UploadFilesService extends Controller{
     }
 
     static function randomFileName($length = 10) {
-        $allowed_chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890';
-        $allowed_chars_len = strlen($allowed_chars);
+        // $allowed_chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890';
+        // $allowed_chars_len = strlen($allowed_chars);
 
-        if($allowed_chars_len == 1) {
-            return str_pad('', $length, $allowed_chars);
-        } else {
-            $result = '';
+        // if($allowed_chars_len == 1) {
+        //     return str_pad('', $length, $allowed_chars);
+        // } else {
+        //     $result = '';
 
-            while(strlen($result) < $length) {
-                $result .= substr($allowed_chars, rand(0, $allowed_chars_len), 1);
-            } // while
+        //     while(strlen($result) < $length) {
+        //         $result .= substr($allowed_chars, rand(0, $allowed_chars_len), 1);
+        //     } // while
 
-            return $result;
-        }
+        //     return $result;
+        // }
+
+        return md5(uniqid());
     }
 
     /**

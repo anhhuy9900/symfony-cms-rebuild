@@ -33,10 +33,11 @@ class HomeController extends BaseController
     }
 
     /**
-     * @Route("test-upload", name="home_page")
+     * @Route("test-upload", name="test_upload_page")
      */
     public function testUploadAction(Request $request)
     {
+        $getFile = $this->getDoctrine()->getRepository('AppBundle:FilesEntity')->find(1);
         $form = $this->createFormBuilder()
             ->add('file',\Symfony\Component\Form\Extension\Core\Type\FileType::class, array('label' => 'Upload file'))
             ->add('save', \Symfony\Component\Form\Extension\Core\Type\SubmitType::class)
@@ -46,19 +47,25 @@ class HomeController extends BaseController
             $form->handleRequest($request);
             if ($form->isValid()) {
                 $file = $form['file']->getData();
-                dump($file);die;
-                $file = new \AppBundle\Entity\FilesEntity;
-                $file->setType('file_test');
-                $file->setFile('file_test');
+
+                $uploadFile = $this->container->get('app.upload_files_service');
+                $uploadFile->upload($file, 'test');
+                $fileEntity = new \AppBundle\Entity\FilesEntity;
+                $fileEntity->setType('file_test');
+                $fileEntity->setFile($uploadFile->fileName);
+                $fileEntity->setPath($uploadFile->path);
+                $fileEntity->setStatus(1);
+                $fileEntity->setCreatedDate();
 
                 $em = $this->getDoctrine()->getEntityManager();
-
-                $em->persist();
+                $em->persist($fileEntity);
                 $em->flush();
 
-                return $this->redirect($this->generateUrl('home_page'));
+                $getFile = $this->getDoctrine()->getRepository('AppBundle:FilesEntity')->find($fileEntity->getID());
             }
         }
+
+        $this->data['file'] = $getFile;
         $this->data['form'] = $form->createView();
         return $this->render('@frontend/home/test_upload.html.twig', $this->data);
     }

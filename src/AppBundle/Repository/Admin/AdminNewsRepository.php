@@ -16,8 +16,8 @@ Trait AdminNewsRepository
         $entity->setDescription($data['description']);
         $entity->setContent($data['content']);
         $entity->setStatus($data['status']);
-        $entity->setUpdated_Date(time());
-        $entity->setCreatedDate(time());
+        $entity->setUpdatedDate();
+        $entity->setCreatedDate();
 
         $em = $this->getEntityManager();
         $em->persist($entity);
@@ -40,7 +40,7 @@ Trait AdminNewsRepository
         $entity->setDescription($data['description']);
         $entity->setContent($data['content']);
         $entity->setStatus($data['status']);
-        $entity->setUpdated_Date(time());
+        $entity->setUpdatedDate();
 
         $em->flush();
 

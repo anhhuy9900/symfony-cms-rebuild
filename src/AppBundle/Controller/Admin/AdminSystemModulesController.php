@@ -13,6 +13,7 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 /* import Bundle Custom */
 use AppBundle\Controller\AdminController;
 use AppBundle\Validation\Admin\AdminSystemModulesValidation;
+use AppBundle\Entity\SystemModulesEntity;
 
 class AdminSystemModulesController extends AdminController
 {
@@ -125,51 +126,56 @@ class AdminSystemModulesController extends AdminController
         $em = $this->getDoctrine()->getEntityManager();
         $result_data = $em->getRepository('AppBundle:SystemModulesEntity')->find($id);
 
-        $fields_value = array(
-            'id' => ( $id ? $id : 0 ),
-            'parentId' => ( $result_data ? $result_data->getParentID() : 0 ),
-            'moduleName' => ( $result_data ? $result_data->getmoduleName() : '' ),
-            'moduleAlias' => ( $result_data ? $result_data->getModuleAlias() : '' ),
-            'moduleOrder' => ( $result_data ? $result_data->getModuleOrder() : 0 ),
-            'moduleStatus' => ( $result_data ? $result_data->getModuleStatus() : 0 )
+        $recursiveModules = $this->global_helper_service->convertArrayResultSelectbox(
+            $em->getRepository('AppBundle:SystemModulesEntity')->getRecursiveModules(0),
+            array('key'=>'id', 'value'=>'moduleName')
+        );
+        $fieldsValue = array(
+            'id' => $id ? $id : 0,
+            'parentId' => $result_data ? $result_data->getParentID() : 0,
+            'moduleName' => $result_data ? $result_data->getModuleName() : '',
+            'moduleAlias' => $result_data ? $result_data->getModuleAlias() : '',
+            'moduleOrder' => $result_data ? $result_data->getModuleOrder() : 0,
+            'moduleStatus' => $result_data ? $result_data->getModuleStatus() : 1,
+            'recursiveModules' => $recursiveModules
         );
 
-        $get_recursive_modules = $em->getRepository('AppBundle:SystemModulesEntity')->getRecursiveModules(0);
-        $list_recursive_modules = $this->global_helper_service->convertArrayResultSelectbox($get_recursive_modules, array('key'=>'id', 'value'=>'moduleName'));
+        $entity = new SystemModulesEntity;
+        $form = $this->createForm(\AppBundle\Form\Admin\SystemModules::class, $result_data);
 
-        $defaultData = array('message' => 'Type your message here');
-        $form = $this->createFormBuilder($defaultData)
-            //->setAction($this->generateUrl('admincp_system_modules_edit_page'))
-            ->add('id', HiddenType::class, array(
-                'data' => $fields_value['id'],
-            ))
-            ->add('parentId', ChoiceType::class, array(
-                'label' => 'Parent',
-                'choices' =>$list_recursive_modules,
-                'data' => $fields_value['parentId']
-            ))
-            ->add('moduleName', TextType::class, array(
-                'label' => 'Module Name',
-                'data' => $fields_value['moduleName']
-            ))
-            ->add('moduleAlias', TextType::class, array(
-                'label' => 'Module Alias',
-                'data' => $fields_value['moduleAlias'],
-                'required' => FALSE
-            ))
-            ->add('moduleOrder', TextType::class, array(
-                'label' => 'Module Order',
-                'data' => $fields_value['moduleOrder']
-            ))
-            ->add('moduleStatus', ChoiceType::class, array(
-                'label' => 'Module Status',
-                'data' => $fields_value['moduleStatus'],
-                'choices' => array( 0 => 'Unpblish', 1 => 'Publish')
-            ))
-            ->add('send', SubmitType::class, array(
-                'label' => 'Submit',
-            ))
-            ->getForm();
+        // $defaultData = array('message' => 'Type your message here');
+        // $form = $this->createFormBuilder($defaultData)
+        //     //->setAction($this->generateUrl('admincp_system_modules_edit_page'))
+        //     ->add('id', HiddenType::class, array(
+        //         'data' => $fields_value['id'],
+        //     ))
+        //     ->add('parentId', ChoiceType::class, array(
+        //         'label' => 'Parent',
+        //         'choices' => $list_recursive_modules,
+        //         'data' => $fields_value['parentId']
+        //     ))
+        //     ->add('moduleName', TextType::class, array(
+        //         'label' => 'Module Name',
+        //         'data' => $fields_value['moduleName']
+        //     ))
+        //     ->add('moduleAlias', TextType::class, array(
+        //         'label' => 'Module Alias',
+        //         'data' => $fields_value['moduleAlias'],
+        //         'required' => FALSE
+        //     ))
+        //     ->add('moduleOrder', TextType::class, array(
+        //         'label' => 'Module Order',
+        //         'data' => $fields_value['moduleOrder']
+        //     ))
+        //     ->add('moduleStatus', ChoiceType::class, array(
+        //         'label' => 'Module Status',
+        //         'data' => $fields_value['moduleStatus'],
+        //         'choices' => array( 'Publish' => 1, 'Unpblish' => 0)
+        //     ))
+        //     ->add('send', SubmitType::class, array(
+        //         'label' => 'Submit',
+        //     ))
+        //     ->getForm();
 
         $form->handleRequest($request);
 
@@ -177,7 +183,7 @@ class AdminSystemModulesController extends AdminController
         $success = FALSE;
         if ($form->isSubmitted() && $form->isValid()) {
             $data = $form->getData();
-
+            dump($data);die;
             $validation = new AdminSystemModulesValidation();
             $validation->moduleName = $data['moduleName'];
             $validation->moduleAlias = $data['moduleAlias'];

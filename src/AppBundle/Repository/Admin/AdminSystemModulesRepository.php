@@ -22,8 +22,8 @@ class AdminSystemModulesRepository extends EntityRepository
         $entity->setModuleAlias($data['moduleAlias']);
         $entity->setModuleStatus($data['moduleStatus']);
         $entity->setModuleOrder($data['moduleOrder']);
-        $entity->setUpdated_Date(time());
-        $entity->setCreatedDate(time());
+        $entity->setUpdatedDate();
+        $entity->setCreatedDate();
 
         $em = $this->getEntityManager();
         $em->persist($entity);
@@ -42,7 +42,7 @@ class AdminSystemModulesRepository extends EntityRepository
         $entity->setModuleAlias($data['moduleAlias']);
         $entity->setModuleStatus($data['moduleStatus']);
         $entity->setModuleOrder((int)$data['moduleOrder']);
-        $entity->setUpdated_Date(time());
+        $entity->setUpdatedDate();
 
         $em->flush();
 

@@ -118,7 +118,7 @@ class TagsEntity {
     /**
      * @param [datetime]
      */
-    public function setCreatedDate($createdDate) {
+    public function setCreatedDate() {
         $this->createdDate = new \DateTime();
     }
 

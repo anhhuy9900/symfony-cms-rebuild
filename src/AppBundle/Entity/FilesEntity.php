@@ -81,7 +81,7 @@ class FilesEntity {
     /**
      * @param [string]
      */
-    public function setFile($file)
+    public function setFile($file = null)
     {
         $this->file = $file;
     }
@@ -92,6 +92,22 @@ class FilesEntity {
     public function getFile()
     {
         return $this->file;
+    }
+
+     /**
+     * @param [string]
+     */
+    public function setPath($path)
+    {
+        $this->path = $path;
+    }
+
+    /**
+     * @return path
+     */
+    public function getPath()
+    {
+        return $this->path;
     }
 
     /**
@@ -113,7 +129,7 @@ class FilesEntity {
     /**
      * @param [datetime]
      */
-    public function setCreatedDate($createdDate)
+    public function setCreatedDate()
     {
         $this->createdDate = new \DateTime();
     }
@@ -133,7 +149,7 @@ class FilesEntity {
 
     public function getWebPath()
     {
-        return null === $this->path ? null : $this->getUploadDir().'/'.$this->path;
+        return null === $this->path ? null : $this->path;
     }
 
     protected function getUploadRootDir()
@@ -148,6 +164,14 @@ class FilesEntity {
         // get rid of the __DIR__ so it doesn't screw up
         // when displaying uploaded doc/image in the view.
         return 'uploads/documents';
+    }
+
+    /**
+     * @return file
+     */
+    public function file()
+    {
+        return $this->getWebPath() . $this->file;
     }
 
     /**

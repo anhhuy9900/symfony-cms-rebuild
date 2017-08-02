@@ -43,12 +43,12 @@ class AdminCPService extends Controller {
         return NULL;
     }
 
-    public function adminGetUserByToken($user_token)
+    public function adminGetUserByToken($userToken)
     {
         $repository = $this->em->getRepository('AppBundle:SystemUsersEntity');
         $result = $repository->findOneBy(
             [
-                'user_token' => $user_token,
+                'userToken' => $userToken,
                 'status' => 1
             ]
         );
@@ -81,7 +81,7 @@ class AdminCPService extends Controller {
 
         $user = array(
             'username' => $user_data->getUsername(),
-            'token' => $user_data->getUser_Token(),
+            'token' => $user_data->getUserToken(),
             'ad_token' => $token,
         );
 
