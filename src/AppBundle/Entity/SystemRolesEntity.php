@@ -3,7 +3,8 @@ namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\EntityRepository;
-
+use Doctrine\Common\Collections\Collection,
+    Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * @ORM\Entity
@@ -37,7 +38,7 @@ class SystemRolesEntity {
     /**
      * @ORM\Column(name="access", type="smallint", length=1)
      */
-    private $access;
+    private $access = 0;
 
     /**
      * @var \DateTime
@@ -52,6 +53,12 @@ class SystemRolesEntity {
      * @ORM\Column(name="created_date", type="datetime", nullable=true)
      */
     private $createdDate;
+
+    /**
+     * @var Collection
+     * @ORM\OneToMany(targetEntity="SystemUsersEntity", mappedBy="role")
+     */
+    protected $users;
 
     /**
      * @param [int]

@@ -5,7 +5,6 @@ use Doctrine\ORM\EntityRepository;
 use Symfony\Component\Validator\Mapping\ClassMetadata;
 use AppBundle\Entity\SystemModulesEntity;
 
-
 /**
  * @ORM\Table(name="system_modules")
  * @ORM\Entity(repositoryClass="AdminSystemModulesRepository")
@@ -13,50 +12,13 @@ use AppBundle\Entity\SystemModulesEntity;
  */
 class AdminSystemModulesRepository extends EntityRepository
 {
-
-    public function createRecordDb($data)
-    {
-        $entity = new SystemModulesEntity();
-        $entity->setParentID($data['parentId']);
-        $entity->setModuleName($data['moduleName']);
-        $entity->setModuleAlias($data['moduleAlias']);
-        $entity->setModuleStatus($data['moduleStatus']);
-        $entity->setModuleOrder($data['moduleOrder']);
-        $entity->setUpdatedDate();
-        $entity->setCreatedDate();
-
-        $em = $this->getEntityManager();
-        $em->persist($entity);
-        $em->flush();
-
-        return $entity->getID();
-    }
-
-    public function updateRecordDb($data)
-    {
-        $em = $this->getEntityManager();
-        $entity = $em->getRepository('AppBundle:SystemModulesEntity')->find($data['id']);
-
-        $entity->setParentID($data['parentId']);
-        $entity->setModuleName($data['moduleName']);
-        $entity->setModuleAlias($data['moduleAlias']);
-        $entity->setModuleStatus($data['moduleStatus']);
-        $entity->setModuleOrder((int)$data['moduleOrder']);
-        $entity->setUpdatedDate();
-
-        $em->flush();
-
-        return $entity->getID();
-    }
-
-    public function deleteRecordDb($id)
-    {
-        $em = $this->getEntityManager();
-        $entity = $em->getRepository('AppBundle:SystemModulesEntity')->findOneBy(array('id'=>$id));
-        $em->remove($entity);
-        $em->flush();
-    }
-
+    /**
+     * @param  [int]
+     * @param  [int]
+     * @param  array
+     * @param  array
+     * @return array
+     */
     public function getRecords($offset, $limit, $where = array(), $order = array('field'=>'id', 'by'=>'DESC'))
     {
         $repository = $this->getEntityManager()->getRepository('AppBundle:SystemModulesEntity');
@@ -80,6 +42,10 @@ class AdminSystemModulesRepository extends EntityRepository
         return $result->getResult();
     }
 
+    /**
+     * @param  string
+     * @return total
+     */
     public function getTotalRecords($key = '')
     {
         $repository = $this->getEntityManager()->getRepository('AppBundle:SystemModulesEntity');
@@ -93,9 +59,13 @@ class AdminSystemModulesRepository extends EntityRepository
         return $total;
     }
 
+    /**
+     * @param  [int]
+     * @param  array
+     * @return array
+     */
     public function getRecursiveModules($parentId, &$arr_menu = array())
     {
-
         $repository = $this->getEntityManager()->getRepository('AppBundle:SystemModulesEntity');
         $query = $repository->createQueryBuilder('pk');
         $query->select("pk.id, pk.moduleName");

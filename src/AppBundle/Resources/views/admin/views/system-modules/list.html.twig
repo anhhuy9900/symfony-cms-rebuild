@@ -150,12 +150,12 @@
 									</label>
 								</td>
 
-								<td>{{ value.module_name }}</td>
-								<td>{{ value.module_alias }}</td>
-								<td>{{ value.updated_date | date("d-m-Y H:i:s") }}</td>
+								<td>{{ value.moduleName }}</td>
+								<td>{{ value.moduleAlias }}</td>
+								<td>{{ value.updatedDate | date("d-m-Y H:i:s") }}</td>
 
 								<td class="hidden-480">
-									<span class="label label-sm {{ value.module_status ? 'label-success' : 'label-warning' }}">{{ value.module_status ? 'Publish' : 'Unpublish' }}</span>
+									<span class="label label-sm {{ value.moduleStatus ? 'label-success' : 'label-warning' }}">{{ value.moduleStatus ? 'Publish' : 'Unpublish' }}</span>
 								</td>
 
 								<td>

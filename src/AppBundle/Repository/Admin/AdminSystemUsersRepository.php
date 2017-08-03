@@ -62,8 +62,6 @@ class AdminSystemUsersRepository extends EntityRepository
         $repository = $this->getEntityManager()->getRepository('AppBundle:SystemUsersEntity');
         $query = $repository->createQueryBuilder('pk');
         $query->select("pk");
-        $query->addSelect("fk.roleName");
-        $query->leftJoin("AppBundle:SystemRolesEntity", "fk", "WITH", "pk.roleId=fk.id");
         $query->where('pk.id > 0');
         if(!empty($where)){
             if(isset($where['key']) && $where['key']) {
@@ -77,7 +75,7 @@ class AdminSystemUsersRepository extends EntityRepository
         $query->orderBy("pk.".$order['field'], $order['by']);
         $query->setMaxResults($offset);
         $query->setFirstResult($limit);
-        $result = $query->getQuery()->getArrayResult(\Doctrine\ORM\Query::HYDRATE_SCALAR);
+        $result = $query->getQuery()->getResult();
 
         return $result;
     }

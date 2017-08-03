@@ -28,17 +28,17 @@ class AdminSystemModulesValidation extends Controller {
             'maxMessage' => 'Module Name cannot be longer than {{ limit }} characters',
         )));
 
-        /*$metadata->addPropertyConstraint('moduleAlias', new Assert\NotNull(
+        $metadata->addPropertyConstraint('moduleAlias', new Assert\NotNull(
             array(
                 'message' => 'Module Alias is not null',
             )
         ));
-        $metadata->addPropertyConstraint('moduleAlias', new Assert\Length(array(
-            'min'        => 6,
-            'max'        => 100,
-            'minMessage' => 'Module Alias must be at least {{ limit }} characters long',
-            'maxMessage' => 'Module Alias cannot be longer than {{ limit }} characters',
-        )));*/
+        // $metadata->addPropertyConstraint('moduleAlias', new Assert\Length(array(
+        //     'min'        => 6,
+        //     'max'        => 100,
+        //     'minMessage' => 'Module Alias must be at least {{ limit }} characters long',
+        //     'maxMessage' => 'Module Alias cannot be longer than {{ limit }} characters',
+        // )));
 
         $metadata->addPropertyConstraint('moduleOrder', new Assert\NotNull(
             array(

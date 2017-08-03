@@ -152,22 +152,22 @@
 									</label>
 								</td>
 
-								<td>{{ value.role_name }}</td>
-								<td>{{ value.0.username }}</td>
-								<td>{{ value.0.email }}</td>
-								<td>{{ value.0.updated_date | date("d-m-Y H:i:s") }}</td>
+								<td>{{ value.role.name }}</td>
+								<td>{{ value.userName }}</td>
+								<td>{{ value.email }}</td>
+								<td>{{ value.updatedDate | date("d-m-Y H:i:s") }}</td>
 
 								<td class="hidden-480">
-									<span class="label label-sm {{ value.0.status ? 'label-success' : 'label-warning' }}">{{ value.0.status ? 'Publish' : 'Unpublish' }}</span>
+									<span class="label label-sm {{ value.status ? 'label-success' : 'label-warning' }}">{{ value.status ? 'Publish' : 'Unpublish' }}</span>
 								</td>
 
 								<td>
 									<div class="hidden-sm hidden-xs action-buttons">
-										<a class="btn btn-xs btn-info" href="{{ path('admincp_system_users_edit_page', {'id': value.0.id}) }}" title="Edit">
+										<a class="btn btn-xs btn-info" href="{{ path('admincp_system_users_edit_page', {'id': value.id}) }}" title="Edit">
 											<i class="ace-icon fa fa-pencil bigger-120"></i>
 										</a>
 
-										<a class="btn btn-xs btn-danger" href="{{ path('admincp_system_users_delete_page', {'id': value.0.id}) }}" title="Delete">
+										<a class="btn btn-xs btn-danger" href="{{ path('admincp_system_users_delete_page', {'id': value.id}) }}" title="Delete">
 											<i class="ace-icon fa fa-trash-o bigger-120"></i>
 										</a>
 									</div>

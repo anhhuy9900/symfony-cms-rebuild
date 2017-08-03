@@ -91,7 +91,7 @@ class AdminSystemRolesRepository extends EntityRepository
 
     public function getModules()
     {
-        $repository = $this->getEntityManager()->getRepository('AppBundle:AdminSystemModulesEntity');
+        $repository = $this->getEntityManager()->getRepository('AppBundle:SystemModulesEntity');
         $query = $repository->createQueryBuilder('pk');
         $query->select('pk.id, pk.moduleName');
         $query->where('pk.moduleStatus = 1');

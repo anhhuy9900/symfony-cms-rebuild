@@ -5,21 +5,18 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use Symfony\Component\Form\Extension\Core\Type\HiddenType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
 /* import Bundle Custom */
 use AppBundle\Controller\AdminController;
 use AppBundle\Validation\Admin\AdminSystemRolesValidation;
-
+use AppBundle\Entity\SystemRolesEntity;
 
 class AdminSystemRolesController extends AdminController
 {
 
     /**
      * Used as constructor
+     * @param ContainerInterface|null
      */
     public function setContainer(ContainerInterface $container = null)
     {
@@ -40,12 +37,12 @@ class AdminSystemRolesController extends AdminController
         $page_offset = $request->query->get('p') ? (int)$request->query->get('p') : 0;
         $offset = $page_offset > 0 ? ($page_offset - 1) * $limit : $page_offset * $limit;
 
-    	  $repository = $this->getDoctrine()->getRepository('AppBundle:SystemRolesEntity');
+        $repository = $this->getDoctrine()->getRepository('AppBundle:SystemRolesEntity');
         $total = $repository->getTotalRecords($key);
         $results = $repository->getRecords($limit, $offset, array('key' => $key, 'date_range' => $date_range), $arr_order);
 
         if($request->query->get('report')){
-            $this->_report_data($results);
+            $this->reportData($results);
         }
 
         $pagination = $this->global_helper_service->pagination($total, $page_offset, $limit, 3, $this->generateUrl('admincp_system_roles_page'));
@@ -62,18 +59,16 @@ class AdminSystemRolesController extends AdminController
      */
     public function createAction(Request $request)
     {
-        $id = 0;
-        $handle_data = self::handle_form_data($id, $request);
-
-        if($handle_data['success']){
+        $handleData = self::handleFormData($request, 0);
+        if($handleData['success']){
             $request->getSession()->getFlashBag()->add('message_data', 'Created record success!');
             $url = $this->generateUrl('admincp_system_roles_page');
             return $this->redirect($url, 301);
         }
 
-        $this->data['form'] = $handle_data['form']->createView();
-        $this->data['form_errors'] = $handle_data['form_errors'];
-        $this->data['lists_modules'] = $handle_data['lists_modules'];
+        $this->data['form'] = $handleData['form']->createView();
+        $this->data['form_errors'] = $handleData['form_errors'];
+        $this->data['listModules'] = $handleData['listModules'];
 
         return $this->render('@admin/system-roles/edit.html.twig', $this->data);
 
@@ -82,19 +77,18 @@ class AdminSystemRolesController extends AdminController
     /**
      * @Route("/system/system-roles/edit/{id}", name="admincp_system_roles_edit_page")
      */
-    public function editAction($id, Request $request)
+    public function editAction(Request $request, $id)
     {
-        $handle_data = self::handle_form_data($id, $request);
-
-        if($handle_data['success']){
+        $handleData = self::handleFormData($request, $id);
+        if($handleData['success']){
             $request->getSession()->getFlashBag()->add('message_data', 'Updated record success!');
             $url = $this->generateUrl('admincp_system_roles_page');
             return $this->redirect($url, 301);
         }
 
-        $this->data['form'] = $handle_data['form']->createView();
-        $this->data['form_errors'] = $handle_data['form_errors'];
-        $this->data['lists_modules'] = $handle_data['lists_modules'];
+        $this->data['form'] = $handleData['form']->createView();
+        $this->data['form_errors'] = $handleData['form_errors'];
+        $this->data['listModules'] = $handleData['listModules'];
 
         return $this->render('@admin/system-roles/edit.html.twig', $this->data);
     }
@@ -102,20 +96,17 @@ class AdminSystemRolesController extends AdminController
     /**
      * @Route("/system/system-roles/delete/{id}", name="admincp_system_roles_delete_page")
      */
-    public function deleteAction($id , Request $request)
+    public function deleteAction(Request $request, $id)
     {
-        if($id > 0){
-            $em = $this->getDoctrine()->getEntityManager();
-            $check_exist_record = $em->getRepository('AppBundle:SystemRolesEntity')->find($id);
-            if($check_exist_record){
-                $em->getRepository('AppBundle:SystemRolesEntity')->deleteRecordDb($id);
-
-                $request->getSession()->getFlashBag()->add('message_data', 'Deleted record success!');
-            }
+        $em = $this->getDoctrine()->getEntityManager();
+        $entity = $em->getRepository('AppBundle:SystemRolesEntity')->find($id);
+        if($entity) {
+            $em->remove($entity);
+            $em->flush();
+            $request->getSession()->getFlashBag()->add('message_data', 'Deleted record success!');
 
             $url = $this->generateUrl('admincp_system_roles_page');
             return $this->redirect($url, 301);
-            exit();
         }
 
         return $this->render();
@@ -124,104 +115,88 @@ class AdminSystemRolesController extends AdminController
     /**
      * This function Handle create vs update data including handle and handle record in database
      */
-    private function handle_form_data($id, $request){
+    private function handleFormData($request, $id){
         $em = $this->getDoctrine()->getEntityManager();
-        $result_data = $em->getRepository('AppBundle:SystemRolesEntity')->find($id);
+        if($id > 0) {
+            $entity = $em->getRepository('AppBundle:SystemRolesEntity')->find($id);
+        }
+        else {
+            $entity = new SystemRolesEntity;
+        }
 
-        $fields_value = array(
-            'id' => ( $id ? $id : 0 ),
-            'roleName' => ( $result_data ? $result_data->getroleName() : '' ),
-            'roleStatus' => ( $result_data ? $result_data->getRoleStatus() : 0 )
-        );
-
-        $defaultData = array('message' => 'Type your message here');
-
-        $form = $this->createFormBuilder($defaultData)
-            //->setAction($this->generateUrl('admincp_system_roles_edit_page'))
-            ->add('id', HiddenType::class, array(
-                'data' => $fields_value['id'],
-            ))
-            ->add('roleName', TextType::class, array(
-                'label' => 'Role Name',
-                'data' => $fields_value['roleName']
-            ))
-            ->add('roleStatus', ChoiceType::class, array(
-                'label' => 'Role Status',
-                'data' => $fields_value['roleStatus'],
-                'choices' => array( 0 => 'Unpblish', 1 => 'Publish')
-            ))
-            ->add('send', SubmitType::class, array(
-                'label' => 'Submit',
-            ))
-            ->getForm();
-
+        $form = $this->createForm(\AppBundle\Form\Admin\SystemRoles::class, $entity, []);
         $form->handleRequest($request);
 
         $form_errors = '';
         $success = FALSE;
         if ($form->isSubmitted() && $form->isValid()) {
-            $data = $form->getData();
+            // $data = $form->getData();
 
-            $validation = new AdminSystemRolesValidation();
-            $validation->roleName = $data['roleName'];
+            // $validation = new AdminSystemRolesValidation();
+            // $validation->roleName = $data['roleName'];
 
-            $errors = $this->get('validator')->validate($validation);
+            $errors = $this->get('validator')->validate($entity);
             $form_errors = $this->global_helper_service->getErrorMessages($errors);
             if(!$form_errors){
-                $data['roleType'] = self::_filter_permission_roleType($request->request->get('roleType'));
-                if($data['id'] > 0){
+                $roleType = self::filterPermissionRoleType($request->request->get('roleType'));
+                $entity->setRoleType($roleType);
+                if($entity->getID() > 0){
                     /* Update record */
-                    $id = $em->getRepository('AppBundle:SystemRolesEntity')->updateRecordDb($data);
-                } else {
-                    /* Create new record */
-                    $id = $em->getRepository('AppBundle:SystemRolesEntity')->createRecordDb($data);
+                    $em->flush();
                 }
-
+                else {
+                    /* Create new record */
+                    $em->persist($entity);
+                    $em->flush();
+                }
                 $success = TRUE;
             }
         }
 
-        $lists_modules = array();
+        $listModules = array();
         $getListModules = $em->getRepository('AppBundle:SystemRolesEntity')->getModules();
         if(!empty($getListModules)){
             foreach ($getListModules as $key => $module) {
                 $var = new \stdClass();
                 $var->id = $module['id'];
                 $var->moduleName = $module['moduleName'];
-                $var->view = self::_check_role_system($id, $module['id'], 'view');
-                $var->add = self::_check_role_system($id, $module['id'], 'add');
-                $var->edit = self::_check_role_system($id, $module['id'], 'edit');
-                $var->delete = self::_check_role_system($id, $module['id'], 'delete');
+                $var->view = self::checkRoleSystem($id, $module['id'], 'view');
+                $var->add = self::checkRoleSystem($id, $module['id'], 'add');
+                $var->edit = self::checkRoleSystem($id, $module['id'], 'edit');
+                $var->delete = self::checkRoleSystem($id, $module['id'], 'delete');
                 $module = $var;
-                $lists_modules[] = $module;
+                $listModules[] = $module;
             }
         }
 
-        $handle_data = array(
-            'lists_modules' => $lists_modules,
+        $handleData = array(
+            'listModules' => $listModules,
             'form' => $form,
             'form_errors' => $form_errors,
             'success' => $success
         );
 
-        return $handle_data;
+        return $handleData;
     }
 
     /**
-     * Report data into file excel
+     * @param  array
+     * @return array
      */
-    private function _report_data($arrData = array())
+    private function reportData($arrData = array())
     {
         return new Response();
     }
 
     /**
-     * This function use to filter permission for each modules
+     * The function use to filter permission for each modules
+     * @param  array
+     * @return array
      */
-    private function _filter_permission_roleType($roleType){
+    private function filterPermissionRoleType($roleType = []){
         if(!empty($roleType)){
             foreach ($roleType as $key => $value) {
-                $arr_val= array();
+                $arr_val= [];
                 if(!empty($value['view'])){
                     $arr_val['view'] = 1;
                 }else{
@@ -253,8 +228,12 @@ class AdminSystemRolesController extends AdminController
 
     /**
      * This function use to check exists record of the role in database
+     * @param  int
+     * @param  int
+     * @param  string
+     * @return int
      */
-    protected function _check_role_system($roleId, $module_id, $action = ''){
+    protected function checkRoleSystem($roleId, $module_id, $action = ''){
         $em = $this->getDoctrine()->getEntityManager();
         $result_role_active = $em->getRepository('AppBundle:SystemRolesEntity')->find($roleId);
         if(!empty($result_role_active)){
@@ -269,8 +248,9 @@ class AdminSystemRolesController extends AdminController
         }
     }
 
-    /*
+    /**
      * This function used to render form html filter for data
+     * @return array
      */
     private function filterOptions(){
         $request = new Request();

@@ -343,8 +343,7 @@ class GlobalHelperService  extends Controller
         );
         if(!empty($data)){
             foreach($data as $value){
-                $value = (object)$value;
-                $arr_values[$value->$fields['key']] = $value->$fields['value'];
+                $arr_values[$value[$fields['value']]] = $value[$fields['key']];
             }
         }
         return $arr_values;

@@ -14,13 +14,14 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 /* import Bundle Custom */
 use AppBundle\Controller\AdminController;
 use AppBundle\Validation\Admin\AdminSystemUsersValidation;
-
+use AppBundle\Entity\SystemUsersEntity;
 
 class AdminSystemUsersController extends AdminController
 {
 
     /**
      * Used as constructor
+     * @param ContainerInterface|null
      */
     public function setContainer(ContainerInterface $container = null)
     {
@@ -44,7 +45,7 @@ class AdminSystemUsersController extends AdminController
     	$repository = $this->getDoctrine()->getRepository('AppBundle:SystemUsersEntity');
         $total = $repository->getTotalRecords($key);
         $results = $repository->getRecords($limit, $offset, array('key' => $key, 'date_range' => $date_range), $arr_order);
-
+        dump($results);die;
         if($request->query->get('report')){
             $this->_report_data($results);
         }
@@ -63,18 +64,15 @@ class AdminSystemUsersController extends AdminController
      */
     public function createAction(Request $request)
     {
-        $id = 0;
-        $handle_data = self::handle_form_data($id, $request);
-
-        if($handle_data['success']){
+        $handleData = self::handleFormData($request, 0);
+        if($handleData['success']){
             $request->getSession()->getFlashBag()->add('message_data', 'Created record success!');
             $url = $this->generateUrl('admincp_system_users_page');
             return $this->redirect($url, 301);
         }
 
-        $this->data['form'] = $handle_data['form']->createView();
-        $this->data['form_errors'] = $handle_data['form_errors'];
-
+        $this->data['form'] = $handleData['form']->createView();
+        $this->data['form_errors'] = $handleData['form_errors'];
         return $this->render('@admin/system-users/edit.html.twig', $this->data);
 
     }
@@ -84,17 +82,15 @@ class AdminSystemUsersController extends AdminController
      */
     public function editAction($id, Request $request)
     {
-        $handle_data = self::handle_form_data($id, $request);
-
-        if($handle_data['success']){
+        $handleData = self::handleFormData($request, $id);
+        if($handleData['success']){
             $request->getSession()->getFlashBag()->add('message_data', 'Updated record success!');
             $url = $this->generateUrl('admincp_system_users_page');
             return $this->redirect($url, 301);
         }
 
-        $this->data['form'] = $handle_data['form']->createView();
-        $this->data['form_errors'] = $handle_data['form_errors'];
-
+        $this->data['form'] = $handleData['form']->createView();
+        $this->data['form_errors'] = $handleData['form_errors'];
         return $this->render('@admin/system-users/edit.html.twig', $this->data);
     }
 
@@ -123,56 +119,18 @@ class AdminSystemUsersController extends AdminController
     /**
      * This function Handle create vs update data including handle and handle record in database
      */
-    private function handle_form_data($id, $request){
+    private function handleFormData($request, $id){
         $em = $this->getDoctrine()->getEntityManager();
-        $result_data = $em->getRepository('AppBundle:SystemUsersEntity')->find($id);
+        if($id > 0) {
+            $entity = $em->getRepository('AppBundle:SystemUsersEntity')->find($id);
+        }
+        else {
+            $entity = new SystemUsersEntity;
+        }
+        $getRolesUser = $em->getRepository('AppBundle:SystemUsersEntity')->getRolesUser();
+        $roles = $this->global_helper_service->convertArrayResultSelectbox($getRolesUser, array('key'=>'id', 'value'=>'roleName'));
 
-        $fields_value = array(
-            'id' => ( $id ? $id : 0 ),
-            'roleId' => ( $result_data ? $result_data->getRoleID() : 0 ),
-            'username' => ( $result_data ? $result_data->getUsername() : '' ),
-            'email' => ( $result_data ? $result_data->getEmail() : '' ),
-            'password' => ( $result_data ? $result_data->getPassword() : 0 ),
-            'status' => ( $result_data ? $result_data->getStatus() : 0 )
-        );
-
-        $getListRolesUser = $em->getRepository('AppBundle:SystemUsersEntity')->getRolesUser();
-        $list_roles = $this->global_helper_service->convertArrayResultSelectbox($getListRolesUser, array('key'=>'id', 'value'=>'roleName'));
-
-        $defaultData = array('message' => 'Type your message here');
-
-        $form = $this->createFormBuilder($defaultData)
-            //->setAction($this->generateUrl('admincp_system_users_edit_page'))
-            ->add('id', HiddenType::class, array(
-                'data' => $fields_value['id'],
-            ))
-            ->add('roleId', ChoiceType::class, array(
-                'label' => 'Select Role',
-                'choices' => $list_roles,
-                'data' => $fields_value['roleId']
-            ))
-            ->add('username', TextType::class, array(
-                'label' => 'UserName',
-                'data' => $fields_value['username']
-            ))
-            ->add('email', TextType::class, array(
-                'label' => 'Email',
-                'data' => $fields_value['email']
-            ))
-            ->add('password', PasswordType::class, array(
-                'label' => 'Password',
-                'data' => $fields_value['password']
-            ))
-            ->add('status', ChoiceType::class, array(
-                'label' => 'Status',
-                'data' => $fields_value['status'],
-                'choices' => array( 0 => 'Unpblish', 1 => 'Publish')
-            ))
-            ->add('send', SubmitType::class, array(
-                'label' => 'Submit',
-            ))
-            ->getForm();
-
+        $form = $this->createForm(\AppBundle\Form\Admin\SystemUsers::class, $entity, ['roles' => $roles]);
         $form->handleRequest($request);
 
         $form_errors = '';
@@ -180,35 +138,37 @@ class AdminSystemUsersController extends AdminController
         if ($form->isSubmitted() && $form->isValid()) {
             $data = $form->getData();
 
-            $validation = new AdminSystemUsersValidation();
-            $validation->username = $data['username'];
-            $validation->email = $data['email'];
-            $validation->password = $data['password'];
+            // $validation = new AdminSystemUsersValidation();
+            // $validation->username = $data['username'];
+            // $validation->email = $data['email'];
+            // $validation->password = $data['password'];
 
-            $errors = $this->get('validator')->validate($validation);
+            $errors = $this->get('validator')->validate($entity);
             $form_errors = $this->global_helper_service->getErrorMessages($errors);
             if(!$form_errors){
-
-                $data['password'] = $this->admin_service->encodePassword('MyPass', $data['password']);
-                if($data['id'] > 0){
+                //$password = $this->admincp_service->encodePassword('MyPass', $data['password']);
+                $password = 'asdasd';
+                $entity->setPassword($password);
+                if($entity->getID() > 0){
                     /* Update record */
-                    $id = $em->getRepository('AppBundle:SystemUsersEntity')->updateRecordDb($data);
-                } else {
-                    /* Create new record */
-                    $id = $em->getRepository('AppBundle:SystemUsersEntity')->createRecordDb($data);
+                    $em->flush();
                 }
-
+                else {
+                    /* Create new record */
+                    $em->persist($entity);
+                    $em->flush();
+                }
                 $success = TRUE;
             }
         }
 
-        $handle_data = array(
+        $handleData = array(
             'form' => $form,
             'form_errors' => $form_errors,
             'success' => $success
         );
 
-        return $handle_data;
+        return $handleData;
     }
 
     /**
