@@ -20,11 +20,11 @@ class SystemUsersEntity {
     private $id;
 
     /**
-     * @ORM\Column(name="role_id", type="integer", length=5)
+     * @var SystemRolesEntity
      * @ORM\ManyToOne(targetEntity="SystemRolesEntity", inversedBy="users")
      * @ORM\JoinColumn(name="role_id", referencedColumnName="id")
      */
-    protected $role;
+    private $role;
 
     /**
      * @ORM\Column(name="username", type="string", length=150)
@@ -85,16 +85,21 @@ class SystemUsersEntity {
     }
 
     /**
-     * @param [int]
+     * Set role
+     *
+     * @param \AppBundle\Entity\SystemRolesEntity $role
+     *
+     * @return SystemUsers
      */
-    public function setrole($role) {
+    public function setRole(\AppBundle\Entity\SystemRolesEntity $role = null) {
         $this->role = $role;
+        return $this;
     }
 
     /**
      * @return role
      */
-    public function getrole() {
+    public function getRole() {
         return $this->role;
     }
 

@@ -24,7 +24,7 @@ class SystemUsers extends AbstractType
             // ->add('id', \Symfony\Component\Form\Extension\Core\Type\HiddenType::class, array(
             //    //'data' => $options['id'],
             // ))
-            ->add('role', \Symfony\Component\Form\Extension\Core\Type\ChoiceType::class, array(
+            ->add('role', \AppBundle\Entity\SystemRolesEntity::class, array(
                 'label' => 'Select Role',
                 'choices' => $options['roles'],
             ))

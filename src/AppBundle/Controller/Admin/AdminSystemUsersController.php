@@ -41,7 +41,6 @@ class AdminSystemUsersController extends AdminController
         $limit = $request->query->get('lm') ? (int)$request->query->get('lm') : 10;
         $page_offset = $request->query->get('p') ? (int)$request->query->get('p') : 0;
         $offset = $page_offset > 0 ? ($page_offset - 1) * $limit : $page_offset * $limit;
-
     	$repository = $this->getDoctrine()->getRepository('AppBundle:SystemUsersEntity');
         $total = $repository->getTotalRecords($key);
         $results = $repository->getRecords($limit, $offset, array('key' => $key, 'date_range' => $date_range), $arr_order);
@@ -149,6 +148,9 @@ class AdminSystemUsersController extends AdminController
                 //$password = $this->admincp_service->encodePassword('MyPass', $data['password']);
                 $password = 'asdasd';
                 $entity->setPassword($password);
+                $role = $this->getDoctrine()->getRepository('AppBundle:SystemRolesEntity')->find($data['parentId']);
+                dump($role);die;
+                $entity->setRole($role);
                 if($entity->getID() > 0){
                     /* Update record */
                     $em->flush();
