@@ -5,11 +5,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use Symfony\Component\Form\Extension\Core\Type\HiddenType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\Form\Extension\Core\Type\PasswordType;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Security\Core\Encoder\PasswordEncoderInterface;
 
 /* import Bundle Custom */
 use AppBundle\Controller\AdminController;
@@ -44,9 +40,8 @@ class AdminSystemUsersController extends AdminController
     	$repository = $this->getDoctrine()->getRepository('AppBundle:SystemUsersEntity');
         $total = $repository->getTotalRecords($key);
         $results = $repository->getRecords($limit, $offset, array('key' => $key, 'date_range' => $date_range), $arr_order);
-        dump($results);die;
         if($request->query->get('report')){
-            $this->_report_data($results);
+            $this->reportData($results);
         }
 
         $pagination = $this->global_helper_service->pagination($total, $page_offset, $limit, 3, $this->generateUrl('admincp_system_users_page'));
@@ -79,7 +74,7 @@ class AdminSystemUsersController extends AdminController
     /**
      * @Route("/system/system-users/edit/{id}", name="admincp_system_users_edit_page")
      */
-    public function editAction($id, Request $request)
+    public function editAction(Request $request, $id)
     {
         $handleData = self::handleFormData($request, $id);
         if($handleData['success']){
@@ -96,29 +91,29 @@ class AdminSystemUsersController extends AdminController
     /**
      * @Route("/system/system-users/delete/{id}", name="admincp_system_users_delete_page")
      */
-    public function deleteAction($id , Request $request)
+    public function deleteAction(Request $request, $id)
     {
-        if($id > 0){
-            $em = $this->getDoctrine()->getEntityManager();
-            $check_exist_record = $em->getRepository('AppBundle:SystemUsersEntity')->find($id);
-            if($check_exist_record){
-                $em->getRepository('AppBundle:SystemUsersEntity')->deleteRecordDb($id);
-
-                $request->getSession()->getFlashBag()->add('message_data', 'Deleted record success!');
-            }
+        $em = $this->getDoctrine()->getEntityManager();
+        $entity = $em->getRepository('AppBundle:SystemUsersEntity')->find($id);
+        if($entity) {
+            $em->remove($entity);
+            $em->flush();
+            $request->getSession()->getFlashBag()->add('message_data', 'Deleted record success!');
 
             $url = $this->generateUrl('admincp_system_users_page');
             return $this->redirect($url, 301);
-            exit();
         }
 
         return $this->render();
     }
 
     /**
-     * This function Handle create vs update data including handle and handle record in database
+     * This function handle create vs update data including handle and handle record in database
+     * @param  int
+     * @param  object
+     * @return object
      */
-    private function handleFormData($request, $id){
+    protected function handleFormData($request, $id){
         $em = $this->getDoctrine()->getEntityManager();
         if($id > 0) {
             $entity = $em->getRepository('AppBundle:SystemUsersEntity')->find($id);
@@ -128,14 +123,13 @@ class AdminSystemUsersController extends AdminController
         }
         $getRolesUser = $em->getRepository('AppBundle:SystemUsersEntity')->getRolesUser();
         $roles = $this->global_helper_service->convertArrayResultSelectbox($getRolesUser, array('key'=>'id', 'value'=>'roleName'));
-
         $form = $this->createForm(\AppBundle\Form\Admin\SystemUsers::class, $entity, ['roles' => $roles]);
         $form->handleRequest($request);
 
         $form_errors = '';
         $success = FALSE;
         if ($form->isSubmitted() && $form->isValid()) {
-            $data = $form->getData();
+            //$data = $form->getData();
 
             // $validation = new AdminSystemUsersValidation();
             // $validation->username = $data['username'];
@@ -144,13 +138,9 @@ class AdminSystemUsersController extends AdminController
 
             $errors = $this->get('validator')->validate($entity);
             $form_errors = $this->global_helper_service->getErrorMessages($errors);
-            if(!$form_errors){
-                //$password = $this->admincp_service->encodePassword('MyPass', $data['password']);
-                $password = 'asdasd';
-                $entity->setPassword($password);
-                $role = $this->getDoctrine()->getRepository('AppBundle:SystemRolesEntity')->find($data['parentId']);
-                dump($role);die;
-                $entity->setRole($role);
+            if(!$form_errors)
+            {
+                $entity->setPassword($this->admincp_service->encodePassword('SystemUser', $entity->getPassword()));
                 if($entity->getID() > 0){
                     /* Update record */
                     $em->flush();
@@ -176,7 +166,7 @@ class AdminSystemUsersController extends AdminController
     /**
      * Report data into file excel
      */
-    private function _report_data($arrData = array())
+    private function reportData($arrData = array())
     {
 
         return new Response();

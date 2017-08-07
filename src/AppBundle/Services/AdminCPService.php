@@ -191,34 +191,31 @@ class AdminCPService extends Controller {
         $valid = FALSE;
         $get_user = $this->adminGetCurrentUserLogin();
         if($get_user) {
-            $repository = $this->em->getRepository('AppBundle:SystemUsersEntity');
-            $query = $repository->createQueryBuilder('pk');
-            $query->select("fk.roleType");
-            $query->leftJoin("AppBundle:SystemRolesEntity", "fk", "WITH", "pk.roleId=fk.id");
-            $query->where('pk.id = :id')->setParameter('id', $get_user->getID());
-            $query->andwhere('pk.status = 1');
-            $result = $query->getQuery()->getArrayResult(\Doctrine\ORM\Query::HYDRATE_SCALAR);
-
-            $result_roleType = unserialize($result[0]['roleType']);
-            if(!empty($result_roleType[$module_id])) {
+            $result = $this->em->getRepository('AppBundle:SystemUsersEntity')->findOneBy([
+                'id' => $get_user->getID(),
+                'status' => 1
+            ]);
+            $arrRoleType = unserialize($result->getRole()->getRoleType());
+            if(!empty($arrRoleType[$module_id]))
+            {
                 switch($roleType) {
                     case 'view':
-                        if($result_roleType[$module_id][$roleType]){
+                        if($arrRoleType[$module_id][$roleType]){
                             $valid = TRUE;
                         }
                         break;
                     case 'add':
-                        if($result_roleType[$module_id][$roleType]){
+                        if($arrRoleType[$module_id][$roleType]){
                             $valid = TRUE;
                         }
                         break;
                     case 'edit':
-                        if($result_roleType[$module_id][$roleType]){
+                        if($arrRoleType[$module_id][$roleType]){
                             $valid = TRUE;
                         }
                         break;
                     case 'delete':
-                        if($result_roleType[$module_id][$roleType]){
+                        if($arrRoleType[$module_id][$roleType]){
                             $valid = TRUE;
                         }
                         break;

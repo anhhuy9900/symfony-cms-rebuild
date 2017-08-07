@@ -64,7 +64,7 @@
                         <!--<img class="nav-user-photo" src="assets/avatars/user.jpg" alt="Jason's Photo" />-->
 						<span class="user-info">
 							<small>Welcome,</small>
-							{{ user_admin.username }}
+							{{ user_admin ? user_admin.username : '' }}
 						</span>
 
                         <i class="ace-icon fa fa-caret-down"></i>

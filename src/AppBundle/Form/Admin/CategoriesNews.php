@@ -7,7 +7,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class SystemUsers extends AbstractType
+class CategoriesNews extends AbstractType
 {
     /**
      * @param  FormBuilderInterface
@@ -24,23 +24,13 @@ class SystemUsers extends AbstractType
             // ->add('id', \Symfony\Component\Form\Extension\Core\Type\HiddenType::class, array(
             //    //'data' => $options['id'],
             // ))
-            ->add('role', \Symfony\Bridge\Doctrine\Form\Type\EntityType::class, array(
-                'label' => 'Select Role',
-                'class' => 'AppBundle:SystemRolesEntity',
-                'choice_label' => 'roleName',
-            ))
-            ->add('username', \Symfony\Component\Form\Extension\Core\Type\TextType::class, array(
-                'label' => 'UserName',
-            ))
-            ->add('email', \Symfony\Component\Form\Extension\Core\Type\TextType::class, array(
-                'label' => 'Email',
-            ))
-            ->add('password', \Symfony\Component\Form\Extension\Core\Type\PasswordType::class, array(
-                'label' => 'Password',
+            ->add('name', \Symfony\Component\Form\Extension\Core\Type\TextType::class, array(
+                'label' => 'Category Name',
+                'required' => FALSE
             ))
             ->add('status', \Symfony\Component\Form\Extension\Core\Type\ChoiceType::class, array(
                 'label' => 'Status',
-                'choices' => array( 'Unpblish' => 0, 'Publish' => 1)
+                'choices' => array( 'Publish' => 1, 'Unpblish' => 0)
             ))
             ->add('send', \Symfony\Component\Form\Extension\Core\Type\SubmitType::class, array(
                 'label' => 'Submit',
@@ -57,13 +47,12 @@ class SystemUsers extends AbstractType
 
     /**
      * @param  OptionsResolver
-     * @return [type]
+     * @return [object]
      */
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class'    => '\AppBundle\Entity\SystemUsersEntity',
-            'roles'         => []
+            'data_class'    => '\AppBundle\Entity\CategoriesNewsEntity',
         ));
     }
 
@@ -72,7 +61,7 @@ class SystemUsers extends AbstractType
      */
     public function getName()
     {
-        return 'SystemUsers';
+        return 'CategoriesNews';
     }
 
 }

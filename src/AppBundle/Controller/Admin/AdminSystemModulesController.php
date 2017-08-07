@@ -57,7 +57,6 @@ class AdminSystemModulesController extends AdminController
      */
     public function createAction(Request $request)
     {
-        $id = 0;
         $handleData = self::handleFormData($request, 0);
         if($handleData['success']){
             $request->getSession()->getFlashBag()->add('message_data', 'Created record success!');
@@ -110,8 +109,8 @@ class AdminSystemModulesController extends AdminController
 
     /**
      * This function handle create vs update data including handle and handle record in database
-     * @param  int
      * @param  object
+     * @param  int
      * @return object
      */
     private function handleFormData($request, $id){
@@ -122,7 +121,6 @@ class AdminSystemModulesController extends AdminController
         else {
             $entity = new SystemModulesEntity;
         }
-        $modules = $em->getRepository('AppBundle:SystemModulesEntity')->getRecursiveModules(0);
         $recursiveModules = $this->global_helper_service->convertArrayResultSelectbox(
             $em->getRepository('AppBundle:SystemModulesEntity')->getRecursiveModules(0),
             array('key'=>'id', 'value'=>'moduleName')
@@ -134,7 +132,6 @@ class AdminSystemModulesController extends AdminController
         $form_errors = '';
         $success = FALSE;
         if ($form->isSubmitted() && $form->isValid()) {
-            //dump($entity);die;
             // $data = $form->getData();
             // dump($data);die;
             // $validation = new AdminSystemModulesValidation();

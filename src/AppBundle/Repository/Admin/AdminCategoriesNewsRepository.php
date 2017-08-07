@@ -3,43 +3,13 @@ namespace AppBundle\Repository\Admin;
 
 Trait AdminCategoriesNewsRepository
 {
-    public function createRecordDb($data)
-    {
-        $entity = new CategoriesNewsEntity();
-        $entity->setTitle($data['title']);
-        $entity->setStatus($data['status']);
-        $entity->setUpdatedDate();
-        $entity->setCreatedDate();
-
-        $em = $this->getEntityManager();
-        $em->persist($entity);
-        $em->flush();
-
-        return $entity->getID();
-    }
-
-    public function updateRecordDb($data)
-    {
-        $em = $this->getEntityManager();
-        $entity = $em->getRepository('AppBundle:CategoriesNewsEntity')->find($data['id']);
-
-        $entity->setTitle($data['title']);
-        $entity->setStatus($data['status']);
-        $entity->setUpdatedDate();
-
-        $em->flush();
-
-        return $entity->getID();
-    }
-
-    public function deleteRecordDb($id)
-    {
-        $em = $this->getEntityManager();
-        $entity = $em->getRepository('AppBundle:CategoriesNewsEntity')->findOneBy(array('id'=>$id));
-        $em->remove($entity);
-        $em->flush();
-    }
-
+    /**
+     * @param $offset
+     * @param $limit
+     * @param array $where
+     * @param array $order
+     * @return array
+     */
     public function getRecords($offset, $limit, $where = array(), $order = array('field'=>'id', 'by'=>'DESC'))
     {
         $repository = $this->getEntityManager()->getRepository('AppBundle:CategoriesNewsEntity');
@@ -63,6 +33,10 @@ Trait AdminCategoriesNewsRepository
         return $result;
     }
 
+    /**
+     * @param string $key
+     * @return mixed
+     */
     public function getTotalRecords($key = '')
     {
         $repository = $this->getEntityManager()->getRepository('AppBundle:CategoriesNewsEntity');

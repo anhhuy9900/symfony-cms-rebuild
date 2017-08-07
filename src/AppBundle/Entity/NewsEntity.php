@@ -20,14 +20,16 @@ class NewsEntity {
     private $id;
 
     /**
-     * @ORM\Column(name="category_id", type="integer", length=11)
+     * @var CategoriesNewsEntity
+     * @ORM\ManyToOne(targetEntity="CategoriesNewsEntity", inversedBy="news")
+     * @ORM\JoinColumn(name="category_id", referencedColumnName="id")
      */
-    private $categoryId = 0;
+    private $category;
 
     /**
-     * @ORM\Column(name="title", type="string", length=255)
+     * @ORM\Column(name="name", type="string", length=255)
      */
-    private $title;
+    private $name;
 
     /**
      * @ORM\Column(name="slug", type="string", length=255, nullable=true)
@@ -35,9 +37,11 @@ class NewsEntity {
     private $slug;
 
     /**
-     * @ORM\Column(name="image", type="string", length=255, nullable=true)
+     * @var FilesEntity
+     * @ORM\ManyToOne(targetEntity="FilesEntity", inversedBy="files")
+     * @ORM\JoinColumn(name="file_id", referencedColumnName="id")
      */
-    private $image;
+    private $file;
 
     /**
      * @ORM\Column(name="description", type="text", nullable=true)
@@ -85,29 +89,29 @@ class NewsEntity {
     /**
      * @param [int]
      */
-    public function setCategoryID($categoryId) {
-        $this->categoryId = $categoryId;
+    public function setCategory($category) {
+        $this->category = $category;
     }
 
     /**
-     * @return categoryId
+     * @return category
      */
-    public function getCategoryID() {
-        return $this->categoryId;
+    public function getCategory() {
+        return $this->category;
     }
 
     /**
      * @param [string]
      */
-    public function setTitle($title) {
-        $this->title = $title;
+    public function setName($name) {
+        $this->name = $name;
     }
 
     /**
-     * @return title
+     * @return name
      */
-    public function getTitle() {
-        return $this->title;
+    public function getName() {
+        return $this->name;
     }
 
     /**
@@ -127,15 +131,15 @@ class NewsEntity {
     /**
      * @param [string]
      */
-    public function setImage($image) {
-        $this->image = $image;
+    public function setFile($file) {
+        $this->file = $file;
     }
 
     /**
-     * @return image
+     * @return file
      */
-    public function getImage() {
-        return $this->image;
+    public function getFile() {
+        return $this->file;
     }
 
     /**
@@ -183,8 +187,8 @@ class NewsEntity {
     /**
      * @param [datetime]
      */
-    public function setUpdatedDate($updatedDate) {
-        $this->updatedDate = $updatedDate;
+    public function setUpdatedDate() {
+        $this->updatedDate = new \DateTime();
     }
 
     /**
@@ -197,7 +201,7 @@ class NewsEntity {
     /**
      * @param [datetime]
      */
-    public function setCreatedDate($createdDate) {
+    public function setCreatedDate() {
         $this->createdDate = new \DateTime();
     }
 

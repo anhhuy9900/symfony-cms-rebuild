@@ -14,49 +14,6 @@ use AppBundle\Entity\SystemUsersEntity;
 class AdminSystemUsersRepository extends EntityRepository
 {
 
-    public function createRecordDb($data)
-    {
-        $entity = new SystemUsersEntity();
-        $entity->setRoleID($data['roleId']);
-        $entity->setUsername($data['username']);
-        $entity->setEmail($data['email']);
-        $entity->setPassword($data['password']);
-        $entity->setStatus($data['status']);
-        $entity->setUpdatedDate(time());
-        $entity->setCreatedDate(time());
-
-        $em = $this->getEntityManager();
-        $em->persist($entity);
-        $em->flush();
-
-        return $entity->getID();
-    }
-
-    public function updateRecordDb($data)
-    {
-        $em = $this->getEntityManager();
-        $entity = $em->getRepository('AppBundle:SystemUsersEntity')->find($data['id']);
-
-        $entity->setRoleID($data['roleId']);
-        $entity->setUsername($data['username']);
-        $entity->setEmail($data['email']);
-        $entity->setPassword($data['password']);
-        $entity->setStatus((int)$data['status']);
-        $entity->setUpdatedDate(time());
-
-        $em->flush();
-
-        return $entity->getID();
-    }
-
-    public function deleteRecordDb($id)
-    {
-        $em = $this->getEntityManager();
-        $entity = $em->getRepository('AppBundle:SystemUsersEntity')->findOneBy(array('id'=>$id));
-        $em->remove($entity);
-        $em->flush();
-    }
-
     public function getRecords($offset, $limit, $where = array(), $order = array('field'=>'id', 'by'=>'DESC'))
     {
         $repository = $this->getEntityManager()->getRepository('AppBundle:SystemUsersEntity');

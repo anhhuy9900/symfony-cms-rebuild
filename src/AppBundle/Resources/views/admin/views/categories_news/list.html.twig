@@ -151,8 +151,8 @@
 									</label>
 								</td>
 
-								<td>{{ value.title }}</td>
-								<td>{{ value.updated_date | date("d-m-Y H:i:s") }}</td>
+								<td>{{ value.name }}</td>
+								<td>{{ value.updatedDate | date("d-m-Y H:i:s") }}</td>
 
 								<td class="hidden-480">
 									<span class="label label-sm {{ value.status ? 'label-success' : 'label-warning' }}">{{ value.status ? 'Publish' : 'Unpublish' }}</span>

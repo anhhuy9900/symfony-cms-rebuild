@@ -85,15 +85,13 @@ class SystemUsersEntity {
     }
 
     /**
-     * Set role
      *
      * @param \AppBundle\Entity\SystemRolesEntity $role
      *
-     * @return SystemUsers
+     * @return role
      */
     public function setRole(\AppBundle\Entity\SystemRolesEntity $role = null) {
         $this->role = $role;
-        return $this;
     }
 
     /**

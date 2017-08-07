@@ -144,7 +144,7 @@
 						{% if results is not empty %}
 						<tbody>
 
-							{% for key,value in results %}
+							{% for key,item in results %}
 							<tr role="row">
 								<td class="center">
 									<label class="pos-rel">
@@ -153,25 +153,25 @@
 									</label>
 								</td>
 
-								<td>{{ value.category_title }}</td>
-								<td>{{ value.title }}</td>
-								<td><a href="{{ asset('uploads/' ~ value.image) }}" data-rel="colorbox" class="cboxElement ace-thumbnails">View Image</a></td>
-								<td>{{ value.updated_date | date("d-m-Y H:i:s") }}</td>
+								<td>{{ item.category.name }}</td>
+								<td>{{ item.name }}</td>
+								<td><a href="" data-rel="colorbox" class="cboxElement ace-thumbnails">View Image</a></td>
+								<td>{{ item.updatedDate | date("d-m-Y H:i:s") }}</td>
 
 								<td class="hidden-480" width="10%">
-									<span class="label label-sm {{ value.status ? 'label-success' : 'label-warning' }}">{{ value.status ? 'Publish' : 'Unpublish' }}</span>
+									<span class="label label-sm {{ item.status ? 'label-success' : 'label-warning' }}">{{ item.status ? 'Publish' : 'Unpublish' }}</span>
 								</td>
 
 								<td width="10%">
 									<div class="hidden-sm hidden-xs action-buttons">
 										{% if app_admincp_service.adminCheckRolesUser(admin_module_id, 'edit') %}
-											<a class="btn btn-xs btn-info" href="{{ path('admincp_news_edit_page', {'id': value.id}) }}" title="Edit">
+											<a class="btn btn-xs btn-info" href="{{ path('admincp_news_edit_page', {'id': item.id}) }}" title="Edit">
 												<i class="ace-icon fa fa-pencil bigger-120"></i>
 											</a>
 										{% endif %}
 
 										{% if app_admincp_service.adminCheckRolesUser(admin_module_id, 'delete') %}
-											<a class="btn btn-xs btn-danger" href="{{ path('admincp_news_delete_page', {'id': value.id}) }}" title="Delete">
+											<a class="btn btn-xs btn-danger" href="{{ path('admincp_news_delete_page', {'id': item.id}) }}" title="Delete">
 												<i class="ace-icon fa fa-trash-o bigger-120"></i>
 											</a>
 										{% endif %}

@@ -22,7 +22,7 @@ class CategoriesNewsEntity {
     /**
      * @ORM\Column(name="name", type="string", length=255)
      */
-    private $title;
+    private $name;
 
     /**
      * @ORM\Column(name="status", type="smallint", length=1)
@@ -60,15 +60,15 @@ class CategoriesNewsEntity {
     /**
      * @param [string]
      */
-    public function setTitle($title) {
-        $this->title = $title;
+    public function setName($name) {
+        $this->name = $name;
     }
 
     /**
-     * @return title
+     * @return name
      */
-    public function getTitle() {
-        return $this->title;
+    public function getName() {
+        return $this->name;
     }
 
     /**

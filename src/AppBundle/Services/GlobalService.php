@@ -26,7 +26,7 @@ class GlobalService extends Controller
 
     public function getListGalleries($typeId, $type)
     {
-        $entity = $this->em->getRepository('AppBundle:FilesManagedEntity');
+        $entity = $this->em->getRepository('AppBundle:FilesEntity');
         $query = $entity->createQueryBuilder('pk');
         $query->select("pk");
         $query->where('pk.type = :type');

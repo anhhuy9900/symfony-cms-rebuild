@@ -3,65 +3,18 @@ namespace AppBundle\Repository\Admin;
 
 Trait AdminNewsRepository
 {
-
-    public function createRecordDb($data)
-    {
-        $entity = new NewsEntity();
-        $entity->setCategoryID($data['categoryId']);
-        $entity->setTitle($data['title']);
-        $entity->setSlug($data['slug']);
-        if($data['image']){
-            $entity->setImage($data['image']);
-        }
-        $entity->setDescription($data['description']);
-        $entity->setContent($data['content']);
-        $entity->setStatus($data['status']);
-        $entity->setUpdatedDate();
-        $entity->setCreatedDate();
-
-        $em = $this->getEntityManager();
-        $em->persist($entity);
-        $em->flush();
-
-        return $entity->getID();
-    }
-
-    public function updateRecordDb($data)
-    {
-        $em = $this->getEntityManager();
-        $entity = $em->getRepository('AppBundle:NewsEntity')->find($data['id']);
-
-        $entity->setCategoryID($data['categoryId']);
-        $entity->setTitle($data['title']);
-        $entity->setSlug($data['slug']);
-        if($data['image']){
-            $entity->setImage($data['image']);
-        }
-        $entity->setDescription($data['description']);
-        $entity->setContent($data['content']);
-        $entity->setStatus($data['status']);
-        $entity->setUpdatedDate();
-
-        $em->flush();
-
-        return $entity->getID();
-    }
-
-    public function deleteRecordDb($id)
-    {
-        $em = $this->getEntityManager();
-        $entity = $em->getRepository('AppBundle:NewsEntity')->findOneBy(array('id'=>$id));
-        $em->remove($entity);
-        $em->flush();
-    }
-
+    /**
+     * @param $limit
+     * @param $offset
+     * @param array $where
+     * @param array $order
+     * @return array
+     */
     public function getRecords($limit, $offset, $where = array(), $order = array('field'=>'id', 'by'=>'DESC'))
     {
         $repository = $this->getEntityManager()->getRepository('AppBundle:NewsEntity');
         $query = $repository->createQueryBuilder('pk');
-        $query->select("pk.id as id, pk.title as title, pk.image as image, pk.status as status, pk.updatedDate as updatedDate");
-        $query->addSelect("fk.title as category_title");
-        $query->leftJoin("AppBundle:CategoriesNewsEntity", "fk", "WITH", "pk.categoryId=fk.id");
+        $query->select("pk");
         $query->where('pk.id > 0');
 
         if(!empty($where)) {
@@ -80,11 +33,13 @@ Trait AdminNewsRepository
         $query->orderBy("pk.".$order['field'], $order['by']);
         $query->setMaxResults($limit);
         $query->setFirstResult($offset);
-        $result = $query->getQuery()->getResult();
-
-        return $result;
+        return $query->getQuery()->getResult();
     }
 
+    /**
+     * @param array $where
+     * @return mixed
+     */
     public function getTotalRecords($where = array())
     {
         $repository = $this->getEntityManager()->getRepository('AppBundle:NewsEntity');
@@ -103,11 +58,12 @@ Trait AdminNewsRepository
                 $query->andWhere('pk.status = :status')->setParameter('status', $where['status']);
             }
         }
-        $total = $query->getQuery()->getSingleScalarResult();
-
-        return $total;
+        return $query->getQuery()->getSingleScalarResult();
     }
 
+    /**
+     * @return array
+     */
     public function getCategoriesNews()
     {
         $repository = $this->getEntityManager()->getRepository('AppBundle:CategoriesNewsEntity');
@@ -117,6 +73,11 @@ Trait AdminNewsRepository
         return $results;
     }
 
+    /**
+     * @param $typeId
+     * @param string $type
+     * @return array
+     */
     public function getTagsNews($typeId, $type = 'default')
     {
         $repository = $this->getEntityManager()->getRepository('AppBundle:TagsEntity');
@@ -132,10 +93,13 @@ Trait AdminNewsRepository
 
     /**
      * This function use create and update tags for each news
+     * @param $typeId
+     * @param string $type
+     * @param string $tags
+     * @return bool
      */
     public function handleTagsNews($typeId, $type = 'default', $tags = '')
     {
-
         if($tags){
             $entity = $this->getEntityManager()->getRepository('AppBundle:TagsEntity');
             $list_tags = explode(',', $tags);
@@ -150,9 +114,7 @@ Trait AdminNewsRepository
                     $query->setParameter('typeId', $typeId);
                     $query->setParameter('tagName', $tag);
                     $get_tag_exists = $query->getQuery()->getResult();
-
                     if(empty($get_tag_exists)) {
-
                         //Create tag in database
                         $create = new TagsEntity();
                         $create->setTypeID($typeId);
@@ -186,10 +148,8 @@ Trait AdminNewsRepository
                     $em->flush();
                 }
             }
-
             return TRUE;
         }
-
         return FALSE;
     }
 }
