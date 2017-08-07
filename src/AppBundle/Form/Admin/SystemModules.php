@@ -30,7 +30,7 @@ class SystemModules extends AbstractType
             ))
             ->add('moduleName', \Symfony\Component\Form\Extension\Core\Type\TextType::class, array(
                 'label' => 'Module Name',
-                'required' => FALSE
+                'required' => TRUE
             ))
             ->add('moduleAlias', \Symfony\Component\Form\Extension\Core\Type\TextType::class, array(
                 'label' => 'Module Alias',
@@ -38,6 +38,7 @@ class SystemModules extends AbstractType
             ))
             ->add('moduleOrder', \Symfony\Component\Form\Extension\Core\Type\TextType::class, array(
                 'label' => 'Module Order',
+                'required' => TRUE
             ))
             ->add('moduleStatus', \Symfony\Component\Form\Extension\Core\Type\ChoiceType::class, array(
                 'label' => 'Module Status',

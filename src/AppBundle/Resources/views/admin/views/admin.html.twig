@@ -208,11 +208,11 @@
             </div>
             <div class="modal-body">
                 {% if form_errors is defined %}
-                    {% if form_errors %}
                     <ul>
-                        <li class="red">{{ form_errors }}</li>
+                        {% for error in form_errors %}
+                        <li class="red">{{ error }}</li>
+                        {% endfor %}
                     </ul>
-                    {% endif %}
                 {% endif %}
             </div>
         </div>

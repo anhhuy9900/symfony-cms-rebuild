@@ -69,12 +69,14 @@ class GlobalHelperService  extends Controller
 
     public function getErrorMessages($errors)
     {
-        $error_message = '';
-
+        $error_message = [];
         if(count($errors) > 0){
-            foreach ($errors as $key => $error) {
-                $error_message = $error->getMessage();
-                break;
+            foreach ($errors as $key => $error)
+            {
+                if(count($error) > 0) {
+                    $error_message[] = $error[0]->getMessage();
+                }
+
             }
         }
 

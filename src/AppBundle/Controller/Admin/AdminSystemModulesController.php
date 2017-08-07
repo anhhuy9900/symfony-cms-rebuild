@@ -8,7 +8,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /* import Bundle Custom */
 use AppBundle\Controller\AdminController;
-use AppBundle\Validation\Admin\AdminSystemModulesValidation;
+use AppBundle\Validation\Admin\SystemModulesValidation;
 use AppBundle\Entity\SystemModulesEntity;
 
 class AdminSystemModulesController extends AdminController
@@ -134,13 +134,8 @@ class AdminSystemModulesController extends AdminController
         if ($form->isSubmitted() && $form->isValid()) {
             // $data = $form->getData();
             // dump($data);die;
-            // $validation = new AdminSystemModulesValidation();
-            // $validation->moduleName = $data['moduleName'];
-            // $validation->moduleAlias = $data['moduleAlias'];
-            // $validation->moduleOrder = (int)$data['moduleOrder'];
-
-            $errors = $this->get('validator')->validate($entity);
-            $form_errors = $this->global_helper_service->getErrorMessages($errors);
+            $validation = new SystemModulesValidation();
+            $form_errors = $validation->validates($entity);
             if(!$form_errors){
                 if($entity->getID() > 0){
                     /* Update record */
