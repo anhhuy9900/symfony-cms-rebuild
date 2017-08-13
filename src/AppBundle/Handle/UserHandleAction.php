@@ -1,7 +1,7 @@
 <?php
 namespace AppBundle\Handle;
 
-use AppBundle\Controller\Front\UsersController;
+use AppBundle\Controller\Front\UserController;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Doctrine\ORM\EntityManager;
 use Symfony\Component\HttpFoundation\Cookie;
@@ -9,7 +9,7 @@ use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\Session\Storage\PhpBridgeSessionStorage;
 use Symfony\Component\HttpFoundation\Response;
 
-class UserHandleAction extends UsersController
+class UserHandleAction extends UserController
 {
 
     /*

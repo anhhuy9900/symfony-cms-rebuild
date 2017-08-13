@@ -69,52 +69,50 @@
 				</div>
 			</div>
 
-			{# <div class="form-group">
-				{{ form_label(form.tags, form.tags, {'label_attr': {'class': 'col-sm-3 control-label no-padding-right','for': 'form-field-tags'}}) }}
-				<div class="col-sm-9">
-					<div class="inline">
-						{{ form_widget(form.tags, {'attr': { 'placeholder': 'Enter tags ...'}}) }}
-						<textarea class="list_tags hide">{{ tags }}</textarea>
-					</div>
-				</div>
-			</div>
-
 			<div class="form-group">
-				<label class="col-sm-3 control-label no-padding-right">Galleries</label>
+				{{ form_label(form.tags, form.tags, {'label_attr': {'class': 'col-sm-3 control-label no-padding-right','for': 'form-field-tags'}}) }}
 				<div class="col-sm-7">
-					<div class="widget-box">
-						<div class="widget-header">
-							<h4 class="widget-title">Lists Images</h4>
-
-							<div class="widget-toolbar">
-								<a href="#" id="multi_uploads" class="btn">Select files</a>
-								<a href="#" data-action="collapse">
-									<i class="ace-icon fa fa-chevron-up"></i>
-								</a>
-							</div>
-						</div>
-						<div class="widget-body">
-							<div class="widget-main">
-								{{ form_widget(form.lists_thumb, {'attr': {'class': 'lists_thumb hide','data': 'lists_thumb'}}) }}
-
-								{{ form_widget(form.lists_del_file, {'attr': {'class': 'lists_del_file hide','data': 'lists_del_file'}}) }}
-								<div class="form-group" id="filelist">
-									{% if galleries is not empty %}
-										{% for key,value in galleries %}
-											<div class="thumb_uploaded">
-												<img src="{{ app.request.getBasePath() ~ '/uploads/' ~ value.file }}" class="img_uploaded" />
-												<i class="icon-delete" data-value="{{ value.file }}" data-id="{{ value.id }}"></i>
-											</div>
-
-										{% endfor %}
-									{% endif %}
-								</div>
-							</div>
-						</div>
-					</div>
+					{{ form_widget(form.tags, {'attr': {'class': 'col-xs-10 col-sm-12', 'placeholder': 'Enter tags ...', 'rows' : '5','col' : '10'}}) }}
+					<textarea class="list_tags hide">{{ tags }}</textarea>
 				</div>
 			</div>
-			#}
+
+		{# <div class="form-group">
+            <label class="col-sm-3 control-label no-padding-right">Galleries</label>
+            <div class="col-sm-7">
+                <div class="widget-box">
+                    <div class="widget-header">
+                        <h4 class="widget-title">Lists Images</h4>
+
+                        <div class="widget-toolbar">
+                            <a href="#" id="multi_uploads" class="btn">Select files</a>
+                            <a href="#" data-action="collapse">
+                                <i class="ace-icon fa fa-chevron-up"></i>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="widget-body">
+                        <div class="widget-main">
+                            {{ form_widget(form.lists_thumb, {'attr': {'class': 'lists_thumb hide','data': 'lists_thumb'}}) }}
+
+                            {{ form_widget(form.lists_del_file, {'attr': {'class': 'lists_del_file hide','data': 'lists_del_file'}}) }}
+                            <div class="form-group" id="filelist">
+                                {% if galleries is not empty %}
+                                    {% for key,value in galleries %}
+                                        <div class="thumb_uploaded">
+                                            <img src="{{ app.request.getBasePath() ~ '/uploads/' ~ value.file }}" class="img_uploaded" />
+                                            <i class="icon-delete" data-value="{{ value.file }}" data-id="{{ value.id }}"></i>
+                                        </div>
+
+                                    {% endfor %}
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        #}
 
 			<div class="clearfix form-actions">
 				<div class="col-md-offset-3 col-md-9">
@@ -136,13 +134,13 @@
 	</div><!-- /.col -->
 </div><!-- /.row -->
 
-<link href="{{ asset('themes/admin/assets/js/plupload/jquery.ui.plupload/css/jquery.ui.plupload.css') }}" rel="stylesheet">
 
-<script type="text/javascript">
-jQuery(function($) {
-	AdminMain.Func._plupload_files("{{ path('admincp_upload_files')  }}", 'filelist', 'multi_uploads');
-});
-</script>
+{% stylesheets
+'@AppBundle/Resources/public/admin/css/jquery.ui.plupload.css'
+filter='cssrewrite' %}
+<link rel="stylesheet" href="{{ asset_url }}" />
+{% endstylesheets %}
+
 
 {% endblock %}
 

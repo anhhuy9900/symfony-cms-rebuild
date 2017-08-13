@@ -18,8 +18,11 @@ class TagsEntity {
      */
     private $id;
 
+
     /**
-     * @ORM\Column(name="type_id", type="integer", length=11)
+     * @var NewsEntity
+     * @ORM\ManyToOne(targetEntity="NewsEntity", inversedBy="tags")
+     * @ORM\JoinColumn(name="type_id", referencedColumnName="id")
      */
     private $typeId = 0;
 
@@ -60,9 +63,12 @@ class TagsEntity {
     }
 
     /**
-     * @param [int]
+     *
+     * @param \AppBundle\Entity\NewsEntity $typeId
+     *
+     * @return typeId
      */
-    public function setTypeID($typeId) {
+    public function setTypeID(\AppBundle\Entity\NewsEntity $typeId) {
         $this->typeId = $typeId;
     }
 

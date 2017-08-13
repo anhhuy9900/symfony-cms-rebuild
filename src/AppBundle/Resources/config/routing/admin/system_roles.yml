@@ -1,0 +1,15 @@
+admincp_system_roles_page:
+    path:     /
+    defaults: { _controller: AppBundle:Admin/AdminSystemRoles:index }
+
+admincp_system_roles_create_page:
+    path:     /create
+    defaults: { _controller: AppBundle:Admin/AdminSystemRoles:create }
+
+admincp_system_roles_edit_page:
+    path:     /edit/{id}
+    defaults: { _controller: AppBundle:Admin/AdminSystemRoles:edit }
+
+admincp_system_roles_delete_page:
+    path:     /delete/{id}
+    defaults: { _controller: AppBundle:Admin/AdminSystemRoles:delete }

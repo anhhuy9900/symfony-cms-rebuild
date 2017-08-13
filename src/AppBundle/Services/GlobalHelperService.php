@@ -76,7 +76,6 @@ class GlobalHelperService  extends Controller
                 if(count($error) > 0) {
                     $error_message[] = $error[0]->getMessage();
                 }
-
             }
         }
 

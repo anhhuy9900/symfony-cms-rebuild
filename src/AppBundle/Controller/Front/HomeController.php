@@ -1,11 +1,11 @@
 <?php
 namespace AppBundle\Controller\Front;
 
-use AppBundle\Controller\BaseController;
+use AppBundle\Controller\FrontController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
 
-class HomeController extends BaseController
+class HomeController extends FrontController
 {
     /**
      * @Route("/", name="home_page")
@@ -33,7 +33,8 @@ class HomeController extends BaseController
     }
 
     /**
-     * @Route("test-upload", name="test_upload_page")
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\Response
      */
     public function testUploadAction(Request $request)
     {

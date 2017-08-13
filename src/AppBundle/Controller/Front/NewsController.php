@@ -1,14 +1,15 @@
 <?php
 namespace AppBundle\Controller\Front;
 
-use AppBundle\Controller\BaseController;
+use AppBundle\Controller\FrontController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
 
-class NewsController extends BaseController
+class NewsController extends FrontController
 {
     /**
-     * @Route("/news", name="news_page")
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\Response
      */
     public function indexAction(Request $request)
     {
@@ -29,7 +30,8 @@ class NewsController extends BaseController
     }
 
     /**
-     * @Route("/news/{slug}", name="news_detail_page")
+     * @param $slug
+     * @return \Symfony\Component\HttpFoundation\Response
      */
     public function detailAction($slug)
     {

@@ -13,7 +13,7 @@ use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /* import Bundle Custom */
-use AppBundle\Validation\Admin\AdminLoginValidation;
+use AppBundle\Validation\Admin\AuthenticationValidation;
 
 class AdminAuthenticationController extends Controller
 {
@@ -31,25 +31,25 @@ class AdminAuthenticationController extends Controller
     }
 
     /**
-     * @Route("/system/login", name="admincp_login_page")
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|Response
      */
     public function loginAction(Request $request)
     {
-
         if($this->admincp_service->adminUserSessionLogin()){
             $url = $this->generateUrl('admincp_page');
             return $this->redirect($url, 301);
         }
 
         $defaultData = array('message' => 'Type your message here');
-        $form = $this->createForm(\AppBundle\Form\Admin\AuthenticateLogin::class);
+        $form = $this->createForm(\AppBundle\Form\Admin\AuthenticateLoginForm::class);
         $form->handleRequest($request);
 
         $form_errors = '';
         if ($form->isSubmitted() && $form->isValid()) {
             $data = $form->getData();
 
-            $validation = new AdminLoginValidation();
+            $validation = new AuthenticationValidation();
             $validation->username = $data['username'];
             $validation->password = $data['password'];
 
@@ -72,7 +72,8 @@ class AdminAuthenticationController extends Controller
     }
 
     /**
-     * @Route("/system/logout", name="admincp_logout_page")
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
     public function logoutAction(Request $request)
     {

@@ -13,7 +13,6 @@ use AppBundle\Entity\SystemModulesEntity;
 
 class AdminSystemModulesController extends AdminController
 {
-
     /**
      * Used as constructor
      * @param ContainerInterface|null
@@ -25,7 +24,8 @@ class AdminSystemModulesController extends AdminController
     }
 
     /**
-     * @Route("/system/system-modules", name="admincp_system_modules_page")
+     * @param Request $request
+     * @return Response
      */
     public function indexAction(Request $request)
     {
@@ -53,7 +53,8 @@ class AdminSystemModulesController extends AdminController
     }
 
     /**
-     * @Route("/system/system-modules/create", name="admincp_system_modules_create_page")
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|Response
      */
     public function createAction(Request $request)
     {
@@ -71,7 +72,9 @@ class AdminSystemModulesController extends AdminController
     }
 
     /**
-     * @Route("/system/system-modules/edit/{id}", name="admincp_system_modules_edit_page")
+     * @param Request $request
+     * @param $id
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|Response
      */
     public function editAction(Request $request, $id)
     {
@@ -89,7 +92,9 @@ class AdminSystemModulesController extends AdminController
     }
 
     /**
-     * @Route("/system/system-modules/delete/{id}", name="admincp_system_modules_delete_page")
+     * @param Request $request
+     * @param $id
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|Response
      */
     public function deleteAction(Request $request, $id)
     {
@@ -126,15 +131,13 @@ class AdminSystemModulesController extends AdminController
             array('key'=>'id', 'value'=>'moduleName')
         );
 
-        $form = $this->createForm(\AppBundle\Form\Admin\SystemModules::class, $entity, ['recursiveModules' => $recursiveModules]);
+        $form = $this->createForm(\AppBundle\Form\Admin\SystemModulesForm::class, $entity, ['recursiveModules' => $recursiveModules]);
         $form->handleRequest($request);
 
         $form_errors = '';
         $success = FALSE;
         if ($form->isSubmitted() && $form->isValid()) {
-            // $data = $form->getData();
-            // dump($data);die;
-            $validation = new SystemModulesValidation();
+            $validation = new SystemModulesValidation;
             $form_errors = $validation->validates($entity);
             if(!$form_errors){
                 if($entity->getID() > 0){
@@ -161,6 +164,7 @@ class AdminSystemModulesController extends AdminController
 
     /**
      * Report data into file excel
+     * @param array $arrData
      */
     private function reportData($arrData = array())
     {

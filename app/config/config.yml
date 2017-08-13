@@ -15,7 +15,7 @@ framework:
     secret: '%secret%'
     router:
         #resource: '%kernel.project_dir%/app/config/routing.yml'
-        resource: "@AppBundle/Resources/config//routing.yml"
+        resource: "@AppBundle/Resources/config/routing.yml"
         strict_requirements: ~
     form: ~
     csrf_protection: ~
@@ -86,3 +86,7 @@ assetic:
     use_controller: '%kernel.debug%'
     filters:
         cssrewrite: ~
+
+ivory_ck_editor:
+    base_path: "ckeditor"
+    js_path:   "ckeditor/ckeditor.js"

@@ -1,0 +1,15 @@
+admincp_system_users_page:
+    path:     /
+    defaults: { _controller: AppBundle:Admin/AdminSystemUsers:index }
+
+admincp_system_users_create_page:
+    path:     /create
+    defaults: { _controller: AppBundle:Admin/AdminSystemUsers:create }
+
+admincp_system_users_edit_page:
+    path:     /edit/{id}
+    defaults: { _controller: AppBundle:Admin/AdminSystemUsers:edit }
+
+admincp_system_users_delete_page:
+    path:     /delete/{id}
+    defaults: { _controller: AppBundle:Admin/AdminSystemUsers:delete }

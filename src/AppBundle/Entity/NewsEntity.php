@@ -73,6 +73,12 @@ class NewsEntity {
     private $createdDate;
 
     /**
+     * @var Collection
+     * @ORM\OneToMany(targetEntity="TagsEntity", mappedBy="news")
+     */
+    protected $tags;
+
+    /**
      * @param [int]
      */
     public function setID($id) {
@@ -210,6 +216,23 @@ class NewsEntity {
      */
     public function getCreatedDate() {
         return $this->createdDate;
+    }
+
+    /**
+     *
+     * @param \AppBundle\Entity\TagsEntity $tags
+     *
+     * @return tags
+     */
+    public function setTags(\AppBundle\Entity\TagsEntity $tags = null) {
+        $this->tags = $tags;
+    }
+
+    /**
+     * @return tags
+     */
+    public function getTags() {
+        return $this->tags;
     }
 
 }

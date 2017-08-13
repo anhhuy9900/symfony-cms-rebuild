@@ -1,0 +1,35 @@
+admincp_page:
+    path:     /
+    defaults: { _controller: AppBundle:Admin:index }
+
+admincp_login_page:
+    path:     /login
+    defaults: { _controller: AppBundle:Admin:login }
+
+admincp_logout_page:
+    path:     /logout
+    defaults: { _controller: AppBundle:Admin:logout }
+
+admincp_upload_files:
+    path:     /upload-files
+    defaults: { _controller: AppBundle:Admin:uploadFiles }
+
+admincp_system_modules_page:
+    resource: '@AppBundle/Resources/config/routing/admin/system_modules.yml'
+    prefix: /modules
+
+admincp_system_roles_page:
+    resource: '@AppBundle/Resources/config/routing/admin/system_roles.yml'
+    prefix: /roles
+
+admincp_system_users_page:
+    resource: '@AppBundle/Resources/config/routing/admin/system_users.yml'
+    prefix: /users
+
+admincp_news_page:
+    resource: '@AppBundle/Resources/config/routing/admin/news.yml'
+    prefix: /news
+
+admincp_categories_news_page:
+    resource: '@AppBundle/Resources/config/routing/admin/categories_news.yml'
+    prefix: /categories-news

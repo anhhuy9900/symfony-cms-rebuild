@@ -9,12 +9,11 @@ use Symfony\Component\Security\Core\Encoder\PasswordEncoderInterface;
 
 /* import Bundle Custom */
 use AppBundle\Controller\AdminController;
-use AppBundle\Validation\Admin\AdminSystemUsersValidation;
+use AppBundle\Validation\Admin\SystemUsersValidation;
 use AppBundle\Entity\SystemUsersEntity;
 
 class AdminSystemUsersController extends AdminController
 {
-
     /**
      * Used as constructor
      * @param ContainerInterface|null
@@ -26,7 +25,8 @@ class AdminSystemUsersController extends AdminController
     }
 
     /**
-     * @Route("/system/system-users", name="admincp_system_users_page")
+     * @param Request $request
+     * @return Response
      */
     public function indexAction(Request $request)
     {
@@ -54,7 +54,8 @@ class AdminSystemUsersController extends AdminController
     }
 
     /**
-     * @Route("/system/system-users/create", name="admincp_system_users_create_page")
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|Response
      */
     public function createAction(Request $request)
     {
@@ -72,7 +73,9 @@ class AdminSystemUsersController extends AdminController
     }
 
     /**
-     * @Route("/system/system-users/edit/{id}", name="admincp_system_users_edit_page")
+     * @param Request $request
+     * @param $id
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|Response
      */
     public function editAction(Request $request, $id)
     {
@@ -89,7 +92,9 @@ class AdminSystemUsersController extends AdminController
     }
 
     /**
-     * @Route("/system/system-users/delete/{id}", name="admincp_system_users_delete_page")
+     * @param Request $request
+     * @param $id
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|Response
      */
     public function deleteAction(Request $request, $id)
     {
@@ -123,21 +128,14 @@ class AdminSystemUsersController extends AdminController
         }
         $getRolesUser = $em->getRepository('AppBundle:SystemUsersEntity')->getRolesUser();
         $roles = $this->global_helper_service->convertArrayResultSelectbox($getRolesUser, array('key'=>'id', 'value'=>'roleName'));
-        $form = $this->createForm(\AppBundle\Form\Admin\SystemUsers::class, $entity, ['roles' => $roles]);
+        $form = $this->createForm(\AppBundle\Form\Admin\SystemUsersForm::class, $entity, ['roles' => $roles]);
         $form->handleRequest($request);
 
         $form_errors = '';
         $success = FALSE;
         if ($form->isSubmitted() && $form->isValid()) {
-            //$data = $form->getData();
-
-            // $validation = new AdminSystemUsersValidation();
-            // $validation->username = $data['username'];
-            // $validation->email = $data['email'];
-            // $validation->password = $data['password'];
-
-            $errors = $this->get('validator')->validate($entity);
-            $form_errors = $this->global_helper_service->getErrorMessages($errors);
+            $validation = new SystemUsersValidation;
+            $form_errors = $validation->validates($entity);
             if(!$form_errors)
             {
                 $entity->setPassword($this->admincp_service->encodePassword('SystemUser', $entity->getPassword()));
@@ -165,6 +163,8 @@ class AdminSystemUsersController extends AdminController
 
     /**
      * Report data into file excel
+     * @param array $arrData
+     * @return Response
      */
     private function reportData($arrData = array())
     {

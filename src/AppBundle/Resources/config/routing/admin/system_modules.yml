@@ -1,0 +1,15 @@
+admincp_system_modules_page:
+    path:     /
+    defaults: { _controller: AppBundle:Admin/AdminSystemModules:index }
+
+admincp_system_modules_create_page:
+    path:     /create
+    defaults: { _controller: AppBundle:Admin/AdminSystemModules:create }
+
+admincp_system_modules_edit_page:
+    path:     /edit/{id}
+    defaults: { _controller: AppBundle:Admin/AdminSystemModules:edit }
+
+admincp_system_modules_delete_page:
+    path:     /delete/{id}
+    defaults: { _controller: AppBundle:Admin/AdminSystemModules:delete }

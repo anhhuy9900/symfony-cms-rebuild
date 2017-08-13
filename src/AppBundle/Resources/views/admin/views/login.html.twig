@@ -118,15 +118,11 @@
 
 {# Block JS #}
 {% block javascripts %}
-    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
-    <!--[if lt IE 9]>
-    <script src="{{ asset('@AppBundle/Resources/public/admin/js/html5shiv.min.js') }}"></script>
-    <script src="{{ asset('@AppBundle/Resources/public/admin/js/respond.min.js') }}"></script>
-    <![endif]-->
 
     {% javascripts
     '@AppBundle/Resources/public/admin/js/jquery.2.1.1.min.js'
-    '@AppBundle/Resources/public/admin/js/jquery.1.11.1.min.js'
+    '@AppBundle/Resources/public/admin/js/respond.min.js'
+    '@AppBundle/Resources/public/admin/js/html5shiv.min.js'
     %}
     <script src="{{ asset_url }}"></script>
     {% endjavascripts %}

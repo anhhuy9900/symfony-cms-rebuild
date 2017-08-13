@@ -1,3 +1,32 @@
-app:
-    resource: "@AppBundle/Controller/"
-    type:     annotation
+#app:
+#    resource: "@AppBundle/Controller/"
+#    type:     annotation
+
+admin:
+    resource: '@AppBundle/Resources/config/routing/admin/admin_routing.yml'
+    prefix: /system
+
+
+home_page:
+    path:     /
+    defaults: { _controller: AppBundle:Front/Home:index }
+
+test_upload_page:
+    path:     /test-upload
+    defaults: { _controller: AppBundle:Front/Home:testUpload }
+
+news_page:
+    path:     /news
+    defaults: { _controller: AppBundle:Front/News:index }
+
+news_detail_page:
+    path:     /news/{slug}
+    defaults: { _controller: AppBundle:Front/News:detail }
+
+categories_news_page:
+    path:     /categories
+    defaults: { _controller: AppBundle:Front/CategoriesNews:index }
+
+user:
+    resource: '@AppBundle/Resources/config/routing/front/user.yml'
+    prefix: /user

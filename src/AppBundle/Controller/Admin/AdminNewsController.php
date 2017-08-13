@@ -9,7 +9,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /* import Bundle Custom */
 use AppBundle\Controller\AdminController;
-use AppBundle\Validation\Admin\AdminNewsValidation;
+use AppBundle\Validation\Admin\NewsValidation;
 use AppBundle\Entity\NewsEntity;
 
 class AdminNewsController extends AdminController
@@ -27,7 +27,8 @@ class AdminNewsController extends AdminController
     }
 
     /**
-     * @Route("/system/news", name="admincp_news_page")
+     * @param Request $request
+     * @return Response
      */
     public function indexAction(Request $request)
     {
@@ -59,7 +60,8 @@ class AdminNewsController extends AdminController
     }
 
     /**
-     * @Route("/system/news/create", name="admincp_news_create_page")
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|Response
      */
     public function createAction(Request $request)
     {
@@ -79,7 +81,9 @@ class AdminNewsController extends AdminController
     }
 
     /**
-     * @Route("/system/news/edit/{id}", name="admincp_news_edit_page")
+     * @param Request $request
+     * @param $id
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|Response
      */
     public function editAction(Request $request, $id)
     {
@@ -98,7 +102,9 @@ class AdminNewsController extends AdminController
     }
 
     /**
-     * @Route("/system/news/delete/{id}", name="admincp_news_delete_page")
+     * @param Request $request
+     * @param $id
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|Response
      */
     public function deleteAction(Request $request, $id)
     {
@@ -138,7 +144,7 @@ class AdminNewsController extends AdminController
         //Get list tags
         $tags = $em->getRepository('AppBundle:NewsEntity')->getTagsNews($id, 'news');
 
-        $form = $this->createForm(\AppBundle\Form\Admin\News::class, $entity,
+        $form = $this->createForm(\AppBundle\Form\Admin\NewsForm::class, $entity,
             [
                 'galleries' => $galleries ? json_encode($galleries) : [],
                 'tags'      => $tags
@@ -151,14 +157,8 @@ class AdminNewsController extends AdminController
         $success = FALSE;
         if ($form->isSubmitted() && $form->isValid()) {
             $data = $form->getData();
-
-//            $validation = new AdminNewsValidation();
-//            $validation->title = $data['title'];
-//            $validation->description = $data['description'];
-//            $validation->content = $data['content'];
-
-            $errors = $this->get('validator')->validate($entity);
-            $form_errors = $this->global_helper_service->getErrorMessages($errors);
+            $validation = new NewsValidation;
+            $form_errors = $validation->validates($entity);
             if(!$form_errors){
 
                 //Create Slug
@@ -228,6 +228,7 @@ class AdminNewsController extends AdminController
 
     /**
      * Report data into file excel
+     * @param array $arrData
      */
     private function reportData($arrData = array())
     {

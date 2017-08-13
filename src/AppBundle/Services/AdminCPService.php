@@ -196,6 +196,7 @@ class AdminCPService extends Controller {
                 'status' => 1
             ]);
             $arrRoleType = unserialize($result->getRole()->getRoleType());
+
             if(!empty($arrRoleType[$module_id]))
             {
                 switch($roleType) {

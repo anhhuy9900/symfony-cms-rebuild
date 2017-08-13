@@ -1,2 +1,2 @@
-<img src="{{ file.file() }}" width="200" />
+<img src="{{ file ? file.file() : '' }}" width="200" />
 {{ form(form) }}

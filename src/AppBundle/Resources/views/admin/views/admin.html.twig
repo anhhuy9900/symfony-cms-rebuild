@@ -10,21 +10,22 @@
 
     {% block stylesheets %}
         {% stylesheets
-        'bundles/app/admin/css/bootstrap.min.css'
-        'bundles/app/admin/font-awesome/4.2.0/css/font-awesome.min.css'
-        'bundles/app/admin/css/daterangepicker.min.css'
-        'bundles/app/admin/fonts/fonts.googleapis.com.css'
-        'bundles/app/admin/css/colorbox.min.css'
-        'bundles/app/admin/css/ace-skins.min.css'
-        'bundles/app/admin/css/ace.min.css'
+        '@AppBundle/Resources/public/admin/css/bootstrap.min.css'
+        '@AppBundle/Resources/public/admin/font-awesome/4.2.0/css/font-awesome.min.css'
+        '@AppBundle/Resources/public/admin/css/daterangepicker.min.css'
+        '@AppBundle/Resources/public/admin/fonts/fonts.googleapis.com.css'
+        '@AppBundle/Resources/public/admin/css/colorbox.min.css'
+        '@AppBundle/Resources/public/admin/css/ace-skins.min.css'
+        '@AppBundle/Resources/public/admin/css/ace.min.css'
+        '@AppBundle/Resources/public/admin/css/ace.min.css'
         filter='cssrewrite' %}
         <link rel="stylesheet" href="{{ asset_url }}" />
         {% endstylesheets %}
 
         <!--[if lte IE 9]>-->
         {% stylesheets
-        'bundles/app/admin/css/ace-part2.min.css'
-        'bundles/app/admin/css/ace-ie.min.css'
+        '@AppBundle/Resources/public/admin/css/ace-part2.min.css'
+        '@AppBundle/Resources/public/admin/css/ace-ie.min.css'
         filter='cssrewrite' %}
         <link rel="stylesheet" href="{{ asset_url }}" />
         {% endstylesheets %}
@@ -221,14 +222,13 @@
 </div>
 
 {# Block JS #}
+{#'@AppBundle/Resources/public/admin/js/admin-ckeditor/ckeditor.js'#}
 {% block javascripts %}
-    <script src="{{ asset('@AppBundle/Resources/public/admin/js/ace-extra.min.js') }}"></script>
-
     {% javascripts
     '@AppBundle/Resources/public/admin/js/jquery.2.1.1.min.js'
-    '@AppBundle/Resources/public/admin/js/ace-extra.min.js'
     '@AppBundle/Resources/public/admin/js/bootstrap.min.js'
-    '@AppBundle/Resources/public/admin/js/admin-ckeditor/ckeditor.js'
+    '@AppBundle/Resources/public/admin/js/ace-extra.min.js'
+    '@AppBundle/Resources/public/admin/js/html5shiv.min.js'
     '@AppBundle/Resources/public/admin/js/jquery-ui.custom.min.js'
     '@AppBundle/Resources/public/admin/js/jquery.ui.touch-punch.min.js'
     '@AppBundle/Resources/public/admin/js/bootstrap-datepicker.min.js'
@@ -381,6 +381,8 @@
         });
 
         var path_url_assset = '{{ asset('themes/admin/assets/') }}';
+
+        AdminMain.Func._plupload_files("{{ path('admincp_upload_files')  }}", 'filelist', 'multi_uploads');
     </script>
 {% endblock %}
 

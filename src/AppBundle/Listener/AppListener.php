@@ -18,11 +18,11 @@ class AppListener
 
     public function onKernelController(FilterControllerEvent $event)
     {
-        $controller = $event->getController();
+        //$controller = $event->getController();
         //dump($controller);die;
 
         // the controller can be changed to any PHP callable
-        $event->setController($controller);
+        //$event->setController($controller);
     }
 
     public function onKernelRequest(GetResponseEvent $event)

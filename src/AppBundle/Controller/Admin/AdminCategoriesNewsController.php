@@ -9,7 +9,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /* import Bundle Custom */
 use AppBundle\Controller\AdminController;
-use AppBundle\Validation\Admin\AdminCategoriesNewsValidation;
+use AppBundle\Validation\Admin\CategoriesNewsValidation;
 use AppBundle\Entity\CategoriesNewsEntity;
 
 class AdminCategoriesNewsController extends AdminController
@@ -27,7 +27,8 @@ class AdminCategoriesNewsController extends AdminController
     }
 
     /**
-     * @Route("/system/categories_news", name="admincp_categories_news_page")
+     * @param Request $request
+     * @return Response
      */
     public function indexAction(Request $request)
     {
@@ -57,7 +58,8 @@ class AdminCategoriesNewsController extends AdminController
     }
 
     /**
-     * @Route("/system/categories_news/create", name="admincp_categories_news_create_page")
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|Response
      */
     public function createAction(Request $request)
     {
@@ -76,7 +78,9 @@ class AdminCategoriesNewsController extends AdminController
     }
 
     /**
-     * @Route("/system/categories_news/edit/{id}", name="admincp_categories_news_edit_page")
+     * @param Request $request
+     * @param $id
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|Response
      */
     public function editAction(Request $request, $id)
     {
@@ -93,7 +97,9 @@ class AdminCategoriesNewsController extends AdminController
     }
 
     /**
-     * @Route("/system/categories_news/delete/{id}", name="admincp_categories_news_delete_page")
+     * @param Request $request
+     * @param $id
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|Response
      */
     public function deleteAction(Request $request, $id)
     {
@@ -125,19 +131,14 @@ class AdminCategoriesNewsController extends AdminController
         else {
             $entity = new CategoriesNewsEntity;
         }
-        $form = $this->createForm(\AppBundle\Form\Admin\CategoriesNews::class, $entity, []);
+        $form = $this->createForm(\AppBundle\Form\Admin\CategoriesNewsForm::class, $entity, []);
         $form->handleRequest($request);
 
         $form_errors = '';
         $success = FALSE;
         if ($form->isSubmitted() && $form->isValid()) {
-//            $data = $form->getData();
-//
-//            $validation = new AdminCategoriesNewsValidation();
-//            $validation->title = $data['title'];
-
-            $errors = $this->get('validator')->validate($entity);
-            $form_errors = $this->global_helper_service->getErrorMessages($errors);
+            $validation = new CategoriesNewsValidation;
+            $form_errors = $validation->validates($entity);
             if(!$form_errors){
                 if($entity->getID() > 0){
                     /* Update record */
@@ -163,6 +164,7 @@ class AdminCategoriesNewsController extends AdminController
 
     /**
      * Report data into file excel
+     * @param array $arrData
      */
     private function reportData($arrData = array())
     {

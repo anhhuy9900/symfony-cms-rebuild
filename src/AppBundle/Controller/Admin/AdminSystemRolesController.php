@@ -8,12 +8,11 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /* import Bundle Custom */
 use AppBundle\Controller\AdminController;
-use AppBundle\Validation\Admin\AdminSystemRolesValidation;
+use AppBundle\Validation\Admin\SystemRolesValidation;
 use AppBundle\Entity\SystemRolesEntity;
 
 class AdminSystemRolesController extends AdminController
 {
-
     /**
      * Used as constructor
      * @param ContainerInterface|null
@@ -25,7 +24,8 @@ class AdminSystemRolesController extends AdminController
     }
 
     /**
-     * @Route("/system/system-roles", name="admincp_system_roles_page")
+     * @param Request $request
+     * @return Response
      */
     public function indexAction(Request $request)
     {
@@ -55,7 +55,8 @@ class AdminSystemRolesController extends AdminController
     }
 
     /**
-     * @Route("/system/system-roles/create", name="admincp_system_roles_create_page")
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|Response
      */
     public function createAction(Request $request)
     {
@@ -75,7 +76,9 @@ class AdminSystemRolesController extends AdminController
     }
 
     /**
-     * @Route("/system/system-roles/edit/{id}", name="admincp_system_roles_edit_page")
+     * @param Request $request
+     * @param $id
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|Response
      */
     public function editAction(Request $request, $id)
     {
@@ -94,7 +97,9 @@ class AdminSystemRolesController extends AdminController
     }
 
     /**
-     * @Route("/system/system-roles/delete/{id}", name="admincp_system_roles_delete_page")
+     * @param Request $request
+     * @param $id
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|Response
      */
     public function deleteAction(Request $request, $id)
     {
@@ -114,6 +119,9 @@ class AdminSystemRolesController extends AdminController
 
     /**
      * This function Handle create vs update data including handle and handle record in database
+     * @param $request
+     * @param $id
+     * @return array
      */
     private function handleFormData($request, $id){
         $em = $this->getDoctrine()->getEntityManager();
@@ -124,19 +132,14 @@ class AdminSystemRolesController extends AdminController
             $entity = new SystemRolesEntity;
         }
 
-        $form = $this->createForm(\AppBundle\Form\Admin\SystemRoles::class, $entity, []);
+        $form = $this->createForm(\AppBundle\Form\Admin\SystemRolesFrom::class, $entity, []);
         $form->handleRequest($request);
 
         $form_errors = '';
         $success = FALSE;
         if ($form->isSubmitted() && $form->isValid()) {
-            // $data = $form->getData();
-
-            // $validation = new AdminSystemRolesValidation();
-            // $validation->roleName = $data['roleName'];
-
-            $errors = $this->get('validator')->validate($entity);
-            $form_errors = $this->global_helper_service->getErrorMessages($errors);
+            $validation = new SystemRolesValidation;
+            $form_errors = $validation->validates($entity);
             if(!$form_errors){
                 $roleType = self::filterPermissionRoleType($request->request->get('roleType'));
                 $entity->setRoleType($roleType);
@@ -180,8 +183,8 @@ class AdminSystemRolesController extends AdminController
     }
 
     /**
-     * @param  array
-     * @return array
+     * @param array $arrData
+     * @return Response
      */
     private function reportData($arrData = array())
     {

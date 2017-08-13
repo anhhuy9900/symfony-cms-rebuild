@@ -1,0 +1,15 @@
+user_login_page:
+    path:     /login
+    defaults: { _controller: AppBundle:Front/User:login }
+
+user_register_page:
+    path:     /register
+    defaults: { _controller: AppBundle:Front/User:register }
+
+user_forgot_password_page:
+    path:     /forgot-password
+    defaults: { _controller: AppBundle:Front/User:forgotPassword }
+
+user_logout_page:
+    path:     /logout
+    defaults: { _controller: AppBundle:Front/User:logout }

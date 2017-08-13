@@ -23,7 +23,7 @@ class SystemModulesValidation extends Controller {
                     'message' => 'Module Name is not null'
                 ]),
                 new Length([
-                    'min'        => 6,
+                    'min'        => 3,
                     'max'        => 100,
                     'minMessage' => 'Module Name must be at least {{ limit }} characters long',
                     'maxMessage' => 'Module Name cannot be longer than {{ limit }} characters',

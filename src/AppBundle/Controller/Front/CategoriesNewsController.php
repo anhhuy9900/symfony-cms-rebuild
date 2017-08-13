@@ -1,11 +1,11 @@
 <?php
 namespace AppBundle\Controller\Front;
 
-use AppBundle\Controller\BaseController;
+use AppBundle\Controller\FrontController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
 
-class CategoriesNewsController extends BaseController
+class CategoriesNewsController extends FrontController
 {
     /**
      * @Route("/categories", name="categories_news_page")

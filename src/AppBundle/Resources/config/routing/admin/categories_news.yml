@@ -1,0 +1,15 @@
+admincp_categories_news_page:
+    path:     /
+    defaults: { _controller: AppBundle:Admin/AdminCategoriesNews:index }
+
+admincp_categories_news_create_page:
+    path:     /create
+    defaults: { _controller: AppBundle:Admin/AdminCategoriesNews:create }
+
+admincp_categories_news_edit_page:
+    path:     /edit/{id}
+    defaults: { _controller: AppBundle:Admin/AdminCategoriesNews:edit }
+
+admincp_categories_news_delete_page:
+    path:     /delete/{id}
+    defaults: { _controller: AppBundle:Admin/AdminCategoriesNews:delete }
