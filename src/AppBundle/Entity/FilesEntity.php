@@ -24,9 +24,9 @@ class FilesEntity {
     private $type;
 
     /**
-     * @ORM\Column(name="file", type="string", length=255)
+     * @ORM\Column(name="file_name", type="string", length=255)
      */
-    private $file;
+    private $fileName;
 
     /**
      * @ORM\Column(name="path", type="string", length=255, nullable=true)
@@ -44,6 +44,12 @@ class FilesEntity {
      * @ORM\Column(name="created_date", type="datetime", nullable=true)
      */
     private $createdDate;
+
+    /**
+     * One File has One News
+     *  @ORM\OneToMany(targetEntity="NewsEntity", mappedBy="file")
+     */
+    private $news;
 
 
     /**
@@ -79,19 +85,19 @@ class FilesEntity {
     }
 
     /**
-     * @param [string]
+     * @param $fileName
      */
-    public function setFile($file = null)
+    public function setFileName($fileName)
     {
-        $this->file = $file;
+        $this->fileName = $fileName;
     }
 
     /**
-     * @return file
+     * @return mixed
      */
-    public function getFile()
+    public function getFileName()
     {
-        return $this->file;
+        return $this->fileName;
     }
 
      /**
@@ -171,7 +177,7 @@ class FilesEntity {
      */
     public function file()
     {
-        return $this->getWebPath() . $this->file;
+        return $this->getWebPath() . $this->fileName;
     }
 
     /**
@@ -182,11 +188,11 @@ class FilesEntity {
      */
     public function preUpload()
     {
-        if (null !== $this->file) {
-            // do whatever you want to generate a unique name
-            $filename = sha1(uniqid(mt_rand(), true));
-            $this->path = $filename.'.'.$this->file->guessExtension();
-        }
+//        if (null !== $this->file) {
+//            // do whatever you want to generate a unique name
+//            $filename = sha1(uniqid(mt_rand(), true));
+//            $this->path = $filename.'.'.$this->file->guessExtension();
+//        }
     }
 
     /**

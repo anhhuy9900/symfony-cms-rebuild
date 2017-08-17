@@ -48,6 +48,7 @@ class TagsEntity {
      */
     private $createdDate;
 
+
     /**
      * @param [int]
      */

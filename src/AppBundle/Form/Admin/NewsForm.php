@@ -34,6 +34,7 @@ class NewsForm extends AbstractType
             ))
             ->add('file', \Symfony\Component\Form\Extension\Core\Type\FileType::class, array(
                 'label' => 'Image',
+                'data_class' => NULL,
                 'required' => FALSE
             ))
             ->add('description', \Symfony\Component\Form\Extension\Core\Type\TextareaType::class, array(
@@ -44,7 +45,7 @@ class NewsForm extends AbstractType
             ))
             ->add('status', \Symfony\Component\Form\Extension\Core\Type\ChoiceType::class, array(
                 'label' => 'Status',
-                'choices' => array( 0 => 'Unpblish', 1 => 'Publish')
+                'choices' => array( 'Unpblish' => 0, 'Publish' => 1)
             ))
             ->add('tags', \Symfony\Component\Form\Extension\Core\Type\TextareaType::class, array(
                 'label' => 'Tags input',

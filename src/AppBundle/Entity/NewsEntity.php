@@ -3,6 +3,8 @@ namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\EntityRepository;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
+use AppBundle\Entity\FilesEntity;
 
 
 /**
@@ -38,8 +40,8 @@ class NewsEntity {
 
     /**
      * @var FilesEntity
-     * @ORM\ManyToOne(targetEntity="FilesEntity", inversedBy="files")
-     * @ORM\JoinColumn(name="file_id", referencedColumnName="id")
+     * @ORM\ManyToOne(targetEntity="FilesEntity", inversedBy="news")
+     * @ORM\JoinColumn(name="file_id", referencedColumnName="id", nullable=true)
      */
     private $file;
 
@@ -74,7 +76,7 @@ class NewsEntity {
 
     /**
      * @var Collection
-     * @ORM\OneToMany(targetEntity="TagsEntity", mappedBy="news")
+     * @ORM\OneToMany(targetEntity="TagsEntity", mappedBy="typeId")
      */
     protected $tags;
 
@@ -135,10 +137,12 @@ class NewsEntity {
     }
 
     /**
-     * @param [string]
+     * @param $file
+     * @return $this
      */
     public function setFile($file) {
         $this->file = $file;
+        return $this;
     }
 
     /**

@@ -155,7 +155,7 @@
 
 								<td>{{ item.category.name }}</td>
 								<td>{{ item.name }}</td>
-								<td><a href="" data-rel="colorbox" class="cboxElement ace-thumbnails">View Image</a></td>
+								<td><a href="{{ item.file ? item.file.file() : '' }}" data-rel="colorbox" class="cboxElement ace-thumbnails">View Image</a></td>
 								<td>{{ item.updatedDate | date("d-m-Y H:i:s") }}</td>
 
 								<td class="hidden-480" width="10%">

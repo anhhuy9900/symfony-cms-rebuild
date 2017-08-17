@@ -115,7 +115,7 @@ class AdminNewsController extends AdminController
             $em->flush();
             $request->getSession()->getFlashBag()->add('message_data', 'Deleted record success!');
 
-            $url = $this->generateUrl('admincp_system_modules_page');
+            $url = $this->generateUrl('admincp_news_page');
             return $this->redirect($url, 301);
         }
 
@@ -146,8 +146,8 @@ class AdminNewsController extends AdminController
 
         $form = $this->createForm(\AppBundle\Form\Admin\NewsForm::class, $entity,
             [
-                'galleries' => $galleries ? json_encode($galleries) : [],
-                'tags'      => $tags
+               'galleries' => $galleries ? json_encode($galleries) : [],
+               'tags'      => $tags
             ]
         );
 
@@ -169,17 +169,25 @@ class AdminNewsController extends AdminController
 //                $data['image'] = $service->uploadFileRequest($data['image'],'news');
 
                 $file = $form['file']->getData();
-                $uploadFile = $this->container->get('app.upload_files_service');
-                $uploadFile->upload($file, 'news');
-                $fileEntity = new \AppBundle\Entity\FilesEntity;
-                $fileEntity->setType('news');
-                $fileEntity->setFile($uploadFile->fileName);
-                $fileEntity->setPath($uploadFile->path);
-                $fileEntity->setStatus(1);
-                $fileEntity->setCreatedDate();
-                $entity->setFile($fileEntity);
+
+                if($file) {
+                    $uploadFile = $this->container->get('app.upload_files_service');
+                    $uploadFile->upload($file, 'news');
+
+                    $fileEntity = new \AppBundle\Entity\FilesEntity;
+                    $fileEntity->setType('news');
+                    $fileEntity->setFileName($uploadFile->fileName);
+                    $fileEntity->setPath($uploadFile->path);
+                    $fileEntity->setStatus(1);
+                    $fileEntity->setCreatedDate();
+                    $em->persist($fileEntity);
+                    $em->flush();
+                    dump($fileEntity);die;
+                    //$entity->setFile($fileEntity);
+                }
 
                 if($entity->getID() > 0){
+                    //dump($em);die;
                     /* Update record */
                     $em->flush();
                 }

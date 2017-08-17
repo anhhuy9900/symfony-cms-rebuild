@@ -4,11 +4,11 @@ admincp_page:
 
 admincp_login_page:
     path:     /login
-    defaults: { _controller: AppBundle:Admin:login }
+    defaults: { _controller: AppBundle:Admin/AdminAuthentication:login }
 
 admincp_logout_page:
     path:     /logout
-    defaults: { _controller: AppBundle:Admin:logout }
+    defaults: { _controller: AppBundle:Admin/AdminAuthentication:logout }
 
 admincp_upload_files:
     path:     /upload-files
