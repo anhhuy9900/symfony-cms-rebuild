@@ -10,21 +10,21 @@
 
     {% block stylesheets %}
         {% stylesheets
-        '@AppBundle/Resources/public/admin/css/bootstrap.min.css'
-        '@AppBundle/Resources/public/admin/css/font-awesome.min.css'
-        '@AppBundle/Resources/public/admin/css/daterangepicker.min.css'
-        '@AppBundle/Resources/public/admin/fonts/fonts.googleapis.com.css'
-        '@AppBundle/Resources/public/admin/css/colorbox.min.css'
-        '@AppBundle/Resources/public/admin/css/ace-skins.min.css'
-        '@AppBundle/Resources/public/admin/css/ace.min.css'
+        'bundles/app/admin/css/bootstrap.min.css'
+        'bundles/app/admin/css/font-awesome.min.css'
+        'bundles/app/admin/css/daterangepicker.min.css'
+        'bundles/app/admin/fonts/fonts.googleapis.com.css'
+        'bundles/app/admin/css/colorbox.min.css'
+        'bundles/app/admin/css/ace-skins.min.css'
+        'bundles/app/admin/css/ace.min.css'
         filter='cssrewrite' %}
         <link rel="stylesheet" href="{{ asset_url }}" />
         {% endstylesheets %}
 
         <!--[if lte IE 9]>-->
         {% stylesheets
-        '@AppBundle/Resources/public/admin/css/ace-part2.min.css'
-        '@AppBundle/Resources/public/admin/css/ace-ie.min.css'
+        'bundles/app/admin/css/ace-part2.min.css'
+        'bundles/app/admin/css/ace-ie.min.css'
         filter='cssrewrite' %}
         <link rel="stylesheet" href="{{ asset_url }}" />
         {% endstylesheets %}

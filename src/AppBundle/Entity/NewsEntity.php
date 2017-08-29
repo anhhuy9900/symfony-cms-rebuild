@@ -81,56 +81,56 @@ class NewsEntity {
     protected $tags;
 
     /**
-     * @param [int]
+     * @param $id
      */
     public function setID($id) {
         $this->id = $id;
     }
 
     /**
-     * @return id
+     * @return mixed
      */
     public function getID() {
         return $this->id;
     }
 
     /**
-     * @param [int]
+     * @param $category
      */
     public function setCategory($category) {
         $this->category = $category;
     }
 
     /**
-     * @return category
+     * @return CategoriesNewsEntity
      */
     public function getCategory() {
         return $this->category;
     }
 
     /**
-     * @param [string]
+     * @param $name
      */
     public function setName($name) {
         $this->name = $name;
     }
 
     /**
-     * @return name
+     * @return mixed
      */
     public function getName() {
         return $this->name;
     }
 
     /**
-     * @param [string]
+     * @param $slug
      */
     public function setSlug($slug) {
         $this->slug = $slug;
     }
 
     /**
-     * @return slug
+     * @return mixed
      */
     public function getSlug() {
         return $this->slug;
@@ -146,49 +146,49 @@ class NewsEntity {
     }
 
     /**
-     * @return file
+     * @return \AppBundle\Entity\FilesEntity
      */
     public function getFile() {
         return $this->file;
     }
 
     /**
-     * @param [string]
+     * @param $description
      */
     public function setDescription($description) {
         $this->description = $description;
     }
 
     /**
-     * @return description
+     * @return mixed
      */
     public function getDescription() {
         return $this->description;
     }
 
     /**
-     * @param [string]
+     * @param $content
      */
     public function setContent($content) {
         $this->content = $content;
     }
 
     /**
-     * @return content
+     * @return mixed
      */
     public function getContent() {
         return $this->content;
     }
 
     /**
-     * @param [int]
+     * @param $status
      */
     public function setStatus($status) {
         $this->status = $status;
     }
 
     /**
-     * @return status
+     * @return int
      */
     public function getStatus() {
         return $this->status;
@@ -202,7 +202,7 @@ class NewsEntity {
     }
 
     /**
-     * @return updatedDate
+     * @return \DateTime
      */
     public function getUpdatedDate() {
         return $this->updatedDate;
@@ -216,7 +216,7 @@ class NewsEntity {
     }
 
     /**
-     * @return createdDate
+     * @return \DateTime
      */
     public function getCreatedDate() {
         return $this->createdDate;
@@ -233,7 +233,7 @@ class NewsEntity {
     }
 
     /**
-     * @return tags
+     * @return Collection
      */
     public function getTags() {
         return $this->tags;

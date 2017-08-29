@@ -47,13 +47,13 @@ class FilesEntity {
 
     /**
      * One File has One News
-     *  @ORM\OneToMany(targetEntity="NewsEntity", mappedBy="file")
+     * @ORM\OneToMany(targetEntity="NewsEntity", mappedBy="file")
      */
     private $news;
 
 
     /**
-     * @param [int]
+     * @param $id
      */
     public function setID($id)
     {
@@ -61,7 +61,7 @@ class FilesEntity {
     }
 
     /**
-     * @return id
+     * @return mixed
      */
     public function getID()
     {
@@ -69,7 +69,7 @@ class FilesEntity {
     }
 
     /**
-     * @param [string]
+     * @param $type
      */
     public function setType($type)
     {
@@ -77,7 +77,7 @@ class FilesEntity {
     }
 
     /**
-     * @return type
+     * @return mixed
      */
     public function getType()
     {
@@ -100,8 +100,8 @@ class FilesEntity {
         return $this->fileName;
     }
 
-     /**
-     * @param [string]
+    /**
+     * @param $path
      */
     public function setPath($path)
     {
@@ -109,7 +109,7 @@ class FilesEntity {
     }
 
     /**
-     * @return path
+     * @return mixed
      */
     public function getPath()
     {
@@ -117,7 +117,7 @@ class FilesEntity {
     }
 
     /**
-     * @param [int]
+     * @param $status
      */
     public function setStatus($status)
     {
@@ -125,7 +125,7 @@ class FilesEntity {
     }
 
     /**
-     * @return status
+     * @return int
      */
     public function getStatus()
     {
@@ -141,23 +141,34 @@ class FilesEntity {
     }
 
     /**
-     * @return createdDate
+     * @return \DateTime
      */
     public function getCreatedDate()
     {
         return $this->createdDate;
     }
 
+    /**
+     * Get absolute path for file
+     * @return null|string
+     */
     public function getAbsolutePath()
     {
         return null === $this->path ? null : $this->getUploadRootDir().'/'.$this->path;
     }
 
+    /**
+     * Get web path for file
+     * @return null
+     */
     public function getWebPath()
     {
         return null === $this->path ? null : $this->path;
     }
 
+    /**
+     * @return string
+     */
     protected function getUploadRootDir()
     {
         // the absolute directory path where uploaded
@@ -165,6 +176,9 @@ class FilesEntity {
         return __DIR__.'/../../../../web/'.$this->getUploadDir();
     }
 
+    /**
+     * @return string
+     */
     protected function getUploadDir()
     {
         // get rid of the __DIR__ so it doesn't screw up
@@ -188,11 +202,11 @@ class FilesEntity {
      */
     public function preUpload()
     {
-//        if (null !== $this->file) {
-//            // do whatever you want to generate a unique name
-//            $filename = sha1(uniqid(mt_rand(), true));
-//            $this->path = $filename.'.'.$this->file->guessExtension();
-//        }
+        if (null !== $this->file) {
+            // do whatever you want to generate a unique name
+            $filename = sha1(uniqid(mt_rand(), true));
+            $this->path = $filename.'.'.$this->file->guessExtension();
+        }
     }
 
     /**

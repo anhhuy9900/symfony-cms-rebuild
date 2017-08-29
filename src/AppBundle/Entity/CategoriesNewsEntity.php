@@ -44,42 +44,42 @@ class CategoriesNewsEntity {
     private $createdDate;
 
     /**
-     * @param [int]
+     * @param $id
      */
     public function setID($id) {
         $this->id = $id;
     }
 
     /**
-     * @return id
+     * @return mixed
      */
     public function getID() {
         return $this->id;
     }
 
     /**
-     * @param [string]
+     * @param $name
      */
     public function setName($name) {
         $this->name = $name;
     }
 
     /**
-     * @return name
+     * @return mixed
      */
     public function getName() {
         return $this->name;
     }
 
     /**
-     * @param [int]
+     * @param $status
      */
     public function setStatus($status) {
         $this->status = $status;
     }
 
     /**
-     * @return status
+     * @return int
      */
     public function getStatus() {
         return $this->status;
@@ -93,7 +93,7 @@ class CategoriesNewsEntity {
     }
 
     /**
-     * @return updatedDate
+     * @return \DateTime
      */
     public function getUpdatedDate() {
         return $this->updatedDate;
@@ -107,7 +107,7 @@ class CategoriesNewsEntity {
     }
 
     /**
-     * @return createdDate
+     * @return \DateTime
      */
     public function getCreatedDate() {
         return $this->createdDate;

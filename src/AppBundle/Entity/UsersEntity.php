@@ -74,154 +74,152 @@ class UsersEntity {
     private $createdDate;
 
     /**
-     * @param [int]
+     * @param $id
      */
     public function setID($id) {
         $this->id = $id;
     }
 
     /**
-     * @return id
+     * @return mixed
      */
     public function getID() {
         return $this->id;
     }
 
     /**
-     * @param [string]
+     * @param $fullname
      */
     public function setFullname($fullname) {
         $this->fullname = $fullname;
     }
 
     /**
-     * @return fullname
+     * @return mixed
      */
     public function getFullname() {
         return $this->fullname;
     }
 
     /**
-     * @param [string]
+     * @param $email
      */
     public function setEmail($email) {
         $this->email = $email;
     }
 
     /**
-     * @return email
+     * @return mixed
      */
     public function getEmail() {
         return $this->email;
     }
 
     /**
-     * @param [string]
+     * @param $password
      */
     public function setPassword($password) {
         $this->password = $password;
     }
 
     /**
-     * @return password
+     * @return mixed
      */
     public function getPassword() {
         return $this->password;
     }
 
     /**
-     * @param [int]
+     * @param $phone
      */
     public function setPhone($phone) {
         $this->phone = $phone;
     }
 
     /**
-     * @return phone
+     * @return mixed
      */
     public function getPhone() {
         return $this->phone;
     }
 
     /**
-     * @param [string]
+     * @param $address
      */
     public function setAddress($address) {
         $this->address = $address;
     }
 
     /**
-     * @return address
+     * @return mixed
      */
     public function getAddress() {
         return $this->address;
     }
 
     /**
-     * @param [int]
+     * @param $gender
      */
     public function setGender($gender) {
         $this->gender = $gender;
     }
 
     /**
-     * @return gender
+     * @return int
      */
     public function getGender() {
         return $this->gender;
     }
 
     /**
-     * @param [int]
+     * @param $status
      */
     public function setStatus($status) {
         $this->status = $status;
     }
 
     /**
-     * @return status
+     * @return int
      */
     public function getStatus() {
         return $this->status;
     }
 
     /**
-     * @param [string]
+     * @param $activeCode
      */
     public function setActiveCode($activeCode) {
         $this->activeCode = $activeCode;
     }
 
     /**
-     * @return activeCode
+     * @return mixed
      */
     public function getActiveCode() {
         return $this->activeCode;
     }
 
     /**
-     * @param [datetime]
+     * @param $activeDate
      */
     public function setActiveDate($activeDate) {
         $this->activeDate = $activeDate;
     }
 
     /**
-     * @return activeDate
+     * @return \DateTime
      */
     public function getActiveDate() {
         return $this->activeDate;
     }
 
-    /**
-     * @param [datetime]
-     */
+
     public function setCreatedDate() {
         $this->createdDate = new \DateTime();
     }
 
     /**
-     * @return createdDate
+     * @return \DateTime
      */
     public function getCreatedDate() {
         return $this->createdDate;

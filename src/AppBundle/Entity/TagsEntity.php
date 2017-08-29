@@ -50,87 +50,82 @@ class TagsEntity {
 
 
     /**
-     * @param [int]
+     * @param $id
      */
     public function setID($id) {
         $this->id = $id;
     }
 
     /**
-     * @return id
+     * @return mixed
      */
     public function getID() {
         return $this->id;
     }
 
     /**
-     *
-     * @param \AppBundle\Entity\NewsEntity $typeId
-     *
-     * @return typeId
+     * @param NewsEntity $typeId
      */
     public function setTypeID(\AppBundle\Entity\NewsEntity $typeId) {
         $this->typeId = $typeId;
     }
 
     /**
-     * @return typeId
+     * @return NewsEntity
      */
     public function getTypeID() {
         return $this->typeId;
     }
 
     /**
-     * @param [int]
+     * @param $type
      */
     public function setType($type) {
         $this->type = $type;
     }
 
     /**
-     * @return type
+     * @return mixed
      */
     public function getType() {
         return $this->type;
     }
 
     /**
-     * @param [string]
+     * @param $tagName
      */
     public function setTagName($tagName) {
         $this->tagName = $tagName;
     }
 
     /**
-     * @return tagName
+     * @return mixed
      */
     public function getTagName() {
         return $this->tagName;
     }
 
     /**
-     * @param [int]
+     * @param $status
      */
     public function setStatus($status) {
         $this->status = $status;
     }
 
     /**
-     * @return status
+     * @return int
      */
     public function getStatus() {
         return $this->status;
     }
 
-    /**
-     * @param [datetime]
-     */
+
     public function setCreatedDate() {
         $this->createdDate = new \DateTime();
     }
 
     /**
-     * @return createdDate
+     * @return \DateTime
      */
     public function getCreatedDate() {
         return $this->createdDate;

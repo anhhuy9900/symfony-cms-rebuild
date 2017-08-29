@@ -160,20 +160,16 @@ class AdminNewsController extends AdminController
             $validation = new NewsValidation;
             $form_errors = $validation->validates($entity);
             if(!$form_errors){
-
                 //Create Slug
                 $entity->setSlug($this->global_helper_service->createSlug($entity->getName()));
 
-                //Upload image
-//                $service = $this->container->get('app.upload_files_service');
-//                $data['image'] = $service->uploadFileRequest($data['image'],'news');
-
                 $file = $form['file']->getData();
-
                 if($file) {
+                    /**
+                     * Upload file
+                     */
                     $uploadFile = $this->container->get('app.upload_files_service');
                     $uploadFile->upload($file, 'news');
-
                     $fileEntity = new \AppBundle\Entity\FilesEntity;
                     $fileEntity->setType('news');
                     $fileEntity->setFileName($uploadFile->fileName);
@@ -181,13 +177,10 @@ class AdminNewsController extends AdminController
                     $fileEntity->setStatus(1);
                     $fileEntity->setCreatedDate();
                     $em->persist($fileEntity);
-                    $em->flush();
-                    dump($fileEntity);die;
-                    //$entity->setFile($fileEntity);
+                    $entity->setFile($fileEntity);
                 }
 
                 if($entity->getID() > 0){
-                    //dump($em);die;
                     /* Update record */
                     $em->flush();
                 }

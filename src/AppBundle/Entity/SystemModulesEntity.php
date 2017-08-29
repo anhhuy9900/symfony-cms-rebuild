@@ -69,77 +69,77 @@ class SystemModulesEntity {
     private $createdDate;
 
     /**
-     * @param [int]
+     * @param $id
      */
     public function setID($id) {
         $this->id = $id;
     }
 
     /**
-     * @return id
+     * @return mixed
      */
     public function getID() {
         return $this->id;
     }
 
     /**
-     * @param [int]
+     * @param $parentId
      */
     public function setParentID($parentId) {
         $this->parentId = $parentId;
     }
 
     /**
-     * @return parentId
+     * @return int
      */
     public function getParentID() {
         return $this->parentId;
     }
 
     /**
-     * @param [string]
+     * @param $moduleName
      */
     public function setModuleName($moduleName) {
         $this->moduleName = $moduleName;
     }
 
     /**
-     * @return moduleName
+     * @return mixed
      */
     public function getModuleName() {
         return $this->moduleName;
     }
 
     /**
-     * @param [string]
+     * @param $moduleAlias
      */
     public function setModuleAlias($moduleAlias) {
         $this->moduleAlias = $moduleAlias;
     }
 
     /**
-     * @return moduleAlias
+     * @return mixed
      */
     public function getModuleAlias() {
         return $this->moduleAlias;
     }
 
     /**
-     * @param [string]
+     * @param $moduleType
      */
     public function setModuleType($moduleType) {
         $this->moduleType = $moduleType;
     }
 
     /**
-     * @return moduleType
+     * @return mixed
      */
     public function getModuleType() {
         return $this->moduleType;
     }
 
     /**
-     * @param [int]
+     * @param $modulePermission
      */
     public function setModulePermission($modulePermission) {
         $this->modulePermission = $modulePermission;
@@ -153,56 +153,52 @@ class SystemModulesEntity {
     }
 
     /**
-     * @param [int]
+     * @param $moduleStatus
      */
     public function setModuleStatus($moduleStatus) {
         $this->moduleStatus = $moduleStatus;
     }
 
     /**
-     * @return moduleStatus
+     * @return int
      */
     public function getModuleStatus() {
         return $this->moduleStatus;
     }
 
     /**
-     * @param [int]
+     * @param $moduleOrder
      */
     public function setModuleOrder($moduleOrder) {
         $this->moduleOrder = $moduleOrder;
     }
 
     /**
-     * @return moduleOrder
+     * @return int
      */
     public function getModuleOrder() {
         return $this->moduleOrder;
     }
 
-    /**
-     * @param [datetime]
-     */
+
     public function setUpdatedDate() {
         $this->updatedDate = new \DateTime();
     }
 
     /**
-     * @return updatedDate
+     * @return \DateTime
      */
     public function getUpdatedDate() {
         return $this->updatedDate;
     }
 
-    /**
-     * @param [datetime]
-     */
+
     public function setCreatedDate() {
         $this->createdDate = new \DateTime();
     }
 
     /**
-     * @return createdDate
+     * @return \DateTime
      */
     public function getCreatedDate() {
         return $this->createdDate;

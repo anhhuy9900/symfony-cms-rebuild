@@ -30,3 +30,7 @@ categories_news_page:
 user:
     resource: '@AppBundle/Resources/config/routing/front/user.yml'
     prefix: /user
+
+restful:
+    type:     rest
+    resource: AppBundle\Controller\Front\RestfulController

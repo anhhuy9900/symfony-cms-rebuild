@@ -61,98 +61,94 @@ class SystemRolesEntity {
     protected $users;
 
     /**
-     * @param [int]
+     * @param $id
      */
     public function setID($id) {
         $this->id = $id;
     }
 
     /**
-     * @return id
+     * @return mixed
      */
     public function getID() {
         return $this->id;
     }
 
     /**
-     * @param [string]
+     * @param $roleName
      */
     public function setRoleName($roleName) {
         $this->roleName = $roleName;
     }
 
     /**
-     * @return roleName
+     * @return mixed
      */
     public function getRoleName() {
         return $this->roleName;
     }
 
     /**
-     * @param [string]
+     * @param $roleType
      */
     public function setRoleType($roleType) {
         $this->roleType = $roleType;
     }
 
     /**
-     * @return roleType
+     * @return mixed
      */
     public function getRoleType() {
         return $this->roleType;
     }
 
     /**
-     * @param [int]
+     * @param $roleStatus
      */
     public function setRoleStatus($roleStatus) {
         $this->roleStatus = $roleStatus;
     }
 
     /**
-     * @return roleStatus
+     * @return int
      */
     public function getRoleStatus() {
         return $this->roleStatus;
     }
 
     /**
-     * @param access
+     * @param $access
      */
     public function setAccess($access) {
         $this->access = $access;
     }
 
     /**
-     * @return access
+     * @return int
      */
     public function getAccess() {
         return $this->access;
     }
 
-    /**
-     * @param [datetime]
-     */
+
     public function setUpdatedDate() {
         $this->updatedDate = new \DateTime();
     }
 
     /**
-     * @return updatedDate
+     * @return \DateTime
      */
     public function getUpdatedDate() {
         return $this->updatedDate;
     }
 
-    /**
-     * @param [datetime]
-     */
+
     public function setCreatedDate() {
         $this->createdDate = new \DateTime();
     }
 
     /**
-     * @return createdDate
+     * @return \DateTime
      */
     public function getCreatedDate() {
         return $this->createdDate;
