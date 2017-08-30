@@ -12,7 +12,6 @@ class HomeController extends FrontController
      */
     public function indexAction(Request $request)
     {
-
         $this->image_helper = $this->container->get('app.image_helper');
         $results = $this->getDoctrine()->getRepository('AppBundle:NewsEntity')->list_news_get_all();
         if(!empty($results)){

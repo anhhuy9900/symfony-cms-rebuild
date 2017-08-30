@@ -105,12 +105,28 @@ nelmio_cors:
 
 # FOSRest Configuration
 fos_rest:
+    routing_loader:
+        default_format: json   # All responses should be JSON formated
+        include_format: false  # We do not include format in request, so th
     body_listener: true
-    format_listener:
-        rules:
-            - { path: '^/', priorities: ['json'], fallback_format: json, prefer_extension: false }
     param_fetcher_listener: true
+    format_listener:
+        enabled: true
+        rules:
+          - { path: ^/api, fallback_format: json }
+          - { path: ^/, fallback_format: html }
+    # Enable serializer for the REST API
+    serializer:
+        serialize_null: true
     view:
-        view_response_listener: 'force'
-        formats:
-            json: true
+        view_response_listener: force
+
+    # Disable CSRF protection
+    #disable_csrf_role: ROLE_API
+
+jms_serializer:
+    metadata:
+        auto_detection: true
+    handlers:
+        datetime:
+            default_format: c
