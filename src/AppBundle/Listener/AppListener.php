@@ -6,6 +6,7 @@ use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
 use Symfony\Component\HttpKernel\Event\FilterControllerEvent;
 use Symfony\Component\HttpFoundation\Cookie;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 
 class AppListener
 {
@@ -21,35 +22,39 @@ class AppListener
         //$controller = $event->getController();
         //dump($controller);die;
 
-        // the controller can be changed to any PHP callable
-        //$event->setController($controller);
     }
-
+  
+  /**
+   * Hook request in app
+   * @param GetResponseEvent $event
+   */
     public function onKernelRequest(GetResponseEvent $event)
     {
         $kernel    = $event->getKernel();
         $request   = $event->getRequest();
-        $container = $this->container;
-
-        dump($request);die;
 
     }
-
+  
+  /**
+   * Hook response in app
+   * @param FilterResponseEvent $event
+   */
     public function onKernelResponse(FilterResponseEvent $event)
     {
         $response  = $event->getResponse();
         $request   = $event->getRequest();
         $kernel    = $event->getKernel();
-        $container = $this->container;
 
-        switch ($request->query->get('option')) {
-            case 2:
-                $response->setContent('Blah');
-                break;
-
-            case 3:
-                $response->headers->setCookie(new Cookie('test', 1));
-                break;
+        $adminService = $this->container->get('app.admincp_service');
+        $redirectUrl = $this->container->get("router")->generate('admincp_login_page');
+        $currentUrl = $this->container->get("router")->getContext()->getPathInfo();
+        $route = $this->container->get("router")->match($currentUrl);
+        if (!empty($route['_route'])) {
+          if ($adminService->getModulesByAlias($route['_route']) && !$adminService->adminGetCurrentUserLogin()) {
+            $redirectResponse = new RedirectResponse($redirectUrl);
+            $event->setResponse($redirectResponse);
+          }
         }
     }
+  
 }

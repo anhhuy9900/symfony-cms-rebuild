@@ -303,5 +303,16 @@ class AdminCPService extends Controller {
 
         return  $html;
     }
+    
+    public function getModulesByAlias($alias) {
+      $repository = $this->em->getRepository('AppBundle:SystemModulesEntity');
+      $query = $repository->createQueryBuilder('pk');
+      $query->select("pk.id, pk.moduleName, pk.moduleAlias");
+      $query->where('pk.moduleStatus = 1');
+      $query->andWhere('pk.moduleAlias = :module_alias')->setParameter('module_alias', $alias);
+      $query->orderBy("pk.moduleOrder", 'ASC');
+      $results = $query->getQuery()->getResult();
+      return $results;
+    }
 
 }
