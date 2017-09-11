@@ -12,20 +12,20 @@
 
     {% if results is not empty %}
         {% set count = 0 %}
-        {% for key,value in results %}
+        {% for key,item in results %}
             <!-- Projects Row -->
             {% if count % 3 == 0 %}
             <div class="row">
             {% endif %}
                 {% set count = count + 1 %}
                 <div class="col-md-4 portfolio-item">
-                    <a href="{{ path('news_detail_page', {'slug' : value.slug }) }}" title="{{ value.title }}">
-                        <img class="img-responsive" src="{{ asset(value.image_url) }}" alt="">
+                    <a href="{{ path('news_detail_page', {'slug' : item.slug }) }}" title="{{ item.name }}">
+                        <img class="img-responsive" src="{{ item.file ? item.file.file() | imagine_filter('news_thumb') : '' }}" itemprop="thumbnail" alt="">
                     </a>
                     <h4>
-                        <a href="{{ path('news_detail_page', {'slug' : value.slug }) }}">{{ value.title }}</a>
+                        <a href="{{ path('news_detail_page', {'slug' : item.slug }) }}">{{ item.name }}</a>
                     </h4>
-                    <p>{{ value.description }}</p>
+                    <p>{{ item.description }}</p>
                 </div>
             {% if count % 3 == 0  %}
             </div>

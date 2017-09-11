@@ -29,7 +29,7 @@ class AdminSystemRolesController extends AdminController
      */
     public function indexAction(Request $request)
     {
-        $key = $request->query->get('key') ? $this->global_helper_service->cleanStringInput($request->query->get('key')) : '';
+        $key = $request->query->get('key') ? $this->global_helper_service->cleanDataInput($request->query->get('key')) : '';
         $arr_order = $request->query->get('order') ? $this->global_helper_service->handleParamrOderInUrl($request->query->get('order')) : array('field'=>'id', 'by'=>'DESC');
         $date_range = $request->query->get('date_range') ? $this->global_helper_service->handleParamDateRangeInUrl($request->query->get('date_range')) : array();
 
@@ -258,9 +258,9 @@ class AdminSystemRolesController extends AdminController
     private function filterOptions(){
         $request = new Request();
 
-        $key = $request->query->get('key') ? $this->global_helper_service->cleanStringInput($request->query->get('key')) : '';
+        $key = $request->query->get('key') ? $this->global_helper_service->cleanDataInput($request->query->get('key')) : '';
         $date_range = $request->query->get('date_range') ? $request->query->get('date_range') : '';
-        $status = $request->query->get('status') != '' ? (int)$this->global_helper_service->cleanStringInput($request->query->get('status')) : '';
+        $status = $request->query->get('status') != '' ? (int)$this->global_helper_service->cleanDataInput($request->query->get('status')) : '';
 
         $array_filters = array();
 

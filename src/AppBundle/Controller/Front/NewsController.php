@@ -18,8 +18,8 @@ class NewsController extends FrontController
         $offset = $page_offset > 0 ? ($page_offset - 1) * $limit : $page_offset * $limit;
 
         $repository = $this->getDoctrine()->getRepository('AppBundle:NewsEntity');
-        $results = $repository->list_data_news_get($limit, $offset);
-        $total = $repository->total_list_data_news_get();
+        $results = $repository->listNewsGet($limit, $offset);
+        $total = $repository->totalListNewsGet();
         $pagination = $this->global_helper_service->pagination($total, $page_offset, $limit, 3, $this->generateUrl('news_page'));
 
         $this->data['title'] = 'News Page';
@@ -35,9 +35,9 @@ class NewsController extends FrontController
      */
     public function detailAction($slug)
     {
-        $slug = $this->global_helper_service->cleanStringInput($slug);
+        $slug = $this->global_helper_service->cleanDataInput($slug);
         $repository = $this->getDoctrine()->getRepository('AppBundle:NewsEntity');
-        $result = $repository->get_news_detail($slug);
+        $result = $repository->getNewsDetail($slug);
 
         $this->data['title'] = 'News Page';
         $this->data['result'] = $result;

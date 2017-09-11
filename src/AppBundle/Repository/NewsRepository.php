@@ -8,7 +8,7 @@ class NewsRepository extends EntityRepository
 {
     use AdminNewsRepository;
 
-    public function list_data_news_get($limit, $offset)
+    public function listNewsGet($limit, $offset)
     {
         $repository = $this->getEntityManager()->getRepository('AppBundle:NewsEntity');
         $query = $repository->createQueryBuilder('pk');
@@ -26,7 +26,7 @@ class NewsRepository extends EntityRepository
         return NULL;
     }
 
-    public function total_list_data_news_get($where = array())
+    public function totalListNewsGet($where = array())
     {
         $repository = $this->getEntityManager()->getRepository('AppBundle:NewsEntity');
         $query = $repository->createQueryBuilder('pk');
@@ -37,7 +37,7 @@ class NewsRepository extends EntityRepository
         return $total;
     }
 
-    public function list_news_get_all()
+    public function getNewsOnHomePage()
     {
         $repository = $this->getEntityManager()->getRepository('AppBundle:NewsEntity');
         $query = $repository->createQueryBuilder('pk');
@@ -54,7 +54,7 @@ class NewsRepository extends EntityRepository
         return NULL;
     }
 
-    public function get_news_detail($slug)
+    public function getNewsDetail($slug)
     {
         $repository = $this->getEntityManager()->getRepository('AppBundle:NewsEntity');
         $query = $repository->createQueryBuilder('pk');

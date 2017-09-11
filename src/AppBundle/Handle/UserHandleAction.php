@@ -63,7 +63,7 @@ class UserHandleAction extends UserController
 
         $data = (object)$data;
         $validation = new \AppBundle\Validation\Front\Users\UserLoginValidation;
-        $validation->account = $helper->cleanStringInput($data->account);
+        $validation->account = $helper->cleanDataInput($data->account);
         $validation->password = $data->password ? $helper->encodePassword('UserPass', $data->password) : '';
 
         $errors = $kernel->getContainer()->get('validator')->validate($validation);
@@ -126,7 +126,7 @@ class UserHandleAction extends UserController
 
         $data = (object)$data;
         $validation = new \AppBundle\Validation\Front\Users\UserForgotPasswordValidation;
-        $validation->email = $helper->cleanStringInput($data->email);
+        $validation->email = $helper->cleanDataInput($data->email);
 
         $errors = $kernel->getContainer()->get('validator')->validate($validation);
         $error_message = $kernel->getContainer()->get('app.global_helper_service')->getErrorMessages($errors);

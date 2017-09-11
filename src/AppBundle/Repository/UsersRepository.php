@@ -35,11 +35,11 @@ class UsersRepository extends EntityRepository
         $activeCode = md5($data->email.time());
 
         $entity = new UsersEntity();
-        $entity->setFullname($helper->cleanStringInput($data->fullname));
-        $entity->setEmail($helper->cleanStringInput($data->email));
+        $entity->setFullname($helper->cleanDataInput($data->fullname));
+        $entity->setEmail($helper->cleanDataInput($data->email));
         $entity->setPassword($password);
-        $entity->setPhone($helper->cleanStringInput($data->phone));
-        $entity->setAddress($helper->cleanStringInput($data->address));
+        $entity->setPhone($helper->cleanDataInput($data->phone));
+        $entity->setAddress($helper->cleanDataInput($data->address));
         $entity->setGender($helper->cleanIntInput($data->gender));
         $entity->setStatus(0);
         $entity->setactiveCode($activeCode);

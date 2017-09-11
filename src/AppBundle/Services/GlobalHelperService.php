@@ -194,7 +194,7 @@ class GlobalHelperService  extends Controller
         return $pagination;
     }
 
-    public function cleanStringInput($input)
+    public function cleanDataInput($input)
     {
         $output = strip_tags(htmlspecialchars($input));
         return $output;

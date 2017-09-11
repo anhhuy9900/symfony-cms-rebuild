@@ -35,3 +35,6 @@ rest_api:
     prefix:   /api/test
     type:     rest
     resource: AppBundle\Controller\API\ApiTestController
+
+_liip_imagine:
+    resource: "@LiipImagineBundle/Resources/config/routing.xml"
