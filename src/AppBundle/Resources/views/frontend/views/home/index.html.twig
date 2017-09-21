@@ -20,7 +20,8 @@
                 {% set count = count + 1 %}
                 <div class="col-md-4 portfolio-item">
                     <a href="{{ path('news_detail_page', {'slug' : item.slug }) }}" title="{{ item.name }}">
-                        <img class="img-responsive" src="{{ item.file ? item.file.file() | imagine_filter('news_thumb') : '' }}" itemprop="thumbnail" alt="">
+                       <!-- <img class="img-responsive" src="{{ item.file ? item.file.file() | imagine_filter('news_thumb') : '' }}" itemprop="thumbnail" alt="">-->
+                        <img class="img-responsive" src="{{ asset('uploads/news/2017/09/11/aab16f5e0b641629fb1c6392cb9469c7.png' ) | imagine_filter('news_thumb') }}" itemprop="thumbnail" alt="">
                     </a>
                     <h4>
                         <a href="{{ path('news_detail_page', {'slug' : item.slug }) }}">{{ item.name }}</a>
