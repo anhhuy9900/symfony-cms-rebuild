@@ -37,10 +37,10 @@ class NewsController extends FrontController
     {
         $slug = $this->global_helper_service->cleanDataInput($slug);
         $repository = $this->getDoctrine()->getRepository('AppBundle:NewsEntity');
-        $result = $repository->getNewsDetail($slug);
+        $item = $repository->getNewsDetail($slug);
 
         $this->data['title'] = 'News Page';
-        $this->data['result'] = $result;
+        $this->data['item'] = $item;
 
         return $this->render('@frontend/news/detail.html.twig', $this->data);
     }

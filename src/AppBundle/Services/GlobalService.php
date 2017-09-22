@@ -23,7 +23,14 @@ class GlobalService extends Controller
     {
         $this->em = $entityManager;
     }
-
+  
+    /**
+     * get images of gallery
+     * @param $typeId
+     * @param $type
+     *
+     * @return null
+     */
     public function getListGalleries($typeId, $type)
     {
         $entity = $this->em->getRepository('AppBundle:FilesEntity');
@@ -41,7 +48,11 @@ class GlobalService extends Controller
 
         return NULL;
     }
-
+  
+    /**
+     * Get session for current user
+     * @return mixed|string
+     */
     public function sessionCurrentUser()
     {
         $session = new Session();
@@ -53,7 +64,14 @@ class GlobalService extends Controller
 
         return $user;
     }
-
+  
+    /**
+     * Check valid CSRF Token
+     * @param $intention
+     * @param $token
+     *
+     * @return bool
+     */
     public function checkValidCsrfToken($intention, $token)
     {
         if (!$this->isCsrfTokenValid($intention, $token)) {

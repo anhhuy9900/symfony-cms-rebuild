@@ -7,7 +7,14 @@ use AppBundle\Repository\Admin\AdminNewsRepository;
 class NewsRepository extends EntityRepository
 {
     use AdminNewsRepository;
-
+  
+  /**
+   * Get news items
+   * @param $limit
+   * @param $offset
+   *
+   * @return array|null
+   */
     public function listNewsGet($limit, $offset)
     {
         $repository = $this->getEntityManager()->getRepository('AppBundle:NewsEntity');
@@ -25,7 +32,13 @@ class NewsRepository extends EntityRepository
 
         return NULL;
     }
-
+  
+  /**
+   * Get total news item
+   * @param array $where
+   *
+   * @return mixed
+   */
     public function totalListNewsGet($where = array())
     {
         $repository = $this->getEntityManager()->getRepository('AppBundle:NewsEntity');
@@ -36,7 +49,11 @@ class NewsRepository extends EntityRepository
 
         return $total;
     }
-
+  
+  /**
+   * Get items news on home page
+   * @return array|null
+   */
     public function getNewsOnHomePage()
     {
         $repository = $this->getEntityManager()->getRepository('AppBundle:NewsEntity');
@@ -53,7 +70,13 @@ class NewsRepository extends EntityRepository
 
         return NULL;
     }
-
+  
+  /**
+   * Get News Detail Info
+   * @param $slug
+   *
+   * @return mixed|null
+   */
     public function getNewsDetail($slug)
     {
         $repository = $this->getEntityManager()->getRepository('AppBundle:NewsEntity');

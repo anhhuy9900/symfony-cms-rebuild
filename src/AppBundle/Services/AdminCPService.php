@@ -15,20 +15,27 @@ use Symfony\Component\HttpFoundation\Response;
 class AdminCPService extends Controller {
 
     private $global_helper_service;
-
-//    public function setContainer(ContainerInterface $container)
-//    {
-//        $this->container = $container;
-//
-//    }
-
+  
+  /**
+   * AdminCPService constructor.
+   *
+   * @param \Doctrine\ORM\EntityManager $entityManager
+   * @param \Symfony\Component\DependencyInjection\ContainerInterface $container
+   */
     public function __construct(EntityManager $entityManager, ContainerInterface $container)
     {
         $this->em = $entityManager;
         $this->container = $container;
         $this->global_helper_service = $this->container->get('app.global_helper_service');
     }
-
+  
+  /**
+   * Check valid user
+   * @param $username
+   * @param $password
+   *
+   * @return null|object
+   */
     public function adminCheckValidUser($username, $password)
     {
         $password = $this->encodePassword('MyPass', $password);
@@ -42,7 +49,13 @@ class AdminCPService extends Controller {
 
         return NULL;
     }
-
+  
+  /**
+   * Get user info by token
+   * @param $userToken
+   *
+   * @return null|object
+   */
     public function adminGetUserByToken($userToken)
     {
         $repository = $this->em->getRepository('AppBundle:SystemUsersEntity');
@@ -58,7 +71,11 @@ class AdminCPService extends Controller {
 
         return NULL;
     }
-
+  
+  /**
+   * Get current User by user session
+   * @return null|object
+   */
     public function adminGetCurrentUserLogin(){
         $session = new Session(new PhpBridgeSessionStorage());
         if(!empty($session->get('userad_authentication'))) {
@@ -71,7 +88,12 @@ class AdminCPService extends Controller {
         }
         return NULL;
     }
-
+  
+  /**
+   * Set authenticate for user
+   * @param $user_data
+   * @param $remember
+   */
     public function adminSetAuthentication($user_data, $remember) {
         $session = new Session(new PhpBridgeSessionStorage());
         $session->start();
@@ -97,7 +119,11 @@ class AdminCPService extends Controller {
             $response->sendHeaders();
         }
     }
-
+  
+  /**
+   * Set seesion when login to admin page
+   * @return bool
+   */
     public function adminUserSessionLogin(){
         $session = new Session(new PhpBridgeSessionStorage());
         $is_login = FALSE;
@@ -116,7 +142,11 @@ class AdminCPService extends Controller {
         }
         return $is_login;
     }
-
+  
+  /**
+   * Check valida user when user login admin
+   * @return bool
+   */
     public function adminCheckValidLogin()
     {
         if($this->adminUserSessionLogin()) {
@@ -125,19 +155,36 @@ class AdminCPService extends Controller {
         return FALSE;
 
     }
-
+  
+  /**
+   * Get user info of admin
+   * @return mixed
+   */
     public function adminUserAdminInfo()
     {
         $session = new Session();
         $user = $session->get('userad_authentication');
         return $user;
     }
-
+  
+  /**
+   * encode password
+   * @param $raw
+   * @param $salt
+   *
+   * @return string
+   */
     public function encodePassword($raw, $salt)
     {
         return hash('sha256', $salt . $raw); // Custom function for encrypt
     }
-
+  
+  /**
+   * List modules left in admin panel
+   * @param $parentId
+   *
+   * @return string
+   */
     public function adminListModulesLeft($parentId)
     {
         //get current url
@@ -185,7 +232,14 @@ class AdminCPService extends Controller {
 
         return $html;
     }
-
+  
+  /**
+   * Check role for current user
+   * @param $module_id
+   * @param $roleType
+   *
+   * @return bool
+   */
     public function adminCheckRolesUser($module_id, $roleType)
     {
         $valid = FALSE;
@@ -303,7 +357,13 @@ class AdminCPService extends Controller {
 
         return  $html;
     }
-    
+  
+  /**
+   * Get module by alias
+   * @param $alias
+   *
+   * @return array
+   */
     public function getModulesByAlias($alias) {
       $repository = $this->em->getRepository('AppBundle:SystemModulesEntity');
       $query = $repository->createQueryBuilder('pk');

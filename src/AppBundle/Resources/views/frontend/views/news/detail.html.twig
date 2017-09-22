@@ -10,7 +10,7 @@
         <!-- Blog Post -->
 
         <!-- Title -->
-        <h1>{{ result.title }}</h1>
+        <h1>{{ item.name }}</h1>
 
         <!-- Author -->
         <p class="lead">
@@ -25,14 +25,14 @@
         <hr>
 
         <!-- Preview Image -->
-        <img class="img-responsive" src="http://placehold.it/900x300" alt="">
+        <img class="img-responsive" src="{{ item.file ? item.file.file() : '' }}" itemprop="thumbnail" alt="">
 
         <hr>
 
         <!-- Post Content -->
-        <p class="lead">{{ result.description }}</p>
+        <p class="lead">{{ item.description }}</p>
 
-        {{ result.content | raw }}
+        {{ item.content | raw }}
 
         <hr>
 

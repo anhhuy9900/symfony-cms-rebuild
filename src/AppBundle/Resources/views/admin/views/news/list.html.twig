@@ -65,7 +65,7 @@
 
 														<ul class="dropdown-menu">
 															<li>
-																<a href="{{ app.request.getRequestUri()|__strpos('?') > 0 ? app.request.getRequestUri() ~ '&report=1' : app.request.getRequestUri() ~ '?report=1' }}">Export Excel</a>
+																<a href="{{ app.request.getRequestUri()|strpos('?') > 0 ? app.request.getRequestUri() ~ '&report=1' : app.request.getRequestUri() ~ '?report=1' }}">Export Excel</a>
 															</li>
 
 														</ul>
@@ -130,7 +130,7 @@
 								<th>Category</th>
 								<th>Title</th>
 								<th>Image</th>
-								<th class="{{ app.request.query.get('order') ? app.request.query.get("order") =='updated_date|DESC' ? 'sorting_desc' : 'sorting_asc' : 'sorting' }} admin_order_field" data-url="{{ app.request.query.get("order") ? app.request.getRequestUri()|__getLinkOrder(app.request.query.get('order')) : app.request.getRequestUri()|__getLinkOrder('updated_date|DESC') }}">
+								<th class="{{ app.request.query.get('order') ? app.request.query.get("order") =='updated_date|DESC' ? 'sorting_desc' : 'sorting_asc' : 'sorting' }} admin_order_field" data-url="{{ app.request.query.get("order") ? app.request.getRequestUri()|getLinkOrder(app.request.query.get('order')) : app.request.getRequestUri()|getLinkOrder('updated_date|DESC') }}">
 									<i class="ace-icon fa fa-clock-o bigger-110 hidden-480"></i>
 									Updated date
 

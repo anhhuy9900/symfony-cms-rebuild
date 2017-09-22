@@ -12,20 +12,13 @@ use AppBundle\Entity\UsersEntity;
  */
 class UsersRepository extends EntityRepository
 {
-
-    /*
-     * This function use to input info user in database
-     * @param
-     *      - user_data (object)
-     *          - fullname (string)
-     *          - email (string)
-     *          - password (string)
-     *          - phone (string)
-     *          - address (string)
-     *          - gender (int)
-     *          - status (int)
-     *          - activeCode (string)
-     */
+  
+  /**
+   * This function use to input info user in database
+   * @param $data
+   *
+   * @return mixed
+   */
     public function user_data_insert($data)
     {
         global $kernel;
@@ -52,14 +45,13 @@ class UsersRepository extends EntityRepository
 
         return $entity->getID();
     }
-
-    /*
-     * This function use to get user login
-     * @param
-     *      - user_data (object)
-     *          - account (string)
-     *          - password (tring)
-     */
+  
+  /**
+   * This function use to get user login
+   * @param $user_data
+   *
+   * @return bool|mixed
+   */
     function get_current_user($user_data){
         global $kernel;
         $helper = $kernel->getContainer()->get('app.global_helper_service');
@@ -79,12 +71,13 @@ class UsersRepository extends EntityRepository
 
         return FALSE;
     }
-
-    /*
-     * This function use to get user by the email
-     * @param
-     *      - email (string)
-     */
+  
+  /**
+   * This function use to get user by the email
+   * @param $email
+   *
+   * @return bool|mixed
+   */
     function get_current_user_by_email($email){
         $repository = $this->getEntityManager()->getRepository('AppBundle:UsersEntity');
         $query = $repository->createQueryBuilder('pk')

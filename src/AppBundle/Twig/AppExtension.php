@@ -28,9 +28,9 @@ class AppExtension extends \Twig_Extension
     {
         return array(
             new \Twig_SimpleFilter('count', array($this, 'count')),
-            new \Twig_SimpleFilter('__strpos', array($this, '__strposFilter')),
-            new \Twig_SimpleFilter('__getLinkOrder', array($this, '__getLinkOrderFilter')),
-            new \Twig_SimpleFilter('__vardump', array($this, '__vardumpFilter')),
+            new \Twig_SimpleFilter('strpos', array($this, 'strposFilter')),
+            new \Twig_SimpleFilter('getLinkOrder', array($this, 'getLinkOrderFilter')),
+            new \Twig_SimpleFilter('imageStyle', array($this, 'imageStyleFilter')),
         );
     }
 
@@ -38,29 +38,33 @@ class AppExtension extends \Twig_Extension
     {
         return count($value);
     }
-
-    public function __strposFilter($value, $type='')
+  
+  /**
+   * strpos
+   * @param $value
+   * @param string $type
+   *
+   * @return bool|int
+   */
+    public function strposFilter($value, $type='')
     {
         return strpos($value, $type);
     }
-
-    public function __vardumpFilter($value, $type = 0)
-    {
-        print '<pre>';
-        print_r($value);
-        print '</pre>';
-        if($type){
-            die();
-        }
-    }
-
-    public function __getLinkOrderFilter($url, $field_type = 'id|DESC')
+  
+  /**
+   * Get link order filter pages in admin
+   * @param $url
+   * @param string $field_type
+   *
+   * @return string
+   */
+    public function getLinkOrderFilter($url, $field_type = 'id|DESC')
     {
 
         $filter_order = $field_type;
-        if($this->__strposFilter($url, $field_type)){
-            if($this->__strposFilter($url, 'order=')){
-                $replace = $this->__strposFilter($url, '?order=') ? '?order='.$field_type : '&order='.$field_type;
+        if($this->strposFilter($url, $field_type)){
+            if($this->strposFilter($url, 'order=')){
+                $replace = $this->strposFilter($url, '?order=') ? '?order='.$field_type : '&order='.$field_type;
                 $url = str_replace($replace, '', $url);
             }
             $ex_field = explode('|', $field_type);
@@ -74,20 +78,44 @@ class AppExtension extends \Twig_Extension
             }
 
         }
-        $filter_url = $this->__strposFilter($url, '?') ? $url.'&order=' : $url.'?order=';
+        $filter_url = $this->strposFilter($url, '?') ? $url.'&order=' : $url.'?order=';
         $handle_url = $filter_url . $filter_order;
 
         return $handle_url;
     }
-
+  
+  /**
+   * Get global session on app
+   * @return array
+   */
     public function getGlobals() {
-
         $session = new Session();
 
-        return array(
+        return [
             'session' => $session->all(),
             'session_user' => $this->container->get('app.global_service')->sessionCurrentUser()
-        );
+        ];
+    }
+  
+  /**
+   * Use render image style
+   * @param $file
+   * @param $filterFolder
+   * @param $with
+   * @param $height
+   *
+   * @return string
+   */
+    public function imageStyleFilter($file, $filterFolder, $with, $height) {
+      $newPath = '/media/' . $filterFolder . '/';
+      $imageHelper = $this->container->get('app.image_helper');
+      $imageHelper->sourceFile = $this->container->get('kernel')->getWebPathDir() . $file;
+      $imageHelper->newFile = $this->container->get('kernel')->getMediaDir() . $filterFolder . '/';
+      $imageHelper->width = $with;
+      $imageHelper->height = $height;
+      $imageHelper->crop();
+      $resize_data = $imageHelper->getData();
+      return !empty($resize_data) ? $newPath . $resize_data['image_name'] : '';
     }
 
     public function getName()

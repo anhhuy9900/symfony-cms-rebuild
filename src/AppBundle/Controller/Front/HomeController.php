@@ -14,17 +14,6 @@ class HomeController extends FrontController
     {
         $this->image_helper = $this->container->get('app.image_helper');
         $results = $this->getDoctrine()->getRepository('AppBundle:NewsEntity')->getNewsOnHomePage();
-//        if(!empty($results)){
-//            foreach($results as $value){
-//                $image_path = $this->getParameter('upload_dir').'/'. $value->getImage();
-//                $resize_path = $this->getParameter('upload_dir').'/resize/';
-//                $resize_data = $this->image_helper->resizeImage($image_path, $resize_path, 360, 206);
-//                //$value->image_url = $this->get('request')->getBasePath() . '/web/uploads/resize/' . $resize_data['image_name'];
-//                $value->image_url = '';
-//
-//            }
-//        }
-
         $this->data['title'] = 'Home Page';
         $this->data['results'] = $results;
         return $this->render('@frontend/home/index.html.twig', $this->data);
